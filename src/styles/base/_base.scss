@@ -1,0 +1,16 @@
+html:focus-within {
+    scroll-behavior: smooth;
+}
+
+/* Set core body defaults */
+body {
+    min-height: 100vh;
+    text-rendering: optimizeSpeed;
+    line-height: 1.5;
+    // overflow: hidden;
+}
+
+.wrapper{
+    display: flex;
+    background-color: #5E8C61;
+}

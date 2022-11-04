@@ -1,0 +1,20 @@
+.select{
+    background-color: $gray-four;
+    border-radius: 5px;
+
+    &__dropdown{
+        display: block;
+        width: 100%;
+        font-size: 16px;
+        color: $black;
+        background-color: $gray-four;
+        border: none;
+        outline: none;
+    }
+
+    &__label{
+        display: block;
+        font-size: 14px;
+        color: $gray-deep;
+    }
+}

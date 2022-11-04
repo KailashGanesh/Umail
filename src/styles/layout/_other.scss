@@ -1,0 +1,16 @@
+.email{
+
+    width: 90%;
+
+    &__list{
+        height: calc(100vh - 60px);
+        width: 40%;
+        background-color: #94E8B4;
+    }
+
+    &__reader{
+        height: calc(100vh - 60px);
+        width: 60%;
+        background-color: #72BDA3;
+    }
+}
