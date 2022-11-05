@@ -27,6 +27,10 @@ Single-colored icons can be modified like so:
   width: 1.125em;
 }
 
+.icon-trash-can-solid {
+  width: 0.875em;
+}
+
 .icon-user-regular {
   width: 0.875em;
 }

@@ -13,17 +13,17 @@ a, a:visited, a:active{
 
 
 //heading
-@include font-size('heading-lg',18,normal);
-@include font-size('heading-md',16,normal);
-@include font-size('heading-sm',15,normal);
+@include font-size('heading-lg',18px,normal);
+@include font-size('heading-md',16px,normal);
+@include font-size('heading-sm',15px,normal);
 
 //body
-@include font-size('bfs-lg',14,normal);
-@include font-size('bfs-lg',13,normal);
-@include font-size('bfs-lg',12,normal);
+@include font-size('fs-lg',14px,normal);
+@include font-size('fs-md',13px,normal);
+@include font-size('fs-sm',12px,normal);
 
 // font colors
-@include font-color('steel',#000);
+@include font-color('steel',$steel);
 
 .fw-300{ font-weight: 300;}
 .fw-500{ font-weight: 500; }

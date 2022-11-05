@@ -3,20 +3,6 @@
     height: auto;
 }
 
-.link{
-    color: inherit;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out 0s;
-
-    &:hover{
-        color: $primary-blue;
-    }
-}
-
-.border-bottom{
-    border-bottom: 1px solid $gray-deep;
-}
-
 .clear-fix::after{
     content: '';
     clear: both;

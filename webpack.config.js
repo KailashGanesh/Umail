@@ -1,6 +1,8 @@
 const path = require('path')
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const loader = require('sass-loader')
+const CopyPlugin = require("copy-webpack-plugin")
 // const autoprefixer = require("autoprefixer");
 
 module.exports = {
@@ -42,7 +44,7 @@ module.exports = {
             {
                 test: /\.(png|svg|jpg|jpeg|gif)$/i,
                 type: 'asset/resource'
-            }
+            },
 
         ],
     },
@@ -52,5 +54,6 @@ module.exports = {
             filename:'index.html',
             template: 'src/template.html',
         }),
+        new CopyPlugin({patterns:[{from: './src/assets/sprite.svg', to:''}]})
     ]
 }

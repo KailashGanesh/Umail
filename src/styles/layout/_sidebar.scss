@@ -1,5 +1,36 @@
 .sidebar{
-    background-color: #72BDA3;
+    background-color: $white;
+    color: $steel;
     height: calc(100vh - 60px);
-    width: 10%;
+    width: 220px;
+    overflow-y: auto;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    &__items:hover:not(:first-child){
+        background-color: rgba(142, 142, 147, 0.19);
+        cursor: pointer;
+    }
+
+    &__btn{
+        background-color: transparent;
+        color: $steel;
+        font-size: 14px;
+    }
+
+    .btn__icon{
+        fill: $steel;
+    }
+
+    .active{
+        color: $gunmetal;
+        color: $blue;
+
+        .btn__icon{
+            fill: $gunmetal;
+            fill: $blue;
+        }
+    }
 }

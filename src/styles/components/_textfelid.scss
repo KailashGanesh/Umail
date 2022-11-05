@@ -1,0 +1,32 @@
+.input{
+    position: relative;
+
+    &__felid{
+        border-radius: 15px;
+        outline: none;
+        border: none;
+        // box-shadow: 0 0 0 1px rgba($color: #000000, $alpha: 0.7);
+        border: 1px solid $steel;
+        background-color: $white;
+        min-width: 294px;
+        height: 30px;
+        padding-left: 35px;
+
+    }
+
+    &__icon{
+        fill: #000000;
+        width: 14px;
+        height: 14px;
+        position: absolute;
+        left: 10px;
+        top:50%;
+        transform: translate(0,-50%);
+
+    }
+        .input__icon  +  .input__icon {
+            left: 25px;
+            width: 8px;
+            height: 8px;
+        }
+}

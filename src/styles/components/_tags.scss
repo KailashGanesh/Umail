@@ -1,0 +1,41 @@
+%tag{
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    border: 3px solid;
+    // border-style: solid;
+    // border-width: 5px;
+    // border-radius: 1px;
+    vertical-align: middle;
+}
+
+
+.tag--personal{
+    @extend %tag;
+    margin-left: 4px;
+    border-color: $vivid-purple;
+}
+
+.tag--clients{
+    @extend %tag;
+    margin-left: 4px;
+    border-color: $pumpkin-orange;
+}
+
+.tag--family{
+    @extend %tag;
+    margin-left: 4px;
+    border-color: $ugly-yellow;
+}
+
+.tag--friends{
+    @extend %tag;
+    margin-left: 4px;
+    border-color: $neon-blue;
+}
+
+.tag--archives{
+    @extend %tag;
+    margin-left: 4px;
+    border-color: $purplish-grey;
+}

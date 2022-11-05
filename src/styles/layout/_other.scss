@@ -1,16 +1,81 @@
 .email{
 
     width: 90%;
+    width: calc(100% - 220px);
 
     &__list{
         height: calc(100vh - 60px);
         width: 40%;
-        background-color: #94E8B4;
+        max-width: 334px;
+        min-width: 334px;
+        background-color: $white;
+        overflow-y: auto;
+    }
+
+    &__item{
+        display: flex;
+        flex-direction: column;
+        background-color: $white;
+        padding: 20px;
+        border-bottom: 1px solid #ededed;
+        border-left: 3px solid transparent;
+        cursor: pointer;
+
+        &:hover{
+            background-color: rgba(142, 142, 147, 0.05);
+        }
+    }
+
+    .active--email{
+        border-left: 3px solid $blue;
+        background-color: rgba($color: $steel, $alpha: 0.5);
+        background-color: rgba(142, 142, 147, 0.05);
+    }
+
+   
+    &__details{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
     &__reader{
         height: calc(100vh - 60px);
-        width: 60%;
-        background-color: #72BDA3;
+        // width: 60%;
+        flex-grow: 1;
+        // background-color: #72BDA3;
+
+        display: flex;
+        flex-direction: column;
+        overflow: auto;
+    }
+
+    &__header{
+        background-color: $white;
+        flex-basis: 130px;
+        // border: 1px solid;
+        display: flex;
+        justify-content: space-between;
+        /* width: 100%; */
+        align-items: center;
+        padding: 40px 30px;
+        position: relative;
+        &::after{
+            content: '';
+            display: block;
+            margin: 0 auto;
+            width: 90%;
+            border-bottom: 1px solid #eceff3;
+            position: absolute;
+            bottom: 0;
+        }
+    }
+
+    &__body{
+        background-color: $white;
+        color: #65676e;
+        flex-grow: 1;
+        padding: 30px;
+        white-space: pre-line;
     }
 }
