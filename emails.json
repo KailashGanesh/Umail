@@ -9,7 +9,7 @@
             "attachment":"",
             "files":[],
             "unread":false,
-            "message":"",
+            "message":""
         },
         {
             "from":"elonmusk@umail.com",
@@ -20,7 +20,8 @@
             "attachment":true,
             "files":["vision-system.pdf","specs.doc"],
             "unread": true,
-            "message":"hi bob, \n I need you to put your building skills to use and make a vision system for me in 12 months. \n I'll pay you 12 million dollars if you finish it in one month - every month after that I will reduce 1 million",
-        },
-    ]
+            "message":"hi bob, \n I need you to put your building skills to use and make a vision system for me in 12 months. \n I'll pay you 12 million dollars if you finish it in one month - every month after that I will reduce 1 million"
+        }
+    ],
+    "sent":"nothing"
 }
