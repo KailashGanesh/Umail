@@ -5,7 +5,7 @@ import './styles/main.scss'
 
 
 let url = 'https://raw.githubusercontent.com/KailashGanesh/Umail/master/emails.json';
-url = 'http://127.0.0.1:5500/emails.json'
+// url = 'http://127.0.0.1:5500/emails.json'
 
 const sideBar =  document.getElementById('sidebar');
 const emailList =  document.getElementById('email-list');
