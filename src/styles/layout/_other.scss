@@ -39,6 +39,13 @@
         align-items: center;
     }
 
+    &__subject{
+        max-width: 200px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
     &__reader{
         height: calc(100vh - 60px);
         // width: 60%;

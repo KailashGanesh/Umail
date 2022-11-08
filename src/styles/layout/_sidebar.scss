@@ -9,15 +9,25 @@
     flex-direction: column;
     justify-content: space-between;
 
-    &__items:hover:not(:first-child){
-        background-color: rgba(142, 142, 147, 0.19);
-        cursor: pointer;
-    }
+    // &__items:hover:not(:first-child){
+    //     background-color: rgba(142, 142, 147, 0.19);
+    //     cursor: pointer;
+    // }
 
     &__btn{
+        display: block;
         background-color: transparent;
         color: $steel;
         font-size: 14px;
+        width: 100%;
+        text-align: left;
+        padding-left: 16px;
+        padding-bottom: 4px;
+        // cursor: pointer;
+
+        &:hover{
+            background-color: rgba(142, 142, 147, 0.19);
+        }
     }
 
     .btn__icon{
@@ -25,11 +35,11 @@
     }
 
     .active{
-        color: $gunmetal;
+        // color: $gunmetal;
+        background-color:rgba(142, 142, 147, 0.19) ;
         color: $blue;
 
         .btn__icon{
-            fill: $gunmetal;
             fill: $blue;
         }
     }
