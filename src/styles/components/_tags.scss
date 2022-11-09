@@ -39,3 +39,21 @@
     margin-left: 4px;
     border-color: $purplish-grey;
 }
+
+.tag--unread{
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    margin-right: 4px;
+    background-color: $blue;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.circle{
+    width: 9px;
+    height: 9px;
+    border-width: 5px;
+    border-radius: 50%;
+    margin-left: 0;
+}
