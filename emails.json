@@ -57,6 +57,20 @@
             "message":"hi bob, \n\n I need a PBC to make a tesla coil \n\n\n Thanks and regards \n Nicola Tesla"
         },
         {
+            "picture":"",
+            "name":"dan mace",
+            "from":"dan@umail.com",
+            "to":"bob@umail.com",
+            "subject":"Homework",
+            "time":"10 Sep 2022",
+            "tag":"friends",
+            "attachment":true,
+            "files":["scan-1.pdf","scan-2.pdf","scan-3.pdf","scan-4.pdf","scan-5.pdf","answers.doc"],
+            "reply":true,
+            "unread": false,
+            "message":"hi bob, \n\n I here's my answers and question papers for the homework \n\n\nDan Mace"
+        },
+        {
             "picture":"nicola-tesla.jpg",
             "name":"Oscar Wilde",
             "from":"oscar@umail.com",
@@ -83,7 +97,7 @@
             "attachment":true,
             "files":["legal-docs.doc"],
             "reply":false,
-            "unread": true,
+            "unread": false,
             "message":"hi bill, \n\n I will take half of microsoft \n\n\n Thanks and regards \n bob"
         },
         {
@@ -99,6 +113,20 @@
             "reply":false,
             "unread": false,
             "message":"hi Nicola Tesla, \n\n I will give you a PCB \n\n\n you are welcome \n bob"
+        },
+        {
+            "picture":"",
+            "name":"dan mace",
+            "to":"dan@umail.com",
+            "from":"bob@umail.com",
+            "subject":"Homework",
+            "time":"10 Sep 2022",
+            "tag":"friends",
+            "attachment":true,
+            "files":["scan-1.pdf","scan-2.pdf","scan-3.pdf","scan-4.pdf","scan-5.pdf","answers.doc"],
+            "reply":false,
+            "unread": false,
+            "message":"hi Dan, \n\n thanks for the answers and question papers \n\n\nbob"
         }
     ],
     "starred":[],
@@ -114,7 +142,7 @@
             "attachment":true,
             "files":[],
             "reply":false,
-            "unread": true,
+            "unread": false,
             "message":"hi \n I want to buy lunch \n Bob"
         }
     ],
