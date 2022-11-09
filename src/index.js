@@ -1,6 +1,6 @@
 import getData from './js/getData';
 import globals from './js/globals';
-import {popEmailList, popEmailReader, highlightElement} from './js/popluateEmailList';
+import {popEmailList, popEmailReader, highlightElement, updateNumber} from './js/popluateEmailList';
 import './styles/main.scss'
 
 
@@ -10,12 +10,14 @@ let url = 'https://raw.githubusercontent.com/KailashGanesh/Umail/master/emails.j
 const sideBar =  document.getElementById('sidebar');
 const emailList =  document.getElementById('email-list');
 const emailReader = document.getElementById('email-reader')
+
 const inboxBtn = document.getElementById('inboxBtn');
 
 
 getData(url).then( () => {
     highlightElement(inboxBtn,'sidebarMenu')
     popEmailList(globals.emailData,'inbox');
+    updateNumber();
     // const firstEmail = document.getElementById('1');
     // highlightElement(firstEmail,'emailList')
     // popEmailReader(globals.emailData,firstEmail);
@@ -27,7 +29,7 @@ sideBar.addEventListener('click', (e) => {
     let eventTarget = e.target.closest('button');
 
     if(eventTarget == null) return;
-    console.log('sidebar',e.target.closest('button').id)
+    // console.log('sidebar',e.target.closest('button').id)
 
     switch(eventTarget.id){
         case 'inboxBtn':
@@ -50,6 +52,34 @@ sideBar.addEventListener('click', (e) => {
         case 'trashBtn':
             highlightElement(eventTarget,'sidebarMenu')
             popEmailList(data, 'trash')
+        break;
+
+        let result;
+
+        case 'personalBtn':
+            result = { 'inbox': data['inbox'].filter(obj => obj.tag == 'personal')};
+            highlightElement(eventTarget,'sidebarMenu')
+            popEmailList(result, 'inbox')
+        break;
+        case 'clientsBtn':
+            result = { 'inbox': data['inbox'].filter(obj => obj.tag == 'clients')};
+            highlightElement(eventTarget,'sidebarMenu')
+            popEmailList(result, 'inbox')
+        break;
+        case 'familyBtn':
+            result = { 'inbox': data['inbox'].filter(obj => obj.tag == 'family')};
+            highlightElement(eventTarget,'sidebarMenu')
+            popEmailList(result, 'inbox')
+        break;
+        case 'friendsBtn':
+            result = { 'inbox': data['inbox'].filter(obj => obj.tag == 'friends')};
+            highlightElement(eventTarget,'sidebarMenu')
+            popEmailList(result, 'inbox')
+        break;
+        case 'archivesBtn':
+            result = { 'inbox': data['inbox'].filter(obj => obj.tag == 'archives')};
+            highlightElement(eventTarget,'sidebarMenu')
+            popEmailList(result, 'inbox')
         break;
     }
 })
