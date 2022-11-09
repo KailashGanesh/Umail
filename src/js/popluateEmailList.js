@@ -1,16 +1,18 @@
 import globals from './globals';
 
-export const popEmailList = (data, folderName) => {
+export const popEmailList = (data, folderName,openFirstEmail = false) => {
 
 
     const emailList = document.getElementById('email-list');
     const list = data[folderName]
 
     emailList.innerHTML = '';
+    emailList.classList.remove('d-flex','ai-center','jc-center');
 
 
     if(list.length == 0){
-        emailList.innerHTML = "No emails in this folder"
+        defaultScreen(true,false)
+        // emailList.innerHTML = "No emails in this folder"
     }
 
 
@@ -24,8 +26,9 @@ export const popEmailList = (data, folderName) => {
             tag =`<span class="tag--${list[i]['tag']} circle va-middle ml-1"></span>`
         }
 
+
         emailList.innerHTML += `
-    <li class="email__item ${list[i]['unread']? 'unread':''}" id="${i}" data-folder="${folderName}">
+    <li class="email__item ${list[i]['unread']? 'unread':''}" id="${globals.emailData[folderName].indexOf(list[i])}" data-folder="${folderName}">
         <div class="email__details">
             <p class="heading-sm email__subject clr-gunmetal va-middle">${list[i]['subject']}</p>
             <span class="fs-sm clr-gunmetal">${list[i]['time']}</span>
@@ -41,10 +44,37 @@ export const popEmailList = (data, folderName) => {
     </li>
     `;
     }
+    if(openFirstEmail){
+        // const firstEmail = document.getElementById('0');
+        // highlightElement(firstEmail,'emailList')
+        // popEmailReader(globals.emailData,firstEmail);
+        emailList.firstElementChild.click()
+    }
+}
 
-    const firstEmail = document.getElementById('0');
-    highlightElement(firstEmail,'emailList')
-    popEmailReader(globals.emailData,firstEmail);
+export const defaultScreen = (clearEmailList = false,clearEmailReader = false) => {
+
+    if(clearEmailList){
+        const emailList = document.getElementById('email-list');
+        emailList.classList.add('d-flex','ai-center','jc-center');
+
+        emailList.innerHTML = `<div> 
+        <svg width="120" height="120" class="va-middle m-auto d-block fill-cool-gray"><use xlink:href="sprite.svg#icon-folder-open-solid"></use></svg>
+        <p class="clr-cool-gray">No emails in this folder</p>
+        </div>`;
+    }
+
+    if(clearEmailReader){
+        const emailReader = document.getElementById('email-reader');
+        emailReader.classList.add('d-flex','ai-center','jc-center');
+
+        emailReader.innerHTML = `<div class="ta-c"> 
+        <p class="clr-cool-gray m-auto mb-4">No email selected</p>
+        <svg width="120" height="120" class="va-middle m-auto d-block fill-cool-gray" style="transform: translateX(-10px);"><use xlink:href="sprite.svg#icon-sparrow-solid"></use></svg>
+        <p class="clr-cool-gray mt-3">Sparrow Email Client</p>
+        </div>`;
+    }
+
 }
 
 export const popEmailReader = (data,eventElement) => {
@@ -53,32 +83,28 @@ export const popEmailReader = (data,eventElement) => {
     const index = eventElement.id;
     const folder = eventElement.dataset.folder;
     let attachment = '';
+    emailReader.classList.remove('d-flex','ai-center','jc-center');
 
-    // console.log(data, index)
-    if(data[folder][index]['attachment']){
-        data[folder][index]['files'].forEach(element => {
-            let fileType = element.slice(element.length - 3)
-                console.log(fileType)
+    if(globals.emailData[folder][index]['attachment']){
+        globals.emailData[folder][index]['files'].forEach(fileName => {
+            let fileType = fileName.slice(fileName.length - 3)
             if(fileType == 'pdf'){
-                attachment += `<div class="attachment"><svg width="20" height="20" class="va-middle fill-red"><use xlink:href="sprite.svg#icon-file-pdf-solid"></use></svg><span class="va-middle ml-2">${element}</span></div>`;
+                attachment += `<div class="attachment"><svg width="20" height="20" class="va-middle fill-red"><use xlink:href="sprite.svg#icon-file-pdf-solid"></use></svg><span class="va-middle ml-2">${fileName}</span></div>`;
             }else if (fileType == 'doc'){
-                attachment += `<div class="attachment"><svg width="20" height="20" class="va-middle fill-blue"><use xlink:href="sprite.svg#icon-file-word-solid"></use></svg><span class="va-middle ml-2">${element}</span></div>`;
+                attachment += `<div class="attachment"><svg width="20" height="20" class="va-middle fill-blue"><use xlink:href="sprite.svg#icon-file-word-solid"></use></svg><span class="va-middle ml-2">${fileName}</span></div>`;
             }else{
-                attachment += `<div class="attachment"><svg width="20" height="20" class="va-middle"><use xlink:href="sprite.svg#icon-file-solid"></use></svg><span class="va-middle ml-2">${element}</span></div>`;
+                attachment += `<div class="attachment"><svg width="20" height="20" class="va-middle"><use xlink:href="sprite.svg#icon-file-solid"></use></svg><span class="va-middle ml-2">${fileName}</span></div>`;
             }
         });
     }
 
     let picture = './img/avatar-512x512.jpg'
     if(data[folder][index]['picture'].length){
-        console.log('picture ++++++',data[folder][index]['picture'])
         picture = `./img/${data[folder][index]['picture']}`
     }
 
     let tag = '';
-    console.log(data)
     if(data[folder][index]['tag'].length > 1){
-        console.log('tagggggg')
         tag =`<span class="tag--${data[folder][index]['tag']} email__tag"></span>`
     }
 
@@ -120,7 +146,7 @@ export const popEmailReader = (data,eventElement) => {
                 <use xlink:href="sprite.svg#icon-document-text"></use>
             </svg>
         </button>
-        <button class="btn btn-clicked">
+        <button class="btn btn-clicked" id="deleteBtn">
             <svg class="btn__icon">
                 <use xlink:href="sprite.svg#icon-trash-can"></use>
             </svg>
@@ -142,9 +168,30 @@ export const popEmailReader = (data,eventElement) => {
     if(eventElement.classList.contains('unread')){
         eventElement.classList.remove('unread')
         globals.emailData[folder][index]['unread'] = false;
-        
+        updateNumber();
     }
-    updateNumber();
+
+    let deleteBtn = document.getElementById('deleteBtn');
+
+    deleteBtn.addEventListener('click', () =>{
+       
+        if(folder != 'trash'){
+            globals.emailData['trash'].push(globals.emailData[folder][index]);
+        }
+
+        globals.emailData[folder].splice(index, 1);
+        eventElement.remove();
+
+        defaultScreen(false,true)
+        updateNumber();
+        globals['activeSidebarMenu'].click()
+
+        // if(globals['activeSidebarMenu'].firstElementChild.classList[0].match('tag--')){
+        //     return;
+        // } 
+            
+        // popEmailList(data, folder)
+    })
 }
 
 export function highlightElement(element, parentElement) {
@@ -168,7 +215,6 @@ export function highlightElement(element, parentElement) {
             break;
     }
 
-    // console.log('globals.activeSidebtn', globals.activeSidebarBtn)
 }
 
 export const updateNumber = () => {
@@ -187,12 +233,39 @@ export const updateNumber = () => {
 
     appHeading.innerHTML = `sparrow ${(unreadEmailNumber == '0')?'':'(' + unreadEmailNumber + ')'}`;
     inboxBtnText.innerHTML = `Inbox ${(unreadEmailNumber == '0')?'':'(' + unreadEmailNumber + ')'}`;
-    trashBtnText.innerHTML = `Trash ${'(' + globals.emailData.trash.length+')'}`;
+    trashBtnText.innerHTML = `Trash ${globals.emailData.trash.length == '0'? '':'(' + globals.emailData.trash.length+')'}`;
 
-    personalBtnText.innerHTML = `Personal ${'(' + filterObject('inbox','tag','personal').length+')'}`;
-    clientsBtnText.innerHTML = `Personal ${'(' + filterObject('inbox','tag','personal').length+')'}`;
+    // let tagList = ['personal','clients','family','friends','archives']
+    // let tagListNumbers = {}
+
+    // for(let i = 0; i < tagList.length; i++){
+    //     tagListNumbers[tagList[i]] = filterObject('inbox','tag',tagList[i]).length
+    // }
+
+    let tagList = {'personal':personalBtnText,
+                'clients':clientsBtnText,
+                'family':familyBtnText,
+                'friends':friendsBtnText,
+                'archives':archivesBtnText,
+            }
+
+    for(let i in tagList){
+       let number = filterObject('inbox','tag',i).length
+        tagList[i].innerHTML = `${i} ${number == '0'?'':'(' + number + ')'}`;
+    }
+
+
+    // personalBtnText.innerHTML = `Personal ${tagListNumbers['personal'] == '0'?'':'(' + tagListNumbers['personal'] + ')'}`;
+    // clientsBtnText.innerHTML = `Clients ${tagListNumbers['personal'] == '0'?'':'(' + tagListNumbers['personal'] + ')'}`;
+    // familyBtnText.innerHTML = `Family ${tagListNumbers['personal'] == '0'?'':'(' + tagListNumbers['personal'] + ')'}`;
+    // friendsBtnText.innerHTML = `Friends ${tagListNumbers['personal'] == '0'?'':'(' + tagListNumbers['personal'] + ')'}`;
+    // archivesBtnText.innerHTML = `Archives  ${tagListNumbers['archives'] == '0'?'':'(' + tagListNumbers['archives'] + ')'}`;
 }
 
-function filterObject(folder, key, search){
-    return globals.emailData[folder].filter(obj => obj[key] == search);
+export const filterObject = (folder, keyValue, search, isMatch = false) => {
+    if(isMatch){
+        return globals.emailData[folder].filter(obj => obj[keyValue].toLowerCase().match(search.toLowerCase()));
+    }
+
+    return globals.emailData[folder].filter(obj => obj[keyValue] == search);
 }
