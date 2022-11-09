@@ -55,6 +55,6 @@ module.exports = {
             filename:'index.html',
             template: 'src/template.html',
         }),
-        new CopyPlugin({patterns:[{from: './src/assets/sprite.svg', to:''}]})
+        new CopyPlugin({patterns:[{from: './src/assets/sprite.svg', to:''},{from: './src/assets/img', to:'./img'}]})
     ]
 }
