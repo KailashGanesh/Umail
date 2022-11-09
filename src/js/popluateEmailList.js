@@ -8,19 +8,33 @@ export const popEmailList = (data, folderName) => {
 
     emailList.innerHTML = '';
 
+    if(list.length == 0){
+        emailList.innerHTML = "No emails in this folder"
+    }
+
+
     for (let i = 0; i < list.length; i++) {
+
+        let attachment = list[i]['attachment'] ? `<svg class="va-middle fill-cool-gray" height="15" width="15"> <use xlink:href="sprite.svg#icon-paperclip-solid"></use> </svg>`: '';
+        let reply = list[i]['reply'] ? `<svg class="va-middle fill-cool-gray" height="20" width="20"> <use xlink:href="sprite.svg#icon-arrow-back-outline"></use> </svg>`: '';
+        let tag = '';
+
+        if(list[i]['tag'].length > 1){
+            tag =`<span class="tag--${list[i]['tag']} circle va-middle ml-1"></span>`
+        }
+
         emailList.innerHTML += `
     <li class="email__item" id="${i}" data-folder="${folderName}">
         <div class="email__details">
-            <p class="heading-sm email__subject">${list[i]['subject']}</p>
-            <span class="fs-sm">${list[i]['time']}</span>
+            <p class="heading-sm email__subject clr-gunmetal va-middle">${list[i]['subject']}</p>
+            <span class="fs-sm clr-gunmetal">${list[i]['time']}</span>
         </div>
         <div class="email__details">
-            <p class="fs-sm">${list[i]['from']}</p>
+            <p class="fs-sm clr-cool-gray">${list[i]['name']}</p>
             <div>
-                <svg class="btn__icon va-middle">
-                    <use xlink:href="sprite.svg#icon-arrow-back-outline"></use>
-                </svg>
+                ${attachment}
+                ${reply}
+                ${tag}
             </div>
         </div> 
     </li>
@@ -38,14 +52,44 @@ export const popEmailReader = (data,eventElement) => {
     const emailReader = document.getElementById('email-reader');
     const index = eventElement.id;
     const folder = eventElement.dataset.folder;
+    let attachment = '';
 
-    console.log(data, index)
+    // console.log(data, index)
+    if(data[folder][index]['attachment']){
+        data[folder][index]['files'].forEach(element => {
+            let fileType = element.slice(element.length - 3)
+                console.log(fileType)
+            if(fileType == 'pdf'){
+                attachment += `<div class="attachment"><svg width="20" height="20" class="va-middle fill-red"><use xlink:href="sprite.svg#icon-file-pdf-solid"></use></svg><span class="va-middle ml-2">${element}</span></div>`;
+            }else if (fileType == 'doc'){
+                attachment += `<div class="attachment"><svg width="20" height="20" class="va-middle fill-blue"><use xlink:href="sprite.svg#icon-file-word-solid"></use></svg><span class="va-middle ml-2">${element}</span></div>`;
+            }else{
+                attachment += `<div class="attachment"><svg width="20" height="20" class="va-middle"><use xlink:href="sprite.svg#icon-file-solid"></use></svg><span class="va-middle ml-2">${element}</span></div>`;
+            }
+        });
+    }
+
+    let picture = './img/avatar-512X512.jpg'
+    if(data[folder][index]['picture'].length){
+        console.log('picture ++++++',data[folder][index]['picture'])
+        picture = `./img/${data[folder][index]['picture']}`
+    }
+
+    let tag = '';
+    console.log(data)
+    if(data[folder][index]['tag'].length > 1){
+        console.log('tagggggg')
+        tag =`<span class="tag--${data[folder][index]['tag']} email__tag"></span>`
+    }
 
     emailReader.innerHTML = `
 <div class="email__header">
     <div class="d-flex ai-center jc-space-between">
-        <img src="https://www.murrayglass.com/wp-content/uploads/2020/10/avatar-1536x1536.jpeg" alt=""
-        style="border-radius: 50%;" width="54" height="54">
+        <div class="email__img">
+            <img src="${picture}" alt="profile picture"
+            style="border-radius: 50%;" width="54" height="54">
+            ${tag}
+        </div>
         <div class="ml-4">
             <p>${data[folder][index]['subject']}</p>
             <div>
@@ -82,7 +126,8 @@ export const popEmailReader = (data,eventElement) => {
 
 <div class="email__body"> 
     <p class="email__message">${data[folder][index]['message']}</p>
-    <div class="email__attachments">${data[folder][index]['files']}</div>
+    
+    <div class="email__attachments">${attachment}</div>
 </div>`;
 }
 
@@ -107,5 +152,5 @@ export function highlightElement(element, parentElement) {
             break;
     }
 
-    console.log('globals.activeSidebtn', globals.activeSidebarBtn)
+    // console.log('globals.activeSidebtn', globals.activeSidebarBtn)
 }
