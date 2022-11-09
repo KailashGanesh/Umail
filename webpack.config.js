@@ -3,7 +3,6 @@ const webpack = require("webpack");
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const loader = require('sass-loader')
 const CopyPlugin = require("copy-webpack-plugin")
-const globals = require('./src/js/globals.js')
 
 // const autoprefixer = require("autoprefixer");
 
