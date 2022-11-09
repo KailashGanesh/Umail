@@ -1,17 +1,8 @@
 {
     "inbox":[
         {
-            "from":"",
-            "to":"",
-            "subject":"",
-            "time":"",
-            "tag":"",
-            "attachment":"",
-            "files":[],
-            "unread":false,
-            "message":""
-        },
-        {
+            "picture":"elon-musk.jpg",
+            "name":"Elon Musk",
             "from":"elonmusk@umail.com",
             "to":"bob@umail.com",
             "subject":"Need you to make a vision system in 12 months",
@@ -19,82 +10,128 @@
             "tag":"clients",
             "attachment":true,
             "files":["vision-system.pdf","specs.doc"],
+            "reply":false,
             "unread": true,
-            "message":"hi bob, \n I need you to put your building skills to use and make a vision system for me in 12 months. \n I'll pay you 12 million dollars if you finish it in one month - every month after that I will reduce 1 million"
+            "message":"hi bob, \n I need you to put your building skills to use and make a vision system for me in 12 months. \n I'll pay you 12 million dollars if you finish it in one month - every month after that I will reduce 1 million \n\n Elon"
         },
         {
-            "from":"babayega@umail.com",
+            "picture":"albert-einstein.jpg",
+            "name":"Albert Einstein",
+            "from":"albert@umail.com",
             "to":"bob@umail.com",
-            "subject":"Need you to make a vision system in 12 months",
-            "time":"4 Nov 2022",
-            "tag":"clients",
+            "subject":"I found it!",
+            "time":"2 Nov 2022",
+            "tag":"personal",
             "attachment":true,
-            "files":["vision-system.pdf","specs.doc"],
+            "files":["paper.pdf"],
+            "reply":false,
             "unread": true,
-            "message":"hi bob, \n I need you to put your building skills to use and make a vision system for me in 12 months. \n I'll pay you 12 million dollars if you finish it in one month - every month after that I will reduce 1 million"
+            "message":"hi bob, \n\n I think I have finally finished my paper and I want you to take a read \n\n\n Thanks and regards \n Albert Einstein"
         },
         {
-            "from":"banceman@umail.com",
+            "picture":"bill-gates.jpg",
+            "name":"Bill Gates",
+            "from":"bill@umail.com",
             "to":"bob@umail.com",
-            "subject":"Need you to make a vision system in 12 months",
-            "time":"4 Nov 2022",
-            "tag":"clients",
+            "subject":"Half of microsoft",
+            "time":"20 Sep 2022",
+            "tag":"family",
             "attachment":true,
-            "files":["vision-system.pdf","specs.doc"],
+            "files":["legal-docs.doc"],
+            "reply":true,
             "unread": true,
-            "message":"hi bob, \n I need you to put your building skills to use and make a vision system for me in 12 months. \n I'll pay you 12 million dollars if you finish it in one month - every month after that I will reduce 1 million"
+            "message":"hi bob, \n\n I want to give you half of microsoft \n\n\n Thanks and regards \n Bill Gates"
+        },
+        {
+            "picture":"nicola-tesla.jpg",
+            "name":"nicola tesla",
+            "from":"tesla@umail.com",
+            "to":"bob@umail.com",
+            "subject":"Can you give me a PCB?",
+            "time":"10 Sep 2022",
+            "tag":"friends",
+            "attachment":false,
+            "files":[],
+            "reply":true,
+            "unread": true,
+            "message":"hi bob, \n\n I need a PBC to make a tesla coil \n\n\n Thanks and regards \n Nicola Tesla"
         }
     ],
     "sent":[
         {
-            "from":"banceman@umail.com",
-            "to":"bob@umail.com",
-            "subject":"sent",
-            "time":"4 Nov 2022",
-            "tag":"clients",
+            "picture":"bill-gates.jpg",
+            "name":"Bill Gates",
+            "to":"bill@umail.com",
+            "from":"bob@umail.com",
+            "subject":"Accepting half of microsoft",
+            "time":"20 Sep 2022",
+            "tag":"family",
             "attachment":true,
-            "files":["vision-system.pdf","specs.doc"],
+            "files":["legal-docs.doc"],
+            "reply":false,
             "unread": true,
-            "message":"hi \n I will find you and kill you \n\n Thanks and regards \n John wick"
-        }
-    ],
-    "starred":[
+            "message":"hi bill, \n\n I will take half of microsoft \n\n\n Thanks and regards \n Bill Gates"
+        },
         {
-            "from":"banceman@umail.com",
-            "to":"bob@umail.com",
-            "subject":"starred",
-            "time":"4 Nov 2022",
-            "tag":"clients",
-            "attachment":true,
-            "files":["vision-system.pdf","specs.doc"],
+            "picture":"nicola-tesla.jpg",
+            "name":"nicola tesla",
+            "to":"tesla@umail.com",
+            "from":"bob@umail.com",
+            "subject":"Can you give me a PCB?",
+            "time":"10 Sep 2022",
+            "tag":"friends",
+            "attachment":false,
+            "files":[],
+            "reply":false,
             "unread": true,
-            "message":"hi \n I will find you and kill you \n\n Thanks and regards \n John wick"
+            "message":"hi Nicola Tesla, \n\n I will give you a PCB \n\n\n you are welcome \n bob"
         }
     ],
+    "starred":[],
     "drafts":[
         {
-            "from":"banceman@umail.com",
-            "to":"bob@umail.com",
-            "subject":"drafts",
+            "picture":"",
+            "name":"James Man",
+            "from":"bob@umail.com",
+            "to":"james@umail.com",
+            "subject":"can we get lunch?",
             "time":"4 Nov 2022",
             "tag":"clients",
             "attachment":true,
-            "files":["vision-system.pdf","specs.doc"],
+            "files":[],
+            "reply":false,
             "unread": true,
-            "message":"hi \n I will find you and kill you \n\n Thanks and regards \n John wick"
+            "message":"hi \n I want to buy lunch \n Bob"
         }
     ],
     "trash":[
         {
-            "from":"banceman@umail.com",
+            "picture":"",
+            "name":"Jane Doe",
+            "from":"getfree@umail.com",
             "to":"bob@umail.com",
-            "subject":"trash",
-            "time":"4 Nov 2022",
-            "tag":"clients",
+            "subject":"FREE IPHONE!!",
+            "time":"12 Sep 2022",
+            "tag":"",
             "attachment":true,
-            "files":["vision-system.pdf","specs.doc"],
+            "files":["virus.exe"],
+            "reply":false,
             "unread": true,
-            "message":"hi \n I will find you and kill you \n\n Thanks and regards \n John wick"
+            "message":"hi \n get free Iphone!! just download and fill the word document \n\n Thanks and regards \n Jane doe"
+        },
+        {
+            "picture":"",
+            "name":"John Doe",
+            "from":"getpaid@umail.com",
+            "to":"bob@umail.com",
+            "subject":"job offer!!",
+            "time":"13 Sep 2022",
+            "tag":"",
+            "attachment":true,
+            "files":["virus.pdf"],
+            "reply":false,
+            "unread": true,
+            "message":"hi \n you can get a job with 50k USD per day \n\n use the pdf and apply now! \n John doe"
         }
     ]
 }
