@@ -8,6 +8,7 @@ export const popEmailList = (data, folderName) => {
 
     emailList.innerHTML = '';
 
+
     if(list.length == 0){
         emailList.innerHTML = "No emails in this folder"
     }
@@ -24,7 +25,7 @@ export const popEmailList = (data, folderName) => {
         }
 
         emailList.innerHTML += `
-    <li class="email__item" id="${i}" data-folder="${folderName}">
+    <li class="email__item ${list[i]['unread']? 'unread':''}" id="${i}" data-folder="${folderName}">
         <div class="email__details">
             <p class="heading-sm email__subject clr-gunmetal va-middle">${list[i]['subject']}</p>
             <span class="fs-sm clr-gunmetal">${list[i]['time']}</span>
@@ -48,7 +49,6 @@ export const popEmailList = (data, folderName) => {
 
 export const popEmailReader = (data,eventElement) => {
     
-
     const emailReader = document.getElementById('email-reader');
     const index = eventElement.id;
     const folder = eventElement.dataset.folder;
@@ -84,7 +84,7 @@ export const popEmailReader = (data,eventElement) => {
 
     emailReader.innerHTML = `
 <div class="email__header">
-    <div class="d-flex ai-center jc-space-between">
+    <div class="d-flex ai-center jc-space-between flex-wrap">
         <div class="email__img">
             <img src="${picture}" alt="profile picture"
             style="border-radius: 50%;" width="54" height="54" class="fs-sm">
@@ -138,6 +138,13 @@ export const popEmailReader = (data,eventElement) => {
     
     <div class="email__attachments">${attachment}</div>
 </div>`;
+
+    if(eventElement.classList.contains('unread')){
+        eventElement.classList.remove('unread')
+        globals.emailData[folder][index]['unread'] = false;
+        
+    }
+    updateNumber();
 }
 
 export function highlightElement(element, parentElement) {
@@ -162,4 +169,30 @@ export function highlightElement(element, parentElement) {
     }
 
     // console.log('globals.activeSidebtn', globals.activeSidebarBtn)
+}
+
+export const updateNumber = () => {
+    let appHeading = document.getElementById('addHeading');
+    let inboxBtnText = document.getElementById('inboxBtnText');
+    let trashBtnText = document.getElementById('trashBtnText');
+
+    let personalBtnText = document.getElementById('personalBtnText');
+    let clientsBtnText = document.getElementById('clientsBtnText');
+    let familyBtnText = document.getElementById('familyBtnText');
+    let friendsBtnText = document.getElementById('friendsBtnText');
+    let archivesBtnText = document.getElementById('archivesBtnText');
+
+    
+    let unreadEmailNumber = filterObject('inbox','unread',true).length;
+
+    appHeading.innerHTML = `sparrow ${(unreadEmailNumber == '0')?'':'(' + unreadEmailNumber + ')'}`;
+    inboxBtnText.innerHTML = `Inbox ${(unreadEmailNumber == '0')?'':'(' + unreadEmailNumber + ')'}`;
+    trashBtnText.innerHTML = `Trash ${'(' + globals.emailData.trash.length+')'}`;
+
+    personalBtnText.innerHTML = `Personal ${'(' + filterObject('inbox','tag','personal').length+')'}`;
+    clientsBtnText.innerHTML = `Personal ${'(' + filterObject('inbox','tag','personal').length+')'}`;
+}
+
+function filterObject(folder, key, search){
+    return globals.emailData[folder].filter(obj => obj[key] == search);
 }
