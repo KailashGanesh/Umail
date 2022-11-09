@@ -1,6 +1,6 @@
 import getData from './js/getData';
 import globals from './js/globals';
-import {popEmailList, popEmailReader, highlightElement, updateNumber} from './js/popluateEmailList';
+import {popEmailList, popEmailReader, highlightElement, updateNumber, defaultScreen, filterObject} from './js/popluateEmailList';
 import './styles/main.scss'
 
 
@@ -9,14 +9,17 @@ let url = 'https://raw.githubusercontent.com/KailashGanesh/Umail/master/emails.j
 
 const sideBar =  document.getElementById('sidebar');
 const emailList =  document.getElementById('email-list');
-const emailReader = document.getElementById('email-reader')
+// const emailReader = document.getElementById('email-reader');
+const searchBar = document.getElementById('searchBar');
 
 const inboxBtn = document.getElementById('inboxBtn');
 
 
 getData(url).then( () => {
-    highlightElement(inboxBtn,'sidebarMenu')
-    popEmailList(globals.emailData,'inbox');
+    // highlightElement(inboxBtn,'sidebarMenu')
+    // popEmailList(globals.emailData,'inbox', true);
+    inboxBtn.click();
+    emailList.firstElementChild.click();
     updateNumber();
     // const firstEmail = document.getElementById('1');
     // highlightElement(firstEmail,'emailList')
@@ -29,58 +32,83 @@ sideBar.addEventListener('click', (e) => {
     let eventTarget = e.target.closest('button');
 
     if(eventTarget == null) return;
-    // console.log('sidebar',e.target.closest('button').id)
 
-    switch(eventTarget.id){
-        case 'inboxBtn':
-            // eventTarget.classList.add('active');
-            highlightElement(eventTarget,'sidebarMenu')
-            popEmailList(data, 'inbox')
-        break;
-        case 'sentBtn':
-            highlightElement(eventTarget,'sidebarMenu')
-            popEmailList(data, 'sent')
-        break;
-        case 'starredBtn':
-            highlightElement(eventTarget,'sidebarMenu')
-            popEmailList(data, 'starred')
-        break;
-        case 'draftsBtn':
-            highlightElement(eventTarget,'sidebarMenu')
-            popEmailList(data, 'drafts')
-        break;
-        case 'trashBtn':
-            highlightElement(eventTarget,'sidebarMenu')
-            popEmailList(data, 'trash')
-        break;
+    // switch(eventTarget.id){
+    //     case 'inboxBtn':
+    //         // eventTarget.classList.add('active');
+    //         highlightElement(eventTarget,'sidebarMenu')
+    //         defaultScreen(false,true)
+    //         popEmailList(data, 'inbox')
+    //     break;
+    //     case 'sentBtn':
+    //         highlightElement(eventTarget,'sidebarMenu')
+    //         defaultScreen(false,true)
+    //         popEmailList(data, 'sent')
+    //     break;
+    //     case 'starredBtn':
+    //         highlightElement(eventTarget,'sidebarMenu')
+    //         defaultScreen(false,true)
+    //         popEmailList(data, 'starred')
+    //     break;
+    //     case 'draftsBtn':
+    //         highlightElement(eventTarget,'sidebarMenu')
+    //         defaultScreen(false,true)
+    //         popEmailList(data, 'drafts')
+    //     break;
+    //     case 'trashBtn':
+    //         highlightElement(eventTarget,'sidebarMenu')
+    //         defaultScreen(false,true)
+    //         popEmailList(data, 'trash')
+    //     break;
 
-        let result;
+        // let result;
 
-        case 'personalBtn':
-            result = { 'inbox': data['inbox'].filter(obj => obj.tag == 'personal')};
-            highlightElement(eventTarget,'sidebarMenu')
-            popEmailList(result, 'inbox')
-        break;
-        case 'clientsBtn':
-            result = { 'inbox': data['inbox'].filter(obj => obj.tag == 'clients')};
-            highlightElement(eventTarget,'sidebarMenu')
-            popEmailList(result, 'inbox')
-        break;
-        case 'familyBtn':
-            result = { 'inbox': data['inbox'].filter(obj => obj.tag == 'family')};
-            highlightElement(eventTarget,'sidebarMenu')
-            popEmailList(result, 'inbox')
-        break;
-        case 'friendsBtn':
-            result = { 'inbox': data['inbox'].filter(obj => obj.tag == 'friends')};
-            highlightElement(eventTarget,'sidebarMenu')
-            popEmailList(result, 'inbox')
-        break;
-        case 'archivesBtn':
-            result = { 'inbox': data['inbox'].filter(obj => obj.tag == 'archives')};
-            highlightElement(eventTarget,'sidebarMenu')
-            popEmailList(result, 'inbox')
-        break;
+        // case 'personalBtn':
+        //     result = { 'inbox': data['inbox'].filter(obj => obj.tag == 'personal')};
+        //     highlightElement(eventTarget,'sidebarMenu')
+        //     defaultScreen(false,true)
+        //     popEmailList(result, 'inbox')
+        // break;
+        // case 'clientsBtn':
+        //     result = { 'inbox': data['inbox'].filter(obj => obj.tag == 'clients')};
+        //     highlightElement(eventTarget,'sidebarMenu')
+        //     defaultScreen(false,true)
+        //     popEmailList(result, 'inbox')
+        // break;
+        // case 'familyBtn':
+        //     result = { 'inbox': data['inbox'].filter(obj => obj.tag == 'family')};
+        //     highlightElement(eventTarget,'sidebarMenu')
+        //     defaultScreen(false,true)
+        //     popEmailList(result, 'inbox')
+        // break;
+        // case 'friendsBtn':
+        //     result = { 'inbox': data['inbox'].filter(obj => obj.tag == 'friends')};
+        //     highlightElement(eventTarget,'sidebarMenu')
+        //     defaultScreen(false,true)
+        //     popEmailList(result, 'inbox')
+        // break;
+        // case 'archivesBtn':
+        //     result = { 'inbox': data['inbox'].filter(obj => obj.tag == 'archives')};
+        //     highlightElement(eventTarget,'sidebarMenu')
+        //     defaultScreen(false,true)
+        //     popEmailList(result, 'inbox')
+        // break;
+    // }
+    if(eventTarget.dataset.type == 'folder'){
+        let folderName = eventTarget.id.slice(0, -3);
+
+
+        highlightElement(eventTarget,'sidebarMenu')
+        defaultScreen(false,true)
+        popEmailList(data, folderName)
+    }else if(eventTarget.dataset.type == 'tag'){
+        let search = eventTarget.id.slice(0, -3);
+        let result = filterObject('inbox', 'tag', search);
+
+
+        highlightElement(eventTarget,'sidebarMenu')
+        defaultScreen(false,true)
+        popEmailList({'inbox':result}, 'inbox')
     }
 })
 
@@ -93,16 +121,32 @@ emailList.addEventListener('click', (e) => {
     popEmailReader(globals.emailData,eventTarget);
 })
 
+searchBar.addEventListener('keyup', (e) => {
+    let searchText = searchBar.value;
 
-// async () => {emailData =  await getData(url);}
-// let emailData = async () => {return await getData(url)};
+    if (e.key == 'Enter'){
+        e.preventDefault()
 
+        let currentActiveMenuBtn = globals.activeSidebarMenu;
+        let folderName = currentActiveMenuBtn.id.slice(0, -3);
 
+        if(currentActiveMenuBtn.dataset.type == 'folder'){
+            let result = filterObject(folderName, 'subject', searchText, true);
+            let resultObj = {};
+            resultObj[folderName] = result;
 
+            popEmailList(resultObj, folderName)
+        }else if(currentActiveMenuBtn.dataset.type == 'tag'){
 
+            let result = filterObject('inbox', 'tag', folderName);
 
+            globals.emailData[folderName] = result;
 
-// import laughing from './assets/laughing.svg'
+            result = filterObject(folderName, 'subject', searchText, true);
+            popEmailList({'inbox':result}, 'inbox')
+        }
 
-// const laughImg = document.getElementById('laughImg')
-// laughImg.src = laughing
+        // popEmailList({'inbox':result}, 'inbox')
+        // defaultScreen(false,true)
+    }
+})
