@@ -11,7 +11,7 @@
             "attachment":true,
             "files":["vision-system.pdf","specs.doc"],
             "reply":false,
-            "unread": true,
+            "unread": false,
             "message":"hi bob, \n I need you to put your building skills to use and make a vision system for me in 12 months. \n I'll pay you 12 million dollars if you finish it in one month - every month after that I will reduce 1 million \n\n Elon"
         },
         {
@@ -39,7 +39,7 @@
             "attachment":true,
             "files":["legal-docs.doc"],
             "reply":true,
-            "unread": true,
+            "unread": false,
             "message":"hi bob, \n\n I want to give you half of microsoft \n\n\n Thanks and regards \n Bill Gates"
         },
         {
@@ -53,8 +53,22 @@
             "attachment":false,
             "files":[],
             "reply":true,
-            "unread": true,
+            "unread": false,
             "message":"hi bob, \n\n I need a PBC to make a tesla coil \n\n\n Thanks and regards \n Nicola Tesla"
+        },
+        {
+            "picture":"nicola-tesla.jpg",
+            "name":"Oscar Wilde",
+            "from":"oscar@umail.com",
+            "to":"bob@umail.com",
+            "subject":"I need your thoughts",
+            "time":"2 June 2022",
+            "tag":"friends",
+            "attachment":false,
+            "files":[],
+            "reply":false,
+            "unread": true,
+            "message":"hi bob,\n I want your thought on my new poem\n\n here it is: \n\n Beautiful star with the crimson lips\n And flagrant daffodil hair,\n Come back, come back, in the shaking ships\n O'er the much-overrated sea,\n To the hearts that are sick for thee\n With a woe worse than mal de mer-\n O beautiful stars with the crimson lips\n And the flagrant daffodil hair. -\n O ship that shakes on the desolate sea,\n Neath the flag of the wan White Star,\n Thou bringest a brighter star with thee\n From the land of the Philistine,\n Where Niagara's reckoned fine\n And Tupper is popular-\n O ship that shakes on the desolate sea,\n Neath the flag of the wan White Star.\n\n\n Thanks and Regards\n Oscar Wilde"
         }
     ],
     "sent":[
@@ -83,7 +97,7 @@
             "attachment":false,
             "files":[],
             "reply":false,
-            "unread": true,
+            "unread": false,
             "message":"hi Nicola Tesla, \n\n I will give you a PCB \n\n\n you are welcome \n bob"
         }
     ],
@@ -116,7 +130,7 @@
             "attachment":true,
             "files":["virus.exe"],
             "reply":false,
-            "unread": true,
+            "unread": false,
             "message":"hi \n get free Iphone!! just download and fill the word document \n\n Thanks and regards \n Jane doe"
         },
         {
@@ -130,7 +144,7 @@
             "attachment":true,
             "files":["virus.pdf"],
             "reply":false,
-            "unread": true,
+            "unread": false,
             "message":"hi \n you can get a job with 50k USD per day \n\n use the pdf and apply now! \n John doe"
         }
     ]
