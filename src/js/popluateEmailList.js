@@ -69,7 +69,7 @@ export const popEmailReader = (data,eventElement) => {
         });
     }
 
-    let picture = './img/avatar-512X512.jpg'
+    let picture = './img/avatar-512x512.jpg'
     if(data[folder][index]['picture'].length){
         console.log('picture ++++++',data[folder][index]['picture'])
         picture = `./img/${data[folder][index]['picture']}`
