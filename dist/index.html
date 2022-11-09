@@ -5,16 +5,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>webpack App</title>
-<script defer src="bundleafd7f2857cd6fab869c5.js"></script></head>
+<script defer src="bundlefbd6d3fe06db9d2836ac.js"></script></head>
 <body>
     <header class="header">
         <div class="header__logo">
             <div class="logo-U"></div>
             <span class="">mail</span>
         </div>
-        <p class="heading-md clr-steel">Sparrow(2)</p>
+        <p class="heading-md clr-steel" id="addHeading">Sparrow</p>
         <div class="input">
-            <input type="text" class="input__felid">
+            <input type="text" class="input__felid" id="searchBar">
             <svg class="input__icon">
                 <use xlink:href="sprite.svg#icon-magnifying-glass-solid"></use>
             </svg>
@@ -30,15 +30,15 @@
                 <ul class="pt-5">
                     <li class="sidebar__items  mb-7 pl-4" id="composeBtn"><button class="btn btn-blue tt-uppercase d-block m-auto">compose</button></li>
                     <li class="sidebar__items">
-                        <button class="btn sidebar__btn" id="inboxBtn">
+                        <button class="btn sidebar__btn" id="inboxBtn" data-type="folder">
                             <svg class="btn__icon va-middle">
                                 <use xlink:href="sprite.svg#icon-inbox"></use>
                             </svg>
-                            <span class="va-middle">Inbox (2)</span>
+                            <span class="va-middle" id="inboxBtnText">Inbox (2)</span>
                         </button>
                     </li>
                     <li class="sidebar__items" >
-                        <button class="btn sidebar__btn" id="sentBtn">
+                        <button class="btn sidebar__btn" id="sentBtn" data-type="folder">
                             <svg class="btn__icon va-middle">
                                 <use xlink:href="sprite.svg#icon-inbox-upload"></use>
                             </svg>
@@ -46,7 +46,7 @@
                         </button>
                     </li>
                     <li class="sidebar__items">
-                        <button class="btn sidebar__btn" id="starredBtn">
+                        <button class="btn sidebar__btn" id="starredBtn" data-type="folder">
                             <svg class="btn__icon va-middle">
                                 <use xlink:href="sprite.svg#icon-star"></use>
                             </svg>
@@ -54,7 +54,7 @@
                         </button>
                     </li>
                     <li class="sidebar__items">
-                        <button class="btn sidebar__btn" id="draftsBtn">
+                        <button class="btn sidebar__btn" id="draftsBtn" data-type="folder">
                             <svg class="btn__icon va-middle">
                                 <use xlink:href="sprite.svg#icon-document-text"></use>
                             </svg>
@@ -62,42 +62,42 @@
                         </button>
                     </li>
                     <li class="sidebar__items mb-3">
-                        <button class="btn sidebar__btn" id="trashBtn">
+                        <button class="btn sidebar__btn" id="trashBtn" data-type="folder">
                             <svg class="btn__icon va-middle">
                                 <use xlink:href="sprite.svg#icon-trash-can"></use>
                             </svg>
-                            <span class="va-middle">Trash</span>
+                            <span class="va-middle" id="trashBtnText">Trash</span>
                         </button>
                     </li>
 
                     <li class="sidebar__items ">
-                        <button class="btn sidebar__btn" id="personalBtn">
+                        <button class="btn sidebar__btn" id="personalBtn" data-type="tag">
                             <span class="tag--personal"></span>
-                            <span class="va-middle">Personal (2)</span>
+                            <span class="va-middle" id="personalBtnText">Personal (2)</span>
                         </button>
                     </li>
                     <li class="sidebar__items ">
-                        <button class="btn sidebar__btn" id="clientsBtn">
+                        <button class="btn sidebar__btn" id="clientsBtn" data-type="tag">
                             <span class="tag--clients"></span>
-                            <span class="va-middle">Clients</span>
+                            <span class="va-middle" id="clientsBtnText">Clients</span>
                         </button>
                     </li>
                     <li class="sidebar__items ">
-                        <button class="btn sidebar__btn" id="familyBtn">
+                        <button class="btn sidebar__btn" id="familyBtn" data-type="tag">
                             <span class="tag--family"></span>
-                            <span class="va-middle">Family (2)</span>
+                            <span class="va-middle" id="familyBtnText">Family (2)</span>
                         </button>
                     </li>
                     <li class="sidebar__items ">
-                        <button class="btn sidebar__btn" id="friendsBtn">
+                        <button class="btn sidebar__btn" id="friendsBtn" data-type="tag">
                             <span class="tag--friends"></span>
-                            <span class="va-middle">Friends</span>
+                            <span class="va-middle" id="friendsBtnText">Friends</span>
                         </button>
                     </li>
                     <li class="sidebar__items ">
-                        <button class="btn sidebar__btn" id="archivesBtn">
+                        <button class="btn sidebar__btn" id="archivesBtn" data-type="tag">
                             <span class="tag--archives"></span>
-                            <span class="va-middle">Archives</span>
+                            <span class="va-middle" id="archivesBtnText">Archives</span>
                         </button>
                     </li>
                 </ul>
