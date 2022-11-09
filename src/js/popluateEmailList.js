@@ -87,14 +87,23 @@ export const popEmailReader = (data,eventElement) => {
     <div class="d-flex ai-center jc-space-between">
         <div class="email__img">
             <img src="${picture}" alt="profile picture"
-            style="border-radius: 50%;" width="54" height="54">
+            style="border-radius: 50%;" width="54" height="54" class="fs-sm">
             ${tag}
         </div>
         <div class="ml-4">
             <p>${data[folder][index]['subject']}</p>
             <div>
-                <span>From:</span>
-                <span>${data[folder][index]['from']}</span>
+                <span class="fs-md clr-cool-gray">${ folder == 'sent'|| folder == 'drafts' ?'To:':'From:'}</span>
+                <div class="dropdown fs-sm">
+                <span class="va-middle clr-cool-gray">${data[folder][index]['name']}</span>
+                    <svg class="va-middle fill-cool-gray" width="10" height="10">
+                        <use xlink:href="sprite.svg#icon-chevron-down-solid"></use>
+                    </svg>
+                    <div class="dropdown__content">
+                        <p>From: ${data[folder][index]['from']}</p>
+                        <p>To: ${data[folder][index]['to']}</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
