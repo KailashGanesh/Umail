@@ -3,6 +3,7 @@ const webpack = require("webpack");
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const loader = require('sass-loader')
 const CopyPlugin = require("copy-webpack-plugin")
+const ImageminWebpWebpackPlugin= require("imagemin-webp-webpack-plugin");
 
 // const autoprefixer = require("autoprefixer");
 
@@ -55,13 +56,25 @@ module.exports = {
             filename:'index.html',
             template: 'src/template.html',
             scriptLoading: 'blocking',
-            // publicPath: 'dist/'
+            publicPath: 'dist/'
         }),
         new CopyPlugin({patterns:[
             {from: './src/assets/sprite.svg', to:''},
             {from: './src/assets/img', to:'./img'},
             {from:'./src/favicon.ico', to:''},
-            // {from:'./dist/index.html', to:'../index.html'},
-        ]})
+            {from:'./dist/index.html', to:'../index.html'},
+        ]}),
+        new ImageminWebpWebpackPlugin({
+            config: [{
+              test: /\.(jpe?g|png)/,
+              options: {
+                quality:  75
+              }
+            }],
+            overrideExtension: true,
+            detailedLogs: false,
+            silent: false,
+            strict: true
+          })
     ]
 }

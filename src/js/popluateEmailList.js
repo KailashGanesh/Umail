@@ -102,10 +102,12 @@ export const popEmailReader = (data,eventElement) => {
         });
     }
 
-    let picture = './img/avatar-512x512.jpg'
+    let pictureJpg = './dist/img/avatar-512x512.jpg' // by default it's unknown profile picture
     if(data[folder][index]['picture'].length){
-        picture = `./img/${data[folder][index]['picture']}`
+        // if picture exists in json - change it to that picture
+        pictureJpg = `./img/${data[folder][index]['picture']}`
     }
+    let pictureWebp = pictureJpg.slice(0,-4) + '.webp'; // remove .jpg and add .webp
 
     let tag = '';
     if(data[folder][index]['tag'].length > 1){
@@ -115,12 +117,13 @@ export const popEmailReader = (data,eventElement) => {
     emailReader.innerHTML = `
 <div class="email__header">
     <div class="d-flex ai-center jc-space-between flex-wrap">
-        <div class="email__img">
+        <div class="email__imgContainer">
 
             <picture>
-                <source media="(min-width: 650px)" srcset="${picture}">
+                <source srcset="${pictureWebp}" type="image/webp">
+                <source srcset="${pictureJpg}" type="image/jpeg">
 
-                <img src="${picture}" alt="profile picture" style="border-radius: 50%;" width="54" height="54" class="fs-sm">
+                <img src="${pictureJpg}" alt="profile picture" class="fs-sm email__picture">
             </picture>
             ${tag}
         </div>

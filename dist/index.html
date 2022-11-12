@@ -29,7 +29,7 @@
 
         <aside class="sidebar" id="sidebar">
                 <ul class="pt-5">
-                    <li class="sidebar__items  mb-7 pl-4" id="composeBtn"><button class="btn btn-blue tt-uppercase d-block m-auto">compose</button></li>
+                    <li class="sidebar__items  mb-7 pl-4" id="composeBtn"><button class="btn btn-blue tt-uppercase d-block m-auto" id="composeBtn">compose</button></li>
                     <li class="sidebar__items">
                         <button class="btn sidebar__btn" id="inboxBtn" data-type="folder">
                             <svg class="btn__icon va-middle">
@@ -122,6 +122,19 @@
         </main>
     </div>
 
+    <div class="compose" id="composeBox">
+        <div class="compose__titlebar">
+            <span>New Message</span>
+            <button class="btn compose__closebtn" id="closeCompose">&times;</button>
+        </div>
+        <input type="email" class="compose__email" placeholder="Recipient">
+        <input type="text" class="compose__subject" placeholder="Subject">
+        <textarea name="" id="" cols="30" rows="10" class="compose__message"></textarea>
+        <div class="compose__toolbar">
+            <button class="btn compose__btn" id="sendBtn">send</button>
+        </div>
+    </div>
+
     <div class="popup" id="popup">
         <div class="settings">
             <div class="mb-10">
@@ -138,5 +151,6 @@
         </div>
     </div>
 
-<script src="bundle9c8768371fb78cb327f8.js"></script></body>
+
+<script src="dist/bundlee9ff751a93c3b2b14973.js"></script></body>
 </html>
