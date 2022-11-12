@@ -1,0 +1,55 @@
+.popup{
+    display: none;
+    position: absolute;
+    // top:0;
+    left: 0;
+    bottom: 0;
+    // right: 0;
+    background-color:rgba($color: #000000, $alpha: 0.6);
+    height: 100vh;
+    width: 100vw;
+
+    // display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: show 0.4s forwards;
+}
+
+.shown{
+    display: flex;
+}
+
+.settings{
+    height: 300px;
+    width: 500px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    display: flex;
+    justify-content: flex-start;
+    padding-top: 10px;
+    align-items: center;
+    position: relative;
+    flex-direction: column;
+   .settings__btn{
+        position: absolute;
+        right: 10px;
+        top: 5px;
+        background-color: transparent;
+        font-size: 20px;
+
+        &:hover{
+            color: $blue;
+        }
+   }
+}
+
+@keyframes show {
+    0%{
+        opacity: 0;
+        backdrop-filter: blur(0px);
+    }
+    100%{
+        opacity: 1;
+        backdrop-filter: blur(2px);
+    }
+}
