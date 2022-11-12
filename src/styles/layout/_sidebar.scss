@@ -6,13 +6,8 @@
     overflow-y: auto;
 
     display: flex;
-    flex-direction: column;
     justify-content: space-between;
-
-    // &__items:hover:not(:first-child){
-    //     background-color: rgba(142, 142, 147, 0.19);
-    //     cursor: pointer;
-    // }
+    flex-direction: column;
 
     &__btn{
         display: block;

@@ -1,8 +1,3 @@
-@mixin dimension($height,$width){
-    height: #{$height};
-    width: #{$width};
-}
-
 @mixin font-color($name, $color){
     .clr-#{$name}{
         color: $color;
@@ -54,7 +49,11 @@
 
 @include spacing(4);
 
-
+%flex-center-center{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 // @each $name, $value in $color-list{
 //     .bg-#{$name}{
 //         background-color: $value;

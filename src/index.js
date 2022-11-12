@@ -1,6 +1,6 @@
 import getData from './js/getData';
 import globals from './js/globals';
-import {popEmailList, popEmailReader, highlightElement, updateNumber, defaultScreen, filterObject,openComposeBox, closeComposeBox} from './js/popluateEmailList';
+import {popEmailList, popEmailReader, highlightElement,defaultScreen, filterObject,openComposeBox, closeComposeBox} from './js/domFunctions';
 import './styles/main.scss'
 
 
@@ -14,11 +14,7 @@ const inboxBtn = document.getElementById('inboxBtn');
 const composeCloseBtn = document.getElementById('closeCompose');
 const sendEmailBtn = document.getElementById('sendBtn');
 
-getData(url).then( () => {
-    inboxBtn.click();
-    emailList.firstElementChild.click();
-    updateNumber();
-})
+getData(url);
 
 let data = globals.emailData;
 
@@ -26,7 +22,7 @@ sideBar.addEventListener('click', (e) => {
     let eventTarget = e.target.closest('button');
 
     if(eventTarget == null){
-        return;
+        return; // if user clicked on empty space exist
     }else if(eventTarget.dataset.type == 'folder'){
         let folderName = eventTarget.id.slice(0, -3);
 
@@ -37,7 +33,6 @@ sideBar.addEventListener('click', (e) => {
     }else if(eventTarget.dataset.type == 'tag'){
         let search = eventTarget.id.slice(0, -3);
         let result = filterObject('inbox', 'tag', search);
-
 
         highlightElement(eventTarget,'sidebarMenu')
         defaultScreen(false,true)
@@ -93,7 +88,6 @@ searchBar.addEventListener('keyup', (e) => {
             popEmailList({'inbox':result}, 'inbox')
         }
 
-        // popEmailList({'inbox':result}, 'inbox')
         defaultScreen(false,true)
     }
 })

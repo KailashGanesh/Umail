@@ -7,7 +7,7 @@
     position: relative;
 
     &__content{
-        display: none;
+        // display: none;
         position: absolute;
         bottom: -54px;
         left: 8px;
@@ -16,21 +16,21 @@
         box-shadow: 0px 3px 6px 0px gray;
         z-index: 1;
         min-width: 200px;
-        animation: scale-up 0.5s forwards;
+        color: $gunmetal;
+        // animation: scale-up 0.5s forwards;
+
+        max-height: 0;
+        overflow: hidden;
+        visibility: none;
+        opacity: 0;
+        transition: max-height 150ms ease-in,visibility 150ms ease-in, opacity 150ms ease-in;
     }
 
-    &:hover &__content{
-        display: block;
-    }
-}
+    .active &__content{
+        // display: block;
 
-@keyframes scale-up {
-    0%{
-        transform: translate(-100px,-30px) scale(0);
-        filter: opacity(0);
-    }
-    100%{
-        transform: translate(0,0) scale(1);
-        filter: opacity(1);
+        max-height: 200px;
+        visibility: visible;
+        opacity: 1;
     }
 }

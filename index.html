@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Umail</title>
     <link rel="icon" href="favicon.ico" type="image/ico">
-</head>
+<link href="dist/bundle.css" rel="stylesheet"></head>
 <body>
     <header class="header">
         <div class="header__logo">
@@ -127,9 +127,9 @@
             <span>New Message</span>
             <button class="btn compose__closebtn" id="closeCompose">&times;</button>
         </div>
-        <input type="email" class="compose__email" placeholder="Recipient">
-        <input type="text" class="compose__subject" placeholder="Subject">
-        <textarea name="" id="" cols="30" rows="10" class="compose__message"></textarea>
+        <input type="email" class="compose__email" placeholder="Recipient" id="emailInput">
+        <input type="text" class="compose__subject" placeholder="Subject" id="subjectInput">
+        <textarea name="" id="messageInput" cols="30" rows="10" class="compose__message"></textarea>
         <div class="compose__toolbar">
             <button class="btn compose__btn" id="sendBtn">send</button>
         </div>
@@ -142,7 +142,7 @@
                 <button onclick="document.getElementById('popup').classList.remove('shown');" class="btn settings__btn d-block">&times;</button>
             </div>
             <div>
-                <label for="setting_toggle">Automatically open next email after deleting</label>
+                <label for="setting_toggle" class="mr-4">Automatically open next email after deleting</label>
                 <select name="open next" id="setting_toggle">
                     <option value="true">Yes</option>
                     <option value="false">no</option>
@@ -152,5 +152,5 @@
     </div>
 
 
-<script src="dist/bundle4ea40c7e907da369fea1.js"></script></body>
+<script src="dist/bundle.js"></script></body>
 </html>

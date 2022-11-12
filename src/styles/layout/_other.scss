@@ -3,6 +3,7 @@
     width: 90%;
     width: calc(100% - 220px);
 
+    // ========= email list ==========
     &__list{
         height: calc(100vh - 60px);
         width: 40%;
@@ -50,12 +51,10 @@
         white-space: nowrap;
         overflow: hidden;
     }
-
+    // ========= email reader ==========
     &__reader{
         height: calc(100vh - 60px);
-        // width: 60%;
         flex-grow: 1;
-        // background-color: #72BDA3;
 
         display: flex;
         flex-direction: column;
@@ -65,10 +64,8 @@
     &__header{
         background-color: $white;
         flex-basis: 130px;
-        // border: 1px solid;
         display: flex;
         justify-content: space-between;
-        /* width: 100%; */
         align-items: center;
         padding: 40px 30px;
         position: relative;

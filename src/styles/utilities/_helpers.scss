@@ -3,12 +3,10 @@
     height: auto;
 }
 
-.clear-fix::after{
-    content: '';
-    clear: both;
-    display: table;
+.wrapper{
+    display: flex;
+    background-color: $white;
 }
-
 
 // margin auto
 .mr-auto{ margin-right: auto;}
@@ -58,19 +56,8 @@
 
 // colors
 
-.clr-gunmetal{
-    color: $gunmetal;
-}
-
-.clr-cool-gray{
-    color: $cool-gray;
-}
-.fill-cool-gray{
-    fill: $cool-gray;
-}
-.fill-blue{
-    fill: $blue;
-}
-.fill-red{
-    fill: $red;
-}
+.clr-gunmetal{ color: $gunmetal; }
+.clr-cool-gray{ color: $cool-gray; }
+.fill-cool-gray{ fill: $cool-gray; }
+.fill-blue{ fill: $blue; }
+.fill-red{ fill: $red; }

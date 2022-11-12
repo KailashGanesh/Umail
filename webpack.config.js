@@ -4,6 +4,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const loader = require('sass-loader')
 const CopyPlugin = require("copy-webpack-plugin")
 const ImageminWebpWebpackPlugin= require("imagemin-webp-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+
 
 // const autoprefixer = require("autoprefixer");
 
@@ -14,7 +16,8 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: '[name][contenthash].js',
+        // filename: '[name][contenthash].js',
+        filename: '[name].js',
         clean: true,
         assetModuleFilename: '[name][ext]',
     },
@@ -31,7 +34,7 @@ module.exports = {
         rules:[
             {
                 test:/\.scss$/,
-                use: [ 'style-loader', 'css-loader', 'sass-loader' ],
+                use: [ MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader' ],
             },
             {
                 test:/\.js$/,
@@ -64,6 +67,7 @@ module.exports = {
             {from:'./src/favicon.ico', to:''},
             {from:'./dist/index.html', to:'../index.html'},
         ]}),
+        new MiniCssExtractPlugin(),
         new ImageminWebpWebpackPlugin({
             config: [{
               test: /\.(jpe?g|png)/,
