@@ -120,8 +120,8 @@ var popEmailList = function popEmailList(data, folderName) {
   }
 
   for (var i = 0; i < list.length; i++) {
-    var attachment = list[i]['attachment'] ? "<svg class=\"va-middle fill-cool-gray\" height=\"15\" width=\"15\"> <use xlink:href=\"sprite.svg#icon-paperclip-solid\"></use> </svg>" : '';
-    var reply = list[i]['reply'] ? "<svg class=\"va-middle fill-cool-gray\" height=\"20\" width=\"20\"> <use xlink:href=\"sprite.svg#icon-arrow-back-outline\"></use> </svg>" : '';
+    var attachment = list[i]['attachment'] ? "<svg class=\"va-middle fill-cool-gray\" height=\"15\" width=\"15\"> <use xlink:href=\"dist/sprite.svg#icon-paperclip-solid\"></use> </svg>" : '';
+    var reply = list[i]['reply'] ? "<svg class=\"va-middle fill-cool-gray\" height=\"20\" width=\"20\"> <use xlink:href=\"dist/sprite.svg#icon-arrow-back-outline\"></use> </svg>" : '';
     var tag = '';
     if (list[i]['tag'].length > 1) {
       tag = "<span class=\"tag--".concat(list[i]['tag'], " circle va-middle ml-1\"></span>");
@@ -141,12 +141,12 @@ var defaultScreen = function defaultScreen() {
   if (clearEmailList) {
     var emailList = document.getElementById('email-list');
     emailList.classList.add('d-flex', 'ai-center', 'jc-center');
-    emailList.innerHTML = "<div> \n        <svg width=\"120\" height=\"120\" class=\"va-middle m-auto d-block fill-cool-gray\"><use xlink:href=\"sprite.svg#icon-folder-open-solid\"></use></svg>\n        <p class=\"clr-cool-gray\">No emails in this folder</p>\n        </div>";
+    emailList.innerHTML = "<div> \n        <svg width=\"120\" height=\"120\" class=\"va-middle m-auto d-block fill-cool-gray\"><use xlink:href=\"dist/sprite.svg#icon-folder-open-solid\"></use></svg>\n        <p class=\"clr-cool-gray\">No emails in this folder</p>\n        </div>";
   }
   if (clearEmailReader) {
     var emailReader = document.getElementById('email-reader');
     emailReader.classList.add('d-flex', 'ai-center', 'jc-center');
-    emailReader.innerHTML = "<div class=\"ta-c\"> \n        <p class=\"clr-cool-gray m-auto mb-4\">No email selected</p>\n        <svg width=\"120\" height=\"120\" class=\"va-middle m-auto d-block fill-cool-gray\" style=\"transform: translateX(-10px);\"><use xlink:href=\"sprite.svg#icon-sparrow-solid\"></use></svg>\n        <p class=\"clr-cool-gray mt-3\">Sparrow Email Client</p>\n        </div>";
+    emailReader.innerHTML = "<div class=\"ta-c\"> \n        <p class=\"clr-cool-gray m-auto mb-4\">No email selected</p>\n        <svg width=\"120\" height=\"120\" class=\"va-middle m-auto d-block fill-cool-gray\" style=\"transform: translateX(-10px);\"><use xlink:href=\"dist/sprite.svg#icon-sparrow-solid\"></use></svg>\n        <p class=\"clr-cool-gray mt-3\">Sparrow Email Client</p>\n        </div>";
   }
 };
 var popEmailReader = function popEmailReader(data, eventElement) {
@@ -161,18 +161,18 @@ var popEmailReader = function popEmailReader(data, eventElement) {
     _globals__WEBPACK_IMPORTED_MODULE_0__["default"].emailData[folder][index]['files'].forEach(function (fileName) {
       var fileType = fileName.slice(fileName.length - 3);
       if (fileType == 'pdf') {
-        attachment += "<div class=\"attachment\"><svg width=\"20\" height=\"20\" class=\"va-middle fill-red\"><use xlink:href=\"sprite.svg#icon-file-pdf-solid\"></use></svg><span class=\"va-middle ml-2\">".concat(fileName, "</span></div>");
+        attachment += "<div class=\"attachment\"><svg width=\"20\" height=\"20\" class=\"va-middle fill-red\"><use xlink:href=\"dist/sprite.svg#icon-file-pdf-solid\"></use></svg><span class=\"va-middle ml-2\">".concat(fileName, "</span></div>");
       } else if (fileType == 'doc') {
-        attachment += "<div class=\"attachment\"><svg width=\"20\" height=\"20\" class=\"va-middle fill-blue\"><use xlink:href=\"sprite.svg#icon-file-word-solid\"></use></svg><span class=\"va-middle ml-2\">".concat(fileName, "</span></div>");
+        attachment += "<div class=\"attachment\"><svg width=\"20\" height=\"20\" class=\"va-middle fill-blue\"><use xlink:href=\"dist/sprite.svg#icon-file-word-solid\"></use></svg><span class=\"va-middle ml-2\">".concat(fileName, "</span></div>");
       } else {
-        attachment += "<div class=\"attachment\"><svg width=\"20\" height=\"20\" class=\"va-middle\"><use xlink:href=\"sprite.svg#icon-file-solid\"></use></svg><span class=\"va-middle ml-2\">".concat(fileName, "</span></div>");
+        attachment += "<div class=\"attachment\"><svg width=\"20\" height=\"20\" class=\"va-middle\"><use xlink:href=\"dist/sprite.svg#icon-file-solid\"></use></svg><span class=\"va-middle ml-2\">".concat(fileName, "</span></div>");
       }
     });
   }
-  var pictureJpg = './dist/img/avatar-512x512.jpg'; // by default it's unknown profile picture
+  var pictureJpg = 'dist/img/avatar-512x512.jpg'; // by default it's unknown profile picture
   if (data[folder][index]['picture'].length) {
     // if picture exists in json - change it to that picture
-    pictureJpg = "./img/".concat(data[folder][index]['picture']);
+    pictureJpg = "dist/img/".concat(data[folder][index]['picture']);
   }
   var pictureWebp = pictureJpg.slice(0, -4) + '.webp'; // remove .jpg and add .webp
 
@@ -180,7 +180,7 @@ var popEmailReader = function popEmailReader(data, eventElement) {
   if (data[folder][index]['tag'].length > 1) {
     tag = "<span class=\"tag--".concat(data[folder][index]['tag'], " email__tag\"></span>");
   }
-  emailReader.innerHTML = "\n<div class=\"email__header\">\n    <div class=\"d-flex ai-center jc-space-between flex-wrap\">\n        <div class=\"email__imgContainer\">\n\n            <picture>\n                <source srcset=\"".concat(pictureWebp, "\" type=\"image/webp\">\n                <source srcset=\"").concat(pictureJpg, "\" type=\"image/jpeg\">\n\n                <img src=\"").concat(pictureJpg, "\" alt=\"profile picture\" class=\"fs-sm email__picture\">\n            </picture>\n            ").concat(tag, "\n        </div>\n        <div class=\"ml-4\">\n            <p>").concat(data[folder][index]['subject'], "</p>\n            <div>\n                <span class=\"fs-md clr-cool-gray\">").concat(folder == 'sent' || folder == 'drafts' ? 'To:' : 'From:', "</span>\n                <div class=\"dropdown fs-sm\">\n                <span class=\"va-middle clr-cool-gray\">").concat(data[folder][index]['name'], "</span>\n                    <svg class=\"va-middle fill-cool-gray\" width=\"10\" height=\"10\">\n                        <use xlink:href=\"sprite.svg#icon-chevron-down-solid\"></use>\n                    </svg>\n                    <div class=\"dropdown__content\">\n                        <p>From: ").concat(data[folder][index]['from'], "</p>\n                        <p>To: ").concat(data[folder][index]['to'], "</p>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n\n\n    <div class=\"btn-group--round\">\n        <button class=\"btn\">\n            <svg class=\"btn__icon\">\n                <use xlink:href=\"sprite.svg#icon-star\"></use>\n            </svg>\n        </button>\n        <button class=\"btn\">\n            <svg class=\"btn__icon\">\n                <use xlink:href=\"sprite.svg#icon-document-text\"></use>\n            </svg>\n        </button>\n        <button class=\"btn btn-clicked\" id=\"deleteBtn\">\n            <svg class=\"btn__icon\">\n                <use xlink:href=\"sprite.svg#icon-trash-can\"></use>\n            </svg>\n        </button>\n        <button class=\"btn\">\n            <svg class=\"btn__icon\">\n                <use xlink:href=\"sprite.svg#icon-arrow-back-outline\"></use>\n            </svg>\n        </button>\n    </div>\n</div>\n\n<div class=\"email__body\"> \n    <p class=\"email__message\">").concat(data[folder][index]['message'], "</p>\n    \n    <div class=\"email__attachments\">").concat(attachment, "</div>\n</div>");
+  emailReader.innerHTML = "\n<div class=\"email__header\">\n    <div class=\"d-flex ai-center jc-space-between flex-wrap\">\n        <div class=\"email__imgContainer\">\n\n            <picture>\n                <source srcset=\"".concat(pictureWebp, "\" type=\"image/webp\">\n                <source srcset=\"").concat(pictureJpg, "\" type=\"image/jpeg\">\n\n                <img src=\"").concat(pictureJpg, "\" alt=\"profile picture\" class=\"fs-sm email__picture\">\n            </picture>\n            ").concat(tag, "\n        </div>\n        <div class=\"ml-4\">\n            <p>").concat(data[folder][index]['subject'], "</p>\n            <div>\n                <span class=\"fs-md clr-cool-gray\">").concat(folder == 'sent' || folder == 'drafts' ? 'To:' : 'From:', "</span>\n                <div class=\"dropdown fs-sm\">\n                <span class=\"va-middle clr-cool-gray\">").concat(data[folder][index]['name'], "</span>\n                    <svg class=\"va-middle fill-cool-gray\" width=\"10\" height=\"10\">\n                        <use xlink:href=\"dist/sprite.svg#icon-chevron-down-solid\"></use>\n                    </svg>\n                    <div class=\"dropdown__content\">\n                        <p>From: ").concat(data[folder][index]['from'], "</p>\n                        <p>To: ").concat(data[folder][index]['to'], "</p>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n\n\n    <div class=\"btn-group--round\">\n        <button class=\"btn\">\n            <svg class=\"btn__icon\">\n                <use xlink:href=\"dist/sprite.svg#icon-star\"></use>\n            </svg>\n        </button>\n        <button class=\"btn\">\n            <svg class=\"btn__icon\">\n                <use xlink:href=\"dist/sprite.svg#icon-document-text\"></use>\n            </svg>\n        </button>\n        <button class=\"btn btn-clicked\" id=\"deleteBtn\">\n            <svg class=\"btn__icon\">\n                <use xlink:href=\"dist/sprite.svg#icon-trash-can\"></use>\n            </svg>\n        </button>\n        <button class=\"btn\">\n            <svg class=\"btn__icon\">\n                <use xlink:href=\"dist/sprite.svg#icon-arrow-back-outline\"></use>\n            </svg>\n        </button>\n    </div>\n</div>\n\n<div class=\"email__body\"> \n    <p class=\"email__message\">").concat(data[folder][index]['message'], "</p>\n    \n    <div class=\"email__attachments\">").concat(attachment, "</div>\n</div>");
   if (eventElement.classList.contains('unread')) {
     eventElement.classList.remove('unread');
     _globals__WEBPACK_IMPORTED_MODULE_0__["default"].emailData[folder][index]['unread'] = false;
@@ -984,4 +984,4 @@ searchBar.addEventListener('keyup', function (e) {
 
 /******/ })()
 ;
-//# sourceMappingURL=bundle0dbba3f5f562d0271a35.js.map
+//# sourceMappingURL=bundle4ea40c7e907da369fea1.js.map

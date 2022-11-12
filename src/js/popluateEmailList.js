@@ -18,8 +18,8 @@ export const popEmailList = (data, folderName,openFirstEmail = false) => {
 
     for (let i = 0; i < list.length; i++) {
 
-        let attachment = list[i]['attachment'] ? `<svg class="va-middle fill-cool-gray" height="15" width="15"> <use xlink:href="sprite.svg#icon-paperclip-solid"></use> </svg>`: '';
-        let reply = list[i]['reply'] ? `<svg class="va-middle fill-cool-gray" height="20" width="20"> <use xlink:href="sprite.svg#icon-arrow-back-outline"></use> </svg>`: '';
+        let attachment = list[i]['attachment'] ? `<svg class="va-middle fill-cool-gray" height="15" width="15"> <use xlink:href="dist/sprite.svg#icon-paperclip-solid"></use> </svg>`: '';
+        let reply = list[i]['reply'] ? `<svg class="va-middle fill-cool-gray" height="20" width="20"> <use xlink:href="dist/sprite.svg#icon-arrow-back-outline"></use> </svg>`: '';
         let tag = '';
 
         if(list[i]['tag'].length > 1){
@@ -59,7 +59,7 @@ export const defaultScreen = (clearEmailList = false,clearEmailReader = false) =
         emailList.classList.add('d-flex','ai-center','jc-center');
 
         emailList.innerHTML = `<div> 
-        <svg width="120" height="120" class="va-middle m-auto d-block fill-cool-gray"><use xlink:href="sprite.svg#icon-folder-open-solid"></use></svg>
+        <svg width="120" height="120" class="va-middle m-auto d-block fill-cool-gray"><use xlink:href="dist/sprite.svg#icon-folder-open-solid"></use></svg>
         <p class="clr-cool-gray">No emails in this folder</p>
         </div>`;
     }
@@ -70,7 +70,7 @@ export const defaultScreen = (clearEmailList = false,clearEmailReader = false) =
 
         emailReader.innerHTML = `<div class="ta-c"> 
         <p class="clr-cool-gray m-auto mb-4">No email selected</p>
-        <svg width="120" height="120" class="va-middle m-auto d-block fill-cool-gray" style="transform: translateX(-10px);"><use xlink:href="sprite.svg#icon-sparrow-solid"></use></svg>
+        <svg width="120" height="120" class="va-middle m-auto d-block fill-cool-gray" style="transform: translateX(-10px);"><use xlink:href="dist/sprite.svg#icon-sparrow-solid"></use></svg>
         <p class="clr-cool-gray mt-3">Sparrow Email Client</p>
         </div>`;
     }
@@ -93,19 +93,19 @@ export const popEmailReader = (data,eventElement) => {
         globals.emailData[folder][index]['files'].forEach(fileName => {
             let fileType = fileName.slice(fileName.length - 3)
             if(fileType == 'pdf'){
-                attachment += `<div class="attachment"><svg width="20" height="20" class="va-middle fill-red"><use xlink:href="sprite.svg#icon-file-pdf-solid"></use></svg><span class="va-middle ml-2">${fileName}</span></div>`;
+                attachment += `<div class="attachment"><svg width="20" height="20" class="va-middle fill-red"><use xlink:href="dist/sprite.svg#icon-file-pdf-solid"></use></svg><span class="va-middle ml-2">${fileName}</span></div>`;
             }else if (fileType == 'doc'){
-                attachment += `<div class="attachment"><svg width="20" height="20" class="va-middle fill-blue"><use xlink:href="sprite.svg#icon-file-word-solid"></use></svg><span class="va-middle ml-2">${fileName}</span></div>`;
+                attachment += `<div class="attachment"><svg width="20" height="20" class="va-middle fill-blue"><use xlink:href="dist/sprite.svg#icon-file-word-solid"></use></svg><span class="va-middle ml-2">${fileName}</span></div>`;
             }else{
-                attachment += `<div class="attachment"><svg width="20" height="20" class="va-middle"><use xlink:href="sprite.svg#icon-file-solid"></use></svg><span class="va-middle ml-2">${fileName}</span></div>`;
+                attachment += `<div class="attachment"><svg width="20" height="20" class="va-middle"><use xlink:href="dist/sprite.svg#icon-file-solid"></use></svg><span class="va-middle ml-2">${fileName}</span></div>`;
             }
         });
     }
 
-    let pictureJpg = './dist/img/avatar-512x512.jpg' // by default it's unknown profile picture
+    let pictureJpg = 'dist/img/avatar-512x512.jpg' // by default it's unknown profile picture
     if(data[folder][index]['picture'].length){
         // if picture exists in json - change it to that picture
-        pictureJpg = `./img/${data[folder][index]['picture']}`
+        pictureJpg = `dist/img/${data[folder][index]['picture']}`
     }
     let pictureWebp = pictureJpg.slice(0,-4) + '.webp'; // remove .jpg and add .webp
 
@@ -134,7 +134,7 @@ export const popEmailReader = (data,eventElement) => {
                 <div class="dropdown fs-sm">
                 <span class="va-middle clr-cool-gray">${data[folder][index]['name']}</span>
                     <svg class="va-middle fill-cool-gray" width="10" height="10">
-                        <use xlink:href="sprite.svg#icon-chevron-down-solid"></use>
+                        <use xlink:href="dist/sprite.svg#icon-chevron-down-solid"></use>
                     </svg>
                     <div class="dropdown__content">
                         <p>From: ${data[folder][index]['from']}</p>
@@ -149,22 +149,22 @@ export const popEmailReader = (data,eventElement) => {
     <div class="btn-group--round">
         <button class="btn">
             <svg class="btn__icon">
-                <use xlink:href="sprite.svg#icon-star"></use>
+                <use xlink:href="dist/sprite.svg#icon-star"></use>
             </svg>
         </button>
         <button class="btn">
             <svg class="btn__icon">
-                <use xlink:href="sprite.svg#icon-document-text"></use>
+                <use xlink:href="dist/sprite.svg#icon-document-text"></use>
             </svg>
         </button>
         <button class="btn btn-clicked" id="deleteBtn">
             <svg class="btn__icon">
-                <use xlink:href="sprite.svg#icon-trash-can"></use>
+                <use xlink:href="dist/sprite.svg#icon-trash-can"></use>
             </svg>
         </button>
         <button class="btn">
             <svg class="btn__icon">
-                <use xlink:href="sprite.svg#icon-arrow-back-outline"></use>
+                <use xlink:href="dist/sprite.svg#icon-arrow-back-outline"></use>
             </svg>
         </button>
     </div>
