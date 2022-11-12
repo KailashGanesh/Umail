@@ -59,6 +59,7 @@ module.exports = {
             filename:'index.html',
             template: 'src/template.html',
             scriptLoading: 'blocking',
+            favicon:'dist/favicon.ico',
             publicPath: 'dist/'
         }),
         new CopyPlugin({patterns:[
