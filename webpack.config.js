@@ -51,10 +51,17 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            title:'webpack App',
+            title:'Umail',
             filename:'index.html',
             template: 'src/template.html',
+            scriptLoading: 'blocking',
+            // publicPath: 'dist/'
         }),
-        new CopyPlugin({patterns:[{from: './src/assets/sprite.svg', to:''},{from: './src/assets/img', to:'./img'}]})
+        new CopyPlugin({patterns:[
+            {from: './src/assets/sprite.svg', to:''},
+            {from: './src/assets/img', to:'./img'},
+            {from:'./src/favicon.ico', to:''},
+            // {from:'./dist/index.html', to:'../index.html'},
+        ]})
     ]
 }
