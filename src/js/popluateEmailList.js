@@ -78,13 +78,17 @@ export const defaultScreen = (clearEmailList = false,clearEmailReader = false) =
 }
 
 export const popEmailReader = (data,eventElement) => {
+    // highlight the currently displaced email in email list
+    highlightElement(eventElement, 'emailList')
     
     const emailReader = document.getElementById('email-reader');
-    const index = eventElement.id;
-    const folder = eventElement.dataset.folder;
-    let attachment = '';
     emailReader.classList.remove('d-flex','ai-center','jc-center');
 
+    const index = eventElement.id;
+
+    const folder = eventElement.dataset.folder;
+
+    let attachment = '';
     if(globals.emailData[folder][index]['attachment']){
         globals.emailData[folder][index]['files'].forEach(fileName => {
             let fileType = fileName.slice(fileName.length - 3)
@@ -112,8 +116,12 @@ export const popEmailReader = (data,eventElement) => {
 <div class="email__header">
     <div class="d-flex ai-center jc-space-between flex-wrap">
         <div class="email__img">
-            <img src="${picture}" alt="profile picture"
-            style="border-radius: 50%;" width="54" height="54" class="fs-sm">
+
+            <picture>
+                <source media="(min-width: 650px)" srcset="${picture}">
+
+                <img src="${picture}" alt="profile picture" style="border-radius: 50%;" width="54" height="54" class="fs-sm">
+            </picture>
             ${tag}
         </div>
         <div class="ml-4">
@@ -174,23 +182,30 @@ export const popEmailReader = (data,eventElement) => {
     let deleteBtn = document.getElementById('deleteBtn');
 
     deleteBtn.addEventListener('click', () =>{
-       
+
+
+        // if the folder we are in, is not trash - move the email to trash
+        // if the folder is trash, the email will just be permanently deleted
         if(folder != 'trash'){
             globals.emailData['trash'].push(globals.emailData[folder][index]);
         }
 
-        globals.emailData[folder].splice(index, 1);
-        eventElement.remove();
+        eventElement.remove(); // remove the email from email list
+        globals.emailData[folder].splice(index, 1); // removes the email from global array
+        updateNumber(); // an email was deleted so update the numbers
+        globals['activeSidebarMenu'].click() // click on the current active menu to reload email list
 
-        defaultScreen(false,true)
-        updateNumber();
-        globals['activeSidebarMenu'].click()
 
-        // if(globals['activeSidebarMenu'].firstElementChild.classList[0].match('tag--')){
-        //     return;
-        // } 
+        if(globals.settings.openNextEmailAfterDelete){ // checking settings to see if this features is turned on
+            let activeElement = document.getElementById(index);
+
+            if(activeElement == null) return; // if no element after the current element exist, quit
+
+            activeElement.click();
+        }
+
+
             
-        // popEmailList(data, folder)
     })
 }
 
@@ -268,4 +283,14 @@ export const filterObject = (folder, keyValue, search, isMatch = false) => {
     }
 
     return globals.emailData[folder].filter(obj => obj[keyValue] == search);
+}
+
+export const openComposeBox = () => {
+    let composeBox = document.getElementById('composeBox')
+    composeBox.classList.add('shown');
+}
+
+export const closeComposeBox = () => {
+    let composeBox = document.getElementById('composeBox');
+    composeBox.classList.remove('shown');
 }

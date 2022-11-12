@@ -3,7 +3,8 @@ let globals = {
     'inbox':[]
   },
   'activeSidebarMenu':'',
-  'activeEmailList':''
+  'activeEmailList':'',
+  'settings':{'openNextEmailAfterDelete':true}
 };
 
 export default  globals;
