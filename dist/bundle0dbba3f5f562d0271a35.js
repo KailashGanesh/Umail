@@ -905,7 +905,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var url = 'https://raw.githubusercontent.com/KailashGanesh/Umail/master/emails.json';
-url = 'http://127.0.0.1:5500/emails.json';
+// url = 'http://127.0.0.1:5500/emails.json'
+
 var sideBar = document.getElementById('sidebar');
 var emailList = document.getElementById('email-list');
 var searchBar = document.getElementById('searchBar');
@@ -983,4 +984,4 @@ searchBar.addEventListener('keyup', function (e) {
 
 /******/ })()
 ;
-//# sourceMappingURL=bundlee9ff751a93c3b2b14973.js.map
+//# sourceMappingURL=bundle0dbba3f5f562d0271a35.js.map
