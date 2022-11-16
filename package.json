@@ -11,6 +11,7 @@
   "keywords": [],
   "author": "Kailash",
   "license": "ISC",
+  "browserslist":["last 2 versions"],
   "devDependencies": {
     "@babel/core": "^7.19.6",
     "@babel/preset-env": "^7.19.4",

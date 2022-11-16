@@ -1,7 +1,7 @@
 const path = require('path')
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const loader = require('sass-loader')
+// const loader = require('sass-loader')
 const CopyPlugin = require("copy-webpack-plugin")
 const ImageminWebpWebpackPlugin= require("imagemin-webp-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
@@ -34,7 +34,7 @@ module.exports = {
         rules:[
             {
                 test:/\.scss$/,
-                use: [ MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader' ],
+                use: [ MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader','sass-loader'],
             },
             {
                 test:/\.js$/,
