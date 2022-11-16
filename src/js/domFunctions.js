@@ -35,12 +35,12 @@ export const popEmailList = (data, folderName) => {
 
 
         emailList.innerHTML += `
-    <li class="email__item ${list[i]['unread']? 'unread':''}" id="${globals.emailData[folderName].indexOf(list[i])}" data-folder="${folderName}">
-        <div class="email__details">
+    <li class="email__item d-flex flex-direction-col p-5 ${list[i]['unread']? 'unread':''}" id="${globals.emailData[folderName].indexOf(list[i])}" data-folder="${folderName}">
+        <div class="d-flex ai-center jc-space-between">
             <p class="heading-sm email__subject clr-gunmetal va-middle">${list[i]['subject']}</p>
             <span class="fs-sm clr-gunmetal">${list[i]['time']}</span>
         </div>
-        <div class="email__details">
+        <div class="d-flex ai-center jc-space-between">
             <p class="fs-sm clr-cool-gray">${list[i]['name']}</p>
             <div>
                 ${attachment}
@@ -90,7 +90,6 @@ export const defaultScreen = (clearEmailList = false,clearEmailReader = false) =
  * @param  {Element} eventElement the email item element that needs to be displayed (the item from the list the user clicked on)
  */
 export const popEmailReader = (data,eventElement) => {
-    console.log(typeof eventElement)
     // highlight the currently displaced email in email list
     highlightElement(eventElement, 'emailList')
     
@@ -108,13 +107,13 @@ export const popEmailReader = (data,eventElement) => {
 
             if(fileType == 'pdf'){
                 // if extension is pdf add pdf svg
-                attachment += `<div class="attachment"><svg width="20" height="20" class="va-middle fill-red"><use xlink:href="dist/sprite.svg#icon-file-pdf-solid"></use></svg><span class="va-middle ml-2">${fileName}</span></div>`;
+                attachment += `<div class="attachment pt-2 pb-2 pl-4 pr-4"><svg width="20" height="20" class="va-middle fill-red"><use xlink:href="dist/sprite.svg#icon-file-pdf-solid"></use></svg><span class="va-middle ml-2">${fileName}</span></div>`;
             }else if (fileType == 'doc'){
                 // if extension is doc add doc svg
-                attachment += `<div class="attachment"><svg width="20" height="20" class="va-middle fill-blue"><use xlink:href="dist/sprite.svg#icon-file-word-solid"></use></svg><span class="va-middle ml-2">${fileName}</span></div>`;
+                attachment += `<div class="attachment pt-2 pb-2 pl-4 pr-4"><svg width="20" height="20" class="va-middle fill-blue"><use xlink:href="dist/sprite.svg#icon-file-word-solid"></use></svg><span class="va-middle ml-2">${fileName}</span></div>`;
             }else{
                 // if extension is other then those two, add normal file svg
-                attachment += `<div class="attachment"><svg width="20" height="20" class="va-middle"><use xlink:href="dist/sprite.svg#icon-file-solid"></use></svg><span class="va-middle ml-2">${fileName}</span></div>`;
+                attachment += `<div class="attachment pt-2 pb-2 pl-4 pr-4"><svg width="20" height="20" class="va-middle"><use xlink:href="dist/sprite.svg#icon-file-solid"></use></svg><span class="va-middle ml-2">${fileName}</span></div>`;
             }
         });
     }
@@ -133,7 +132,7 @@ export const popEmailReader = (data,eventElement) => {
     }
 
     emailReader.innerHTML = `
-<div class="email__header">
+<div class="email__header d-flex jc-space-between ai-center flex-wrap pt-10 pb-10 pl-7 pr-7">
     <div class="d-flex ai-center jc-space-between flex-wrap">
         <div class="email__imgContainer">
 
@@ -150,7 +149,7 @@ export const popEmailReader = (data,eventElement) => {
             <div>
                 <span class="fs-md clr-cool-gray">${ folder == 'sent'|| folder == 'drafts' ?'To:':'From:'}</span>
 
-                <a href="javascript:void(0);" class="dropdown fs-sm" id="dropdown">
+                <a tabindex="0" href="javascript:void(0);" class="dropdown fs-sm" id="dropdown">
                     <span class="va-middle clr-cool-gray">${data[folder][index]['name']}</span>
                     <svg class="va-middle fill-cool-gray" width="10" height="10">
                         <use xlink:href="dist/sprite.svg#icon-chevron-down-solid"></use>
@@ -189,10 +188,10 @@ export const popEmailReader = (data,eventElement) => {
     </div>
 </div>
 
-<div class="email__body"> 
+<div class="email__body p-7"> 
     <p class="email__message">${data[folder][index]['message']}</p>
     
-    <div class="email__attachments">${attachment}</div>
+    <div class="email__attachments d-flex flex-wrap">${attachment}</div>
 </div>`;
 
     if(eventElement.classList.contains('unread')){
@@ -201,8 +200,8 @@ export const popEmailReader = (data,eventElement) => {
         updateNumber(); // update numbers to reflect the change
     }
 
-    let deleteBtn = document.getElementById('deleteBtn'); // get delete button in email reader
-    let dropdown = document.getElementById('dropdown');
+    const deleteBtn = document.getElementById('deleteBtn'); // get delete button in email reader
+    const dropdown = document.getElementById('dropdown');
 
     deleteBtn.addEventListener('click', () =>{
         deleteEmail(eventElement);
@@ -213,7 +212,6 @@ export const popEmailReader = (data,eventElement) => {
     })
 
     dropdown.addEventListener('focusout', () => { 
-        console.log('nivy poty taku')
         dropdown.classList.remove('active'); 
     })
 }

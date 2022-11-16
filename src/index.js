@@ -8,54 +8,84 @@ let url = 'https://raw.githubusercontent.com/KailashGanesh/Umail/master/emails.j
 // url = 'http://127.0.0.1:5500/emails.json'
 
 const sideBar =  document.getElementById('sidebar');
-const emailList =  document.getElementById('email-list');
-const searchBar = document.getElementById('searchBar');
-const inboxBtn = document.getElementById('inboxBtn');
-const composeCloseBtn = document.getElementById('closeCompose');
-const sendEmailBtn = document.getElementById('sendBtn');
+// const emailList =  document.getElementById('email-list');
+// const searchBar = document.getElementById('searchBar');
+// const inboxBtn = document.getElementById('inboxBtn');
+// const composeCloseBtn = document.getElementById('closeCompose');
+// const sendEmailBtn = document.getElementById('sendBtn');
 
 getData(url);
 
 let data = globals.emailData;
 
-sideBar.addEventListener('click', (e) => {
+document.getElementById('sidebar').addEventListener('click', (e) => {
     let eventTarget = e.target.closest('button');
 
     if(eventTarget == null){
-        return; // if user clicked on empty space exist
-    }else if(eventTarget.dataset.type == 'folder'){
-        let folderName = eventTarget.id.slice(0, -3);
+        return; // if user clicked on empty space exit
+    }
+    // else if(eventTarget.dataset.type == 'folder'){
+    //     let folderName = eventTarget.id.slice(0, -3);
 
 
-        highlightElement(eventTarget,'sidebarMenu')
-        defaultScreen(false,true)
-        popEmailList(data, folderName)
-    }else if(eventTarget.dataset.type == 'tag'){
-        let search = eventTarget.id.slice(0, -3);
-        let result = filterObject('inbox', 'tag', search);
+    //     highlightElement(eventTarget,'sidebarMenu')
+    //     defaultScreen(false,true)
+    //     popEmailList(data, folderName)
+    // }else if(eventTarget.dataset.type == 'tag'){
+    //     let search = eventTarget.id.slice(0, -3);
+    //     let result = filterObject('inbox', 'tag', search);
 
-        highlightElement(eventTarget,'sidebarMenu')
-        defaultScreen(false,true)
-        popEmailList({'inbox':result}, 'inbox')
-    }else if(eventTarget.id == 'settingsBtn'){
-        let popup = document.getElementById('popup');
-        let toggle = document.getElementById('setting_toggle');
+    //     highlightElement(eventTarget,'sidebarMenu')
+    //     defaultScreen(false,true)
+    //     popEmailList({'inbox':result}, 'inbox')
+    // }else if(eventTarget.id == 'settingsBtn'){
+    //     let popup = document.getElementById('popup');
+    //     let toggle = document.getElementById('setting_toggle');
 
-        popup.classList.add('shown');
+    //     popup.classList.add('shown');
 
-        toggle.addEventListener('change',() => {
+    //     toggle.addEventListener('change',() => {
 
-            globals.settings.openNextEmailAfterDelete = (/true/i).test(toggle.value);
-        })
-    }else if(eventTarget.id == 'composeBtn'){
-       openComposeBox();
-    }else{return;}
+    //         globals.settings.openNextEmailAfterDelete = (/true/i).test(toggle.value);
+    //     })
+    // }else if(eventTarget.id == 'composeBtn'){
+    //    openComposeBox();
+    // }else{return;}
+
+    switch (eventTarget.dataset.type) {
+        case 'folder':
+            let folderName = eventTarget.id.slice(0, -3);
+            highlightElement(eventTarget,'sidebarMenu')
+            defaultScreen(false,true)
+            popEmailList(data, folderName)
+        break;
+        case 'tag':
+            let search = eventTarget.id.slice(0, -3);
+            let result = filterObject('inbox', 'tag', search);
+
+            highlightElement(eventTarget,'sidebarMenu')
+            defaultScreen(false,true)
+            popEmailList({'inbox':result}, 'inbox')
+        break;
+        case 'settings':
+            let popup = document.getElementById('popup');
+            let toggle = document.getElementById('setting_toggle');
+
+            popup.classList.add('shown');
+            toggle.addEventListener('change', () => {
+                globals.settings.openNextEmailAfterDelete = (/true/i).test(toggle.value); // converts string 'true' into bool true
+            })
+        break;
+        case 'compose':
+            openComposeBox();
+        break;
+    }
 })
 
-composeCloseBtn.addEventListener('click', closeComposeBox);
-sendEmailBtn.addEventListener('click', closeComposeBox);
+document.getElementById('closeCompose').addEventListener('click', closeComposeBox);
+document.getElementById('sendBtn').addEventListener('click', closeComposeBox);
 
-emailList.addEventListener('click', (e) => {
+document.getElementById('email-list').addEventListener('click', (e) => {
     let eventTarget = e.target.closest('li');
 
     if(eventTarget == null) return;
@@ -63,8 +93,8 @@ emailList.addEventListener('click', (e) => {
     popEmailReader(globals.emailData,eventTarget);
 })
 
-searchBar.addEventListener('keyup', (e) => {
-    let searchText = searchBar.value;
+document.getElementById('searchBar').addEventListener('keyup', (e) => {
+    let searchText = document.getElementById('searchBar').value;
 
     if (e.key == 'Enter'){
         e.preventDefault()
