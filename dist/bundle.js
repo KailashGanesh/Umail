@@ -10,15 +10,12 @@
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "closeComposeBox": function() { return /* binding */ closeComposeBox; },
 /* harmony export */   "defaultScreen": function() { return /* binding */ defaultScreen; },
 /* harmony export */   "deleteEmail": function() { return /* binding */ deleteEmail; },
 /* harmony export */   "filterObject": function() { return /* binding */ filterObject; },
-/* harmony export */   "highlightElement": function() { return /* binding */ highlightElement; },
-/* harmony export */   "openComposeBox": function() { return /* binding */ openComposeBox; },
 /* harmony export */   "popEmailList": function() { return /* binding */ popEmailList; },
 /* harmony export */   "popEmailReader": function() { return /* binding */ popEmailReader; },
-/* harmony export */   "updateNumber": function() { return /* binding */ updateNumber; }
+/* harmony export */   "updateThumbnail": function() { return /* binding */ updateThumbnail; }
 /* harmony export */ });
 /* harmony import */ var _globals__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./globals */ "./src/js/globals.js");
 
@@ -80,7 +77,7 @@ var defaultScreen = function defaultScreen() {
  * calls highlightElement on clicked item in email list
  * displays the message,subject, profile picture in email reader
  * @param  {Object} data the email data object
- * @param  {Element} eventElement the email item element that needs to be displayed (the item from the list the user clicked on)
+ * @param  {HTMLElement} eventElement the email item element that needs to be displayed (the item from the list the user clicked on)
  */
 var popEmailReader = function popEmailReader(data, eventElement) {
   // highlight the currently displaced email in email list
@@ -167,83 +164,26 @@ var deleteEmail = function deleteEmail(eventElement) {
 };
 
 /**
- * highlights the given element by adding css class
- * @param  {Element} element the element to make active or highlight
- * @param  {string} parentElement which parent element does the element belong to? (sidebarMenu or emailList)
+ * 
+ * @param  {HTMLElement} dropzoneElement
+ * @param  {file} file 
  */
-var highlightElement = function highlightElement(element, parentElement) {
-  switch (parentElement) {
-    case 'sidebarMenu':
-      if (_globals__WEBPACK_IMPORTED_MODULE_0__["default"].activeSidebarMenu) {
-        _globals__WEBPACK_IMPORTED_MODULE_0__["default"].activeSidebarMenu.classList.remove('active');
-      }
-      _globals__WEBPACK_IMPORTED_MODULE_0__["default"].activeSidebarMenu = element;
-      element.classList.add('active');
-      break;
-    case 'emailList':
-      if (_globals__WEBPACK_IMPORTED_MODULE_0__["default"].activeEmailList) {
-        _globals__WEBPACK_IMPORTED_MODULE_0__["default"].activeEmailList.classList.remove('active--email');
-      }
-      _globals__WEBPACK_IMPORTED_MODULE_0__["default"].activeEmailList = element;
-      element.classList.add('active--email');
-      break;
-  }
-};
+var updateThumbnail = function updateThumbnail(dropzoneElement, file) {
+  console.log(dropzoneElement);
+  console.log(file);
+  var thumbnailElement = dropzoneElement.getElementById('');
+  dropzoneElement.classList.add('drop-zone--thumbnail');
+  thumbnailElement.dataset.label = file.name;
+  console.log(file.name);
 
-/**
- * updates the number of unread email in inboxBtn text and app title text - inbox (2), sparrow (2)
- * adds the number of emails in each tag from the inbox next to tag text- personal (1), friends (3)
- * adds the number of emails in trash folder next to trash text
- * if no email is available just the text is displayed, the brackets and number are not shown
- */
-var updateNumber = function updateNumber() {
-  var appHeading = document.getElementById('addHeading');
-  var inboxBtnText = document.getElementById('inboxBtnText');
-  var trashBtnText = document.getElementById('trashBtnText');
-  var personalBtnText = document.getElementById('personalBtnText');
-  var clientsBtnText = document.getElementById('clientsBtnText');
-  var familyBtnText = document.getElementById('familyBtnText');
-  var friendsBtnText = document.getElementById('friendsBtnText');
-  var archivesBtnText = document.getElementById('archivesBtnText');
-  var unreadEmailNumber = filterObject('inbox', 'unread', true).length;
-  appHeading.innerHTML = "sparrow ".concat(unreadEmailNumber == '0' ? '' : '(' + unreadEmailNumber + ')');
-  inboxBtnText.innerHTML = "Inbox ".concat(unreadEmailNumber == '0' ? '' : '(' + unreadEmailNumber + ')');
-  trashBtnText.innerHTML = "Trash ".concat(_globals__WEBPACK_IMPORTED_MODULE_0__["default"].emailData.trash.length == '0' ? '' : '(' + _globals__WEBPACK_IMPORTED_MODULE_0__["default"].emailData.trash.length + ')');
-  var tagList = {
-    'personal': personalBtnText,
-    'clients': clientsBtnText,
-    'family': familyBtnText,
-    'friends': friendsBtnText,
-    'archives': archivesBtnText
-  };
-  for (var i in tagList) {
-    var number = filterObject('inbox', 'tag', i).length;
-    tagList[i].innerHTML = "".concat(i, " ").concat(number == '0' ? '' : '(' + number + ')');
-  }
-};
+  // if(file.type.startWith('image/')){
+  //     const reader = new FileReader();
 
-/**
- * adds class of 'shown' to element with id of composeBox
- */
-var openComposeBox = function openComposeBox() {
-  var composeBox = document.getElementById('composeBox');
-  composeBox.classList.add('shown');
-};
-
-/**
- * removes class of 'shown' from element with id of composeBox
- */
-var closeComposeBox = function closeComposeBox() {
-  var composeBox = document.getElementById('composeBox');
-  composeBox.classList.remove('shown');
-  var emailInput = document.getElementById('emailInput');
-  var subjectInput = document.getElementById('subjectInput');
-  var messageInput = document.getElementById('messageInput');
-
-  // clears the values of inputs on close
-  emailInput.value = '';
-  subjectInput.value = '';
-  messageInput.value = '';
+  //     reader.readAsDataURL(file);
+  //     reader.onload = () => {
+  //         thumbnailElement.style.backgroundImage = `url('${reader.result}')`;
+  //     };
+  // }
 };
 
 /**
@@ -505,9 +445,10 @@ document.getElementById('sidebar').addEventListener('click', function (e) {
       }, 'inbox');
       break;
     case 'settings':
-      var popup = document.getElementById('popup');
+      _popup('settings');
+      var _popup = document.getElementById('popup');
       var toggle = document.getElementById('setting_toggle');
-      popup.classList.add('shown');
+      _popup.classList.add('shown');
       toggle.addEventListener('change', function () {
         _js_globals__WEBPACK_IMPORTED_MODULE_1__["default"].settings.openNextEmailAfterDelete = /true/i.test(toggle.value); // converts string 'true' into bool true
       });
@@ -519,7 +460,10 @@ document.getElementById('sidebar').addEventListener('click', function (e) {
   }
 });
 document.getElementById('closeCompose').addEventListener('click', _js_domFunctions__WEBPACK_IMPORTED_MODULE_2__.closeComposeBox);
-document.getElementById('sendBtn').addEventListener('click', _js_domFunctions__WEBPACK_IMPORTED_MODULE_2__.closeComposeBox);
+document.getElementById('sendBtn').addEventListener('click', _js_domFunctions__WEBPACK_IMPORTED_MODULE_2__.addEmailToSent);
+document.getElementById('attachBtn').addEventListener('click', function () {
+  (0,_js_domFunctions__WEBPACK_IMPORTED_MODULE_2__.popup)('attachment');
+});
 document.getElementById('email-list').addEventListener('click', function (e) {
   var eventTarget = e.target.closest('li');
   if (eventTarget == null) return;
@@ -547,6 +491,7 @@ document.getElementById('searchBar').addEventListener('keyup', function (e) {
     (0,_js_domFunctions__WEBPACK_IMPORTED_MODULE_2__.defaultScreen)(false, true);
   }
 });
+document.getElementById('popup').addEventListener('click', function (e) {});
 }();
 /******/ })()
 ;

@@ -134,20 +134,23 @@
         <textarea name="" id="messageInput" cols="30" rows="10" class="compose__message"></textarea>
         <div class="compose__toolbar">
             <button class="btn compose__btn" id="sendBtn">send</button>
+            <button class="btn ml-2 compose__attachbtn" id="attachBtn">
+                <svg class="va-middle fill-cool-gray attachbtn__icon" height="15" width="15">
+                    <use xlink:href="dist/sprite.svg#icon-paperclip-solid"></use>
+                </svg>
+            </button>
+            <!-- <select name="tagSelect" id="">
+                <option value=""><span class="tag--personal circle va-middle ml-1"></span>None</option>
+                <option value="personal"><span class="tag--personal circle va-middle ml-1"></span>Personal</option>
+                <option value="clients"><span class="tag--clients circle va-middle ml-1"></span>Clients</option>
+                <option value="family"><span class="tag--family circle va-middle ml-1"></span>Family</option>
+                <option value="friends"><span class="tag--friends circle va-middle ml-1"></span>Friends</option>
+                <option value="archives"><span class="tag--archives circle va-middle ml-1"></span>Archives</option>
+            </select> -->
         </div>
     </div>
 
     <div class="popup" id="popup">
-        <div class="settings">
-            <div class="mb-10">
-                <p>Settings</p>
-                <button onclick="document.getElementById('popup').classList.remove('shown');" class="btn settings__btn d-block">&times;</button>
-            </div>
-            <div>
-                <label for="setting_toggle" class="mr-4">Automatically open next email after deleting</label>
-                <input class="cb2 tgl tgl-ios" type="checkbox" id="setting_toggle">
-            </div>
-        </div>
     </div>
 
 
