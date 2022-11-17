@@ -276,6 +276,9 @@ export const addEmailToSent = () => {
         popup('emailError','Please specify at least one recipient.');
     }else if (emailInput.value){
         popup('emailError', `The address "${emailInput.value}" in the recipient field was not recognized. Please make sure that all addresses are properly formatted.`)
+    }else{
+        currentEmail.to = emailInput.value;
+        currentEmail.name = emailInput.value.slice('@')[0];
     }
 
     // check if subject and message is filled
@@ -286,13 +289,11 @@ export const addEmailToSent = () => {
 
     // if no subject change to (no subject)
 
-    if(subjectInput.value == ''){
-        currentEmail.subject = '(no subject)';
-    }else{
-        currentEmail.subject = subjectInput.value;
-    }
-
+    currentEmail.subject = subjectInput.value? '(no subject)':subjectInput.value;
     currentEmail.message = messageInput.value;
+
+    console.log(currentEmail)
+    globals.emailData.sent.unshift(currentEmail)
 
 
 }
@@ -316,7 +317,7 @@ export const popup = (whichPopup,popupMessage) => {
 
 /**
  * highlights the given element by adding css class
- * @param  {Element} element the element to make active or highlight
+ * @param  {HTMLElement} element the element to make active or highlight
  * @param  {string} parentElement which parent element does the element belong to? (sidebarMenu or emailList)
  */
  export const highlightElement = (element, parentElement) => {
