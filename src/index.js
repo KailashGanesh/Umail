@@ -85,7 +85,7 @@ document.getElementById('sidebar').addEventListener('click', (e) => {
 
 document.getElementById('closeCompose').addEventListener('click', closeComposeBox);
 document.getElementById('sendBtn').addEventListener('click', addEmailToSent);
-document.getElementById('attachBtn').addEventListener('click', () => {popup('attachment')});
+document.getElementById('attachBtn').addEventListener('click', () => {popup('fileUpload')});
 
 document.getElementById('email-list').addEventListener('click', (e) => {
     let eventTarget = e.target.closest('li');

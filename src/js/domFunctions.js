@@ -247,76 +247,34 @@ export const deleteEmail = (eventElement) => {
     }
 }
 
-/**
- * highlights the given element by adding css class
- * @param  {Element} element the element to make active or highlight
- * @param  {string} parentElement which parent element does the element belong to? (sidebarMenu or emailList)
- */
- export const highlightElement = (element, parentElement) => {
+export const addEmailToSent = () => {
 
-
-    switch (parentElement) {
-        case 'sidebarMenu':
-            if (globals.activeSidebarMenu) {
-                globals.activeSidebarMenu.classList.remove('active')
-            }
-            globals.activeSidebarMenu = element;
-            element.classList.add('active')
-            break;
-
-        case 'emailList':
-            if (globals.activeEmailList) {
-                globals.activeEmailList.classList.remove('active--email')
-            }
-            globals.activeEmailList = element;
-            element.classList.add('active--email')
-            break;
-    }
-
+    const emailInput = document.getElementById('emailInput');
+    const subjectInput = document.getElementById('subjectInput');
+    const messageInput = document.getElementById('messageInput');
 }
 
-/**
- * updates the number of unread email in inboxBtn text and app title text - inbox (2), sparrow (2)
- * adds the number of emails in each tag from the inbox next to tag text- personal (1), friends (3)
- * adds the number of emails in trash folder next to trash text
- * if no email is available just the text is displayed, the brackets and number are not shown
- */
-export const updateNumber = () => {
-    let appHeading = document.getElementById('addHeading');
-    let inboxBtnText = document.getElementById('inboxBtnText');
-    let trashBtnText = document.getElementById('trashBtnText');
-
-    let personalBtnText = document.getElementById('personalBtnText');
-    let clientsBtnText = document.getElementById('clientsBtnText');
-    let familyBtnText = document.getElementById('familyBtnText');
-    let friendsBtnText = document.getElementById('friendsBtnText');
-    let archivesBtnText = document.getElementById('archivesBtnText');
-
+export const popup = (whichPopup,popupMessage) => {
+    const popupElement = getElementById('popup');
+    switch (whichPopup) {
+        case 'settings':
+            popupElement.innerHTML = ``
+            popupElement.classList.add('shown') 
+        break;
+        case 'emailError':
+            
+        break;
+        case 'fileUpload':
+            
+        break;
     
-    let unreadEmailNumber = filterObject('inbox','unread',true).length;
-
-    appHeading.innerHTML = `sparrow ${(unreadEmailNumber == '0')?'':'(' + unreadEmailNumber + ')'}`;
-    inboxBtnText.innerHTML = `Inbox ${(unreadEmailNumber == '0')?'':'(' + unreadEmailNumber + ')'}`;
-    trashBtnText.innerHTML = `Trash ${globals.emailData.trash.length == '0'? '':'(' + globals.emailData.trash.length+')'}`;
-
-    let tagList = {'personal':personalBtnText,
-                'clients':clientsBtnText,
-                'family':familyBtnText,
-                'friends':friendsBtnText,
-                'archives':archivesBtnText,
-            }
-
-    for(let i in tagList){
-       let number = filterObject('inbox','tag',i).length
-        tagList[i].innerHTML = `${i} ${number == '0'?'':'(' + number + ')'}`;
     }
 }
-
 
 /**
  * adds class of 'shown' to element with id of composeBox
  */
-export const openComposeBox = () => {
+ export const openComposeBox = () => {
     let composeBox = document.getElementById('composeBox')
     composeBox.classList.add('shown');
 }
@@ -325,17 +283,14 @@ export const openComposeBox = () => {
  * removes class of 'shown' from element with id of composeBox
  */
 export const closeComposeBox = () => {
-    let composeBox = document.getElementById('composeBox');
-    composeBox.classList.remove('shown');
-
-    let emailInput = document.getElementById('emailInput');
-    let subjectInput = document.getElementById('subjectInput');
-    let messageInput = document.getElementById('messageInput');
+    //hides compose box
+    document.getElementById('composeBox').classList.remove('shown');
 
     // clears the values of inputs on close
-    emailInput.value = '';
-    subjectInput.value = '';
-    messageInput.value = '';
+    document.getElementById('emailInput').value = '';
+    document.getElementById('subjectInput').value = '';
+    document.getElementById('messageInput').value = '';
+
 }
 
 /**
