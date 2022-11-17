@@ -10,6 +10,7 @@
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "addEmailToSent": function() { return /* binding */ addEmailToSent; },
 /* harmony export */   "closeComposeBox": function() { return /* binding */ closeComposeBox; },
 /* harmony export */   "defaultScreen": function() { return /* binding */ defaultScreen; },
 /* harmony export */   "deleteEmail": function() { return /* binding */ deleteEmail; },
@@ -18,6 +19,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "openComposeBox": function() { return /* binding */ openComposeBox; },
 /* harmony export */   "popEmailList": function() { return /* binding */ popEmailList; },
 /* harmony export */   "popEmailReader": function() { return /* binding */ popEmailReader; },
+/* harmony export */   "popup": function() { return /* binding */ popup; },
 /* harmony export */   "updateNumber": function() { return /* binding */ updateNumber; },
 /* harmony export */   "updateThumbnail": function() { return /* binding */ updateThumbnail; }
 /* harmony export */ });
@@ -166,6 +168,63 @@ var deleteEmail = function deleteEmail(eventElement) {
     activeElement.click();
   }
 };
+var addEmailToSent = function addEmailToSent() {
+  var currentEmail = {
+    "picture": "",
+    "name": "",
+    "to": "",
+    "from": "bob@umail.com",
+    "subject": "",
+    "time": "",
+    "tag": "",
+    "attachment": false,
+    "files": [],
+    "reply": false,
+    "unread": false,
+    "message": ""
+  };
+  var emailInput = document.getElementById('emailInput');
+  var subjectInput = document.getElementById('subjectInput');
+  var messageInput = document.getElementById('messageInput');
+
+  // check email address
+  // check valid email
+  // check if empty
+  // 
+  if (emailInput.value == '') {
+    popup('emailError', 'Please specify at least one recipient.');
+  } else if (emailInput.value) {
+    popup('emailError', "The address \"".concat(emailInput.value, "\" in the recipient field was not recognized. Please make sure that all addresses are properly formatted."));
+  }
+
+  // check if subject and message is filled
+
+  if (subjectInput.value == '' && messageInput.value == '') {
+    console.log(confirm('Send this message without a subject or text in the body?'));
+  }
+
+  // if no subject change to (no subject)
+
+  if (subjectInput.value == '') {
+    currentEmail.subject = '(no subject)';
+  } else {
+    currentEmail.subject = subjectInput.value;
+  }
+  currentEmail.message = messageInput.value;
+};
+var popup = function popup(whichPopup, popupMessage) {
+  var popupElement = getElementById('popup');
+  switch (whichPopup) {
+    case 'settings':
+      popupElement.innerHTML = "";
+      popupElement.classList.add('shown');
+      break;
+    case 'emailError':
+      break;
+    case 'fileUpload':
+      break;
+  }
+};
 
 /**
  * highlights the given element by adding css class
@@ -235,16 +294,13 @@ var openComposeBox = function openComposeBox() {
  * removes class of 'shown' from element with id of composeBox
  */
 var closeComposeBox = function closeComposeBox() {
-  var composeBox = document.getElementById('composeBox');
-  composeBox.classList.remove('shown');
-  var emailInput = document.getElementById('emailInput');
-  var subjectInput = document.getElementById('subjectInput');
-  var messageInput = document.getElementById('messageInput');
+  //hides compose box
+  document.getElementById('composeBox').classList.remove('shown');
 
   // clears the values of inputs on close
-  emailInput.value = '';
-  subjectInput.value = '';
-  messageInput.value = '';
+  document.getElementById('emailInput').value = '';
+  document.getElementById('subjectInput').value = '';
+  document.getElementById('messageInput').value = '';
 };
 
 /**
@@ -546,7 +602,7 @@ document.getElementById('sidebar').addEventListener('click', function (e) {
 document.getElementById('closeCompose').addEventListener('click', _js_domFunctions__WEBPACK_IMPORTED_MODULE_2__.closeComposeBox);
 document.getElementById('sendBtn').addEventListener('click', _js_domFunctions__WEBPACK_IMPORTED_MODULE_2__.addEmailToSent);
 document.getElementById('attachBtn').addEventListener('click', function () {
-  (0,_js_domFunctions__WEBPACK_IMPORTED_MODULE_2__.popup)('attachment');
+  (0,_js_domFunctions__WEBPACK_IMPORTED_MODULE_2__.popup)('fileUpload');
 });
 document.getElementById('email-list').addEventListener('click', function (e) {
   var eventTarget = e.target.closest('li');

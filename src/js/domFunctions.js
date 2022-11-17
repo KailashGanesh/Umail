@@ -249,9 +249,52 @@ export const deleteEmail = (eventElement) => {
 
 export const addEmailToSent = () => {
 
+    const currentEmail = {
+            "picture":"",
+            "name":"",
+            "to":"",
+            "from":"bob@umail.com",
+            "subject":"",
+            "time":"",
+            "tag":"",
+            "attachment":false,
+            "files":[],
+            "reply":false,
+            "unread": false,
+            "message":""
+        }
+
     const emailInput = document.getElementById('emailInput');
     const subjectInput = document.getElementById('subjectInput');
     const messageInput = document.getElementById('messageInput');
+
+    // check email address
+        // check valid email
+        // check if empty
+        // 
+    if(emailInput.value == ''){
+        popup('emailError','Please specify at least one recipient.');
+    }else if (emailInput.value){
+        popup('emailError', `The address "${emailInput.value}" in the recipient field was not recognized. Please make sure that all addresses are properly formatted.`)
+    }
+
+    // check if subject and message is filled
+
+    if(subjectInput.value == '' && messageInput.value ==''){
+        console.log(confirm('Send this message without a subject or text in the body?')) ;
+    }
+
+    // if no subject change to (no subject)
+
+    if(subjectInput.value == ''){
+        currentEmail.subject = '(no subject)';
+    }else{
+        currentEmail.subject = subjectInput.value;
+    }
+
+    currentEmail.message = messageInput.value;
+
+
 }
 
 export const popup = (whichPopup,popupMessage) => {
@@ -268,6 +311,71 @@ export const popup = (whichPopup,popupMessage) => {
             
         break;
     
+    }
+}
+
+/**
+ * highlights the given element by adding css class
+ * @param  {Element} element the element to make active or highlight
+ * @param  {string} parentElement which parent element does the element belong to? (sidebarMenu or emailList)
+ */
+ export const highlightElement = (element, parentElement) => {
+
+
+    switch (parentElement) {
+        case 'sidebarMenu':
+            if (globals.activeSidebarMenu) {
+                globals.activeSidebarMenu.classList.remove('active')
+            }
+            globals.activeSidebarMenu = element;
+            element.classList.add('active')
+            break;
+
+        case 'emailList':
+            if (globals.activeEmailList) {
+                globals.activeEmailList.classList.remove('active--email')
+            }
+            globals.activeEmailList = element;
+            element.classList.add('active--email')
+            break;
+    }
+
+}
+
+/**
+ * updates the number of unread email in inboxBtn text and app title text - inbox (2), sparrow (2)
+ * adds the number of emails in each tag from the inbox next to tag text- personal (1), friends (3)
+ * adds the number of emails in trash folder next to trash text
+ * if no email is available just the text is displayed, the brackets and number are not shown
+ */
+export const updateNumber = () => {
+    let appHeading = document.getElementById('addHeading');
+    let inboxBtnText = document.getElementById('inboxBtnText');
+    let trashBtnText = document.getElementById('trashBtnText');
+
+    let personalBtnText = document.getElementById('personalBtnText');
+    let clientsBtnText = document.getElementById('clientsBtnText');
+    let familyBtnText = document.getElementById('familyBtnText');
+    let friendsBtnText = document.getElementById('friendsBtnText');
+    let archivesBtnText = document.getElementById('archivesBtnText');
+
+    
+    let unreadEmailNumber = filterObject('inbox','unread',true).length;
+
+    appHeading.innerHTML = `sparrow ${(unreadEmailNumber == '0')?'':'(' + unreadEmailNumber + ')'}`;
+    inboxBtnText.innerHTML = `Inbox ${(unreadEmailNumber == '0')?'':'(' + unreadEmailNumber + ')'}`;
+    trashBtnText.innerHTML = `Trash ${globals.emailData.trash.length == '0'? '':'(' + globals.emailData.trash.length+')'}`;
+
+    let tagList = {'personal':personalBtnText,
+                'clients':clientsBtnText,
+                'family':familyBtnText,
+                'friends':friendsBtnText,
+                'archives':archivesBtnText,
+            }
+
+    for(let i in tagList){
+       let number = filterObject('inbox','tag',i).length
+        tagList[i].innerHTML = `${i} ${number == '0'?'':'(' + number + ')'}`;
     }
 }
 
