@@ -2691,7 +2691,7 @@ body {
   }
 }
 .drop-zone {
-  max-width: 200px;
+  width: 200px;
   height: 200px;
   border: 4px dashed #4c4f59;
   border-radius: 10px;

@@ -188,47 +188,72 @@ var addEmailToSent = function addEmailToSent() {
   var messageInput = document.getElementById('messageInput');
 
   // check email address
-  // check valid email
-  // check if empty
-  // 
+  var emailRegex = new RegExp('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$');
   if (emailInput.value == '') {
-    popup('emailError', 'Please specify at least one recipient.');
-  } else if (emailInput.value) {
-    popup('emailError', "The address \"".concat(emailInput.value, "\" in the recipient field was not recognized. Please make sure that all addresses are properly formatted."));
+    alert('Please specify at least one recipient.');
+    return;
+  } else if (!emailRegex.test(emailInput.value)) {
+    alert("The address \"".concat(emailInput.value, "\" in the recipient field was not recognized. Please make sure that all addresses are properly formatted."));
+    return;
+  } else {
+    currentEmail.to = emailInput.value;
+    currentEmail.name = emailInput.value.split('@')[0];
   }
-
-  // check if subject and message is filled
-
-  if (subjectInput.value == '' && messageInput.value == '') {
-    console.log(confirm('Send this message without a subject or text in the body?'));
-  }
+  var date = new Date();
+  currentEmail.time = "".concat(date.getDate(), " ").concat(date.toLocaleString('default', {
+    month: 'short'
+  }), " ").concat(date.getFullYear());
 
   // if no subject change to (no subject)
-
-  if (subjectInput.value == '') {
-    currentEmail.subject = '(no subject)';
-  } else {
-    currentEmail.subject = subjectInput.value;
+  currentEmail.subject = subjectInput.value == '' ? '(no subject)' : subjectInput.value;
+  currentEmail.message = messageInput.value == '' ? '(no message)' : messageInput.value;
+  console.log(currentEmail);
+  _globals__WEBPACK_IMPORTED_MODULE_0__["default"].emailData.sent.unshift(currentEmail);
+  if (_globals__WEBPACK_IMPORTED_MODULE_0__["default"].activeSidebarMenu.id == 'sentBtn') {
+    _globals__WEBPACK_IMPORTED_MODULE_0__["default"].activeSidebarMenu.click();
   }
-  currentEmail.message = messageInput.value;
 };
 var popup = function popup(whichPopup, popupMessage) {
-  var popupElement = getElementById('popup');
+  var popupElement = document.getElementById('popup');
   switch (whichPopup) {
     case 'settings':
-      popupElement.innerHTML = "";
+      popupElement.innerHTML = "\n            <div class=\"settings\">\n                <div class=\"mb-10\">\n                    <p>Settings</p>\n                    <button onclick=\"document.getElementById('popup').classList.remove('shown');\" class=\"btn settings__btn d-block\">&times;</button>\n                </div>\n                <div>\n                    <label for=\"setting_toggle\" class=\"mr-4\">Automatically open next email after deleting</label>\n                    <input class=\"cb2 tgl tgl-ios\" type=\"checkbox\" id=\"setting_toggle\">\n                </div>\n            </div>";
       popupElement.classList.add('shown');
       break;
     case 'emailError':
       break;
     case 'fileUpload':
+      popupElement.innerHTML = "\n            <div class=\"settings\">\n                <div class=\"mb-10\">\n                    <p>Attach files</p>\n                    <button onclick=\"document.getElementById('popup').classList.remove('shown');\" class=\"btn settings__btn d-block\">&times;</button>\n                </div>\n                <div class=\"drop-zone\" id=\"drop-zone\">\n                    <span class=\"drop-zone__prompt\">Drop file here or click to upload</span>\n                    <div class=\"drop-zone__thumb\" data-label=\"myfile.txt\" id=\"dropzoneThumbnail\"></div>\n                    <input class=\"drop-zone__input\" type=\"file\"  name=\"emailAttachment\" id=\"dropzoneInput\">\n                </div>\n            </div>";
+      popupElement.classList.add('shown');
+      var dropZoneElement = document.getElementById('drop-zone');
+      var dropZoneInput = document.getElementById('dropzoneInput');
+      dropZoneElement.addEventListener("click", function (e) {
+        dropZoneInput.click();
+      });
+      dropZoneElement.addEventListener("dragover", function (e) {
+        e.preventDefault();
+        dropZoneElement.classList.add("drop-zone--over");
+      });
+      ["dragleave", "dragend"].forEach(function (type) {
+        dropZoneElement.addEventListener(type, function (e) {
+          dropZoneElement.classList.remove("drop-zone--over");
+        });
+      });
+      dropZoneElement.addEventListener("drop", function (e) {
+        e.preventDefault();
+        if (e.dataTransfer.files.length) {
+          dropZoneInput.files = e.dataTransfer.files;
+          updateThumbnail(dropZoneElement, e.dataTransfer.files[0]);
+        }
+        dropZoneElement.classList.remove("drop-zone--over");
+      });
       break;
   }
 };
 
 /**
  * highlights the given element by adding css class
- * @param  {Element} element the element to make active or highlight
+ * @param  {HTMLElement} element the element to make active or highlight
  * @param  {string} parentElement which parent element does the element belong to? (sidebarMenu or emailList)
  */
 var highlightElement = function highlightElement(element, parentElement) {
@@ -247,6 +272,31 @@ var highlightElement = function highlightElement(element, parentElement) {
       _globals__WEBPACK_IMPORTED_MODULE_0__["default"].activeEmailList = element;
       element.classList.add('active--email');
       break;
+  }
+};
+
+/**
+ * 
+ * @param  {HTMLElement} dropzoneElement
+ * @param  {file} file 
+ */
+var updateThumbnail = function updateThumbnail(dropzoneElement, file) {
+  console.log(dropzoneElement);
+  console.log(file);
+  var thumbnailElement = dropzoneElement.querySelector('#dropzoneThumbnail');
+
+  // remove prompt and show thumbnail
+  dropzoneElement.classList.add('drop-zone--thumbnail');
+  thumbnailElement.dataset.label = file.name;
+  console.log(file.name);
+  if (file.type.startsWith('image/')) {
+    var reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function () {
+      thumbnailElement.style.backgroundImage = "url('".concat(reader.result, "')");
+    };
+  } else {
+    thumbnailElement.style.backgroundImage = null;
   }
 };
 
@@ -301,29 +351,6 @@ var closeComposeBox = function closeComposeBox() {
   document.getElementById('emailInput').value = '';
   document.getElementById('subjectInput').value = '';
   document.getElementById('messageInput').value = '';
-};
-
-/**
- * 
- * @param  {HTMLElement} dropzoneElement
- * @param  {file} file 
- */
-var updateThumbnail = function updateThumbnail(dropzoneElement, file) {
-  console.log(dropzoneElement);
-  console.log(file);
-  var thumbnailElement = dropzoneElement.getElementById('');
-  dropzoneElement.classList.add('drop-zone--thumbnail');
-  thumbnailElement.dataset.label = file.name;
-  console.log(file.name);
-
-  // if(file.type.startWith('image/')){
-  //     const reader = new FileReader();
-
-  //     reader.readAsDataURL(file);
-  //     reader.onload = () => {
-  //         thumbnailElement.style.backgroundImage = `url('${reader.result}')`;
-  //     };
-  // }
 };
 
 /**
