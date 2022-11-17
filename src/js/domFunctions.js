@@ -300,16 +300,72 @@ export const popup = (whichPopup,popupMessage) => {
     const popupElement = document.getElementById('popup');
     switch (whichPopup) {
         case 'settings':
-            popupElement.innerHTML = ``
+            popupElement.innerHTML = `
+            <div class="settings">
+                <div class="mb-10">
+                    <p>Settings</p>
+                    <button onclick="document.getElementById('popup').classList.remove('shown');" class="btn settings__btn d-block">&times;</button>
+                </div>
+                <div>
+                    <label for="setting_toggle" class="mr-4">Automatically open next email after deleting</label>
+                    <input class="cb2 tgl tgl-ios" type="checkbox" id="setting_toggle">
+                </div>
+            </div>`
             popupElement.classList.add('shown') 
         break;
         case 'emailError':
             
         break;
         case 'fileUpload':
-            
+            popupElement.innerHTML = `
+            <div class="settings">
+                <div class="mb-10">
+                    <p>Attach files</p>
+                    <button onclick="document.getElementById('popup').classList.remove('shown');" class="btn settings__btn d-block">&times;</button>
+                </div>
+                <div class="drop-zone" id="drop-zone">
+                    <span class="drop-zone__prompt">Drop file here or click to upload</span>
+                    <div class="drop-zone__thumb" data-label="myfile.txt" id="dropzoneThumbnail"></div>
+                    <input class="drop-zone__input" type="file"  name="emailAttachment" id="dropzoneInput">
+                </div>
+            </div>`
+            popupElement.classList.add('shown') 
+
+            const dropZoneElement =  document.getElementById('drop-zone')
+            const dropZoneInput =  document.getElementById('dropzoneInput')
+
+            dropZoneElement.addEventListener("click", (e) => {
+                dropZoneInput.click();
+            });
+
+            dropZoneInput.addEventListener('change',(e) => {
+                if(dropZoneInput.files.length){
+                    updateThumbnail(dropZoneElement, dropZoneInput.files[0]);
+                }
+            }) 
+
+            dropZoneElement.addEventListener("dragover", (e) => {
+                e.preventDefault();
+                dropZoneElement.classList.add("drop-zone--over");
+            });
+        
+            ["dragleave", "dragend"].forEach((type) => {
+                dropZoneElement.addEventListener(type, (e) => {
+                    dropZoneElement.classList.remove("drop-zone--over");
+                });
+            });
+        
+            dropZoneElement.addEventListener("drop", (e) => {
+                e.preventDefault();
+        
+                if (e.dataTransfer.files.length) {
+                    dropZoneInput.files = e.dataTransfer.files;
+                    updateThumbnail(dropZoneElement, e.dataTransfer.files[0]);
+                }
+        
+                dropZoneElement.classList.remove("drop-zone--over");
+            });
         break;
-    
     }
 }
 
@@ -339,6 +395,36 @@ export const popup = (whichPopup,popupMessage) => {
             break;
     }
 
+}
+
+/**
+ * 
+ * @param  {HTMLElement} dropzoneElement
+ * @param  {file} file 
+ */
+export const updateThumbnail = (dropzoneElement,file) => {
+    console.log(dropzoneElement);
+    console.log(file);
+
+    const thumbnailElement = dropzoneElement.querySelector('#dropzoneThumbnail');
+
+    // remove prompt and show thumbnail
+    dropzoneElement.classList.add('drop-zone--thumbnail');
+
+    thumbnailElement.dataset.label = file.name;
+
+    console.log(file.name)
+
+    if(file.type.startsWith('image/')){
+        const reader = new FileReader();
+
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+            thumbnailElement.style.backgroundImage = `url('${reader.result}')`;
+        };
+    }else{
+            thumbnailElement.style.backgroundImage = null;
+    }
 }
 
 /**
@@ -400,32 +486,6 @@ export const closeComposeBox = () => {
 
 }
 
-/**
- * 
- * @param  {HTMLElement} dropzoneElement
- * @param  {file} file 
- */
-export const updateThumbnail = (dropzoneElement,file) => {
-    console.log(dropzoneElement);
-    console.log(file);
-
-    const thumbnailElement = dropzoneElement.getElementById('')
-
-    dropzoneElement.classList.add('drop-zone--thumbnail');
-
-    thumbnailElement.dataset.label = file.name;
-
-    console.log(file.name)
-
-    // if(file.type.startWith('image/')){
-    //     const reader = new FileReader();
-
-    //     reader.readAsDataURL(file);
-    //     reader.onload = () => {
-    //         thumbnailElement.style.backgroundImage = `url('${reader.result}')`;
-    //     };
-    // }
-}
 
 /**
  * looks at gobals.emailData[folder]
