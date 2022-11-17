@@ -1,0 +1,56 @@
+.drop-zone{
+    max-width: 200px;
+    height: 200px;
+    border: 4px dashed $gunmetal;
+    border-radius: 10px;
+
+    padding: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-weight: 500;
+    color: $cool-gray;
+
+    &__input{
+        display: none;
+    }
+
+    &__thumb{
+        width: 100%;
+        height: 100%;
+        border-radius: 10px;
+        overflow: hidden;
+        background-color: #ccc;
+        background-size: cover;
+        position: relative;
+        display: none;
+
+        &::after{
+            content: attr(data-label);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 5px 0;
+            color: white;
+            background-color: rgba($color: #000000, $alpha: 0.6);
+            text-align: center;
+        }
+    }
+}
+
+.drop-zone--over{
+    // when user has file over area
+    border-style: solid;
+}
+
+.drop-zone--thumbnail{
+    .drop-zone__thumb{
+        display: block;
+    }
+
+    .drop-zone__prompt{
+        display: none;
+    }
+}
