@@ -75,6 +75,19 @@
             background-color: #0c29e6;
         }
     }
+
+    &__attachbtn{
+        background-color: transparent;
+        border-radius: 5px;
+
+        &:hover{
+            background-color: rgba($color: $cool-gray, $alpha: 0.4);
+        }
+    }
+
+    .attachbtn__icon{
+       transform: rotate(317deg); 
+    }
 }
 
 .shown{
