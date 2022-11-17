@@ -87,7 +87,7 @@ export const defaultScreen = (clearEmailList = false,clearEmailReader = false) =
  * calls highlightElement on clicked item in email list
  * displays the message,subject, profile picture in email reader
  * @param  {Object} data the email data object
- * @param  {Element} eventElement the email item element that needs to be displayed (the item from the list the user clicked on)
+ * @param  {HTMLElement} eventElement the email item element that needs to be displayed (the item from the list the user clicked on)
  */
 export const popEmailReader = (data,eventElement) => {
     // highlight the currently displaced email in email list
@@ -252,7 +252,7 @@ export const deleteEmail = (eventElement) => {
  * @param  {Element} element the element to make active or highlight
  * @param  {string} parentElement which parent element does the element belong to? (sidebarMenu or emailList)
  */
-export const highlightElement = (element, parentElement) => {
+ export const highlightElement = (element, parentElement) => {
 
 
     switch (parentElement) {
@@ -336,6 +336,33 @@ export const closeComposeBox = () => {
     emailInput.value = '';
     subjectInput.value = '';
     messageInput.value = '';
+}
+
+/**
+ * 
+ * @param  {HTMLElement} dropzoneElement
+ * @param  {file} file 
+ */
+export const updateThumbnail = (dropzoneElement,file) => {
+    console.log(dropzoneElement);
+    console.log(file);
+
+    const thumbnailElement = dropzoneElement.getElementById('')
+
+    dropzoneElement.classList.add('drop-zone--thumbnail');
+
+    thumbnailElement.dataset.label = file.name;
+
+    console.log(file.name)
+
+    // if(file.type.startWith('image/')){
+    //     const reader = new FileReader();
+
+    //     reader.readAsDataURL(file);
+    //     reader.onload = () => {
+    //         thumbnailElement.style.backgroundImage = `url('${reader.result}')`;
+    //     };
+    // }
 }
 
 /**

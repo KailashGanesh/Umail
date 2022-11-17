@@ -1,6 +1,6 @@
 import getData from './js/getData';
 import globals from './js/globals';
-import {popEmailList, popEmailReader, highlightElement,defaultScreen, filterObject,openComposeBox, closeComposeBox} from './js/domFunctions';
+import {popEmailList, popEmailReader, highlightElement,defaultScreen, filterObject,openComposeBox, closeComposeBox, addEmailToSent, popup} from './js/domFunctions';
 import './styles/main.scss'
 
 
@@ -68,6 +68,7 @@ document.getElementById('sidebar').addEventListener('click', (e) => {
             popEmailList({'inbox':result}, 'inbox')
         break;
         case 'settings':
+            popup('settings')
             let popup = document.getElementById('popup');
             let toggle = document.getElementById('setting_toggle');
 
@@ -83,7 +84,8 @@ document.getElementById('sidebar').addEventListener('click', (e) => {
 })
 
 document.getElementById('closeCompose').addEventListener('click', closeComposeBox);
-document.getElementById('sendBtn').addEventListener('click', closeComposeBox);
+document.getElementById('sendBtn').addEventListener('click', addEmailToSent);
+document.getElementById('attachBtn').addEventListener('click', () => {popup('attachment')});
 
 document.getElementById('email-list').addEventListener('click', (e) => {
     let eventTarget = e.target.closest('li');
@@ -123,4 +125,5 @@ document.getElementById('searchBar').addEventListener('keyup', (e) => {
 })
 
 
+document.getElementById('popup').addEventListener('click', (e) => {});
 
