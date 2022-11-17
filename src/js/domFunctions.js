@@ -269,37 +269,35 @@ export const addEmailToSent = () => {
     const messageInput = document.getElementById('messageInput');
 
     // check email address
-        // check valid email
-        // check if empty
-        // 
+    const emailRegex = new RegExp('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$');
     if(emailInput.value == ''){
-        popup('emailError','Please specify at least one recipient.');
-    }else if (emailInput.value){
-        popup('emailError', `The address "${emailInput.value}" in the recipient field was not recognized. Please make sure that all addresses are properly formatted.`)
+        alert('Please specify at least one recipient.');
+        return;
+    }else if (!emailRegex.test(emailInput.value)){
+        alert(`The address "${emailInput.value}" in the recipient field was not recognized. Please make sure that all addresses are properly formatted.`)
+        return;
     }else{
         currentEmail.to = emailInput.value;
-        currentEmail.name = emailInput.value.slice('@')[0];
+        currentEmail.name = emailInput.value.split('@')[0];
     }
 
-    // check if subject and message is filled
-
-    if(subjectInput.value == '' && messageInput.value ==''){
-        console.log(confirm('Send this message without a subject or text in the body?')) ;
-    }
+    const date = new Date();
+    currentEmail.time = `${date.getDate()} ${date.toLocaleString('default', { month: 'short' })} ${date.getFullYear()}`
 
     // if no subject change to (no subject)
-
-    currentEmail.subject = subjectInput.value? '(no subject)':subjectInput.value;
-    currentEmail.message = messageInput.value;
+    currentEmail.subject = subjectInput.value == ''? '(no subject)':subjectInput.value;
+    currentEmail.message = messageInput.value == ''? '(no message)':messageInput.value;
 
     console.log(currentEmail)
     globals.emailData.sent.unshift(currentEmail)
 
-
+    if(globals.activeSidebarMenu.id == 'sentBtn'){
+        globals.activeSidebarMenu.click();
+    }
 }
 
 export const popup = (whichPopup,popupMessage) => {
-    const popupElement = getElementById('popup');
+    const popupElement = document.getElementById('popup');
     switch (whichPopup) {
         case 'settings':
             popupElement.innerHTML = ``
