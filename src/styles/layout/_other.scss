@@ -95,16 +95,15 @@
         flex-grow: 1;
         white-space: pre-line;
     }
-    
-    &__attachments{
-        gap: 10px;
-    }
+}
+.email__attachments{
+    gap: 10px;
+}
 
-    .attachment{
-        display: inline-block;
-        background-color: #f5f5f5;
-        border: 1px solid #e5e5e5;
-        border-radius: 50px;
-        cursor: pointer;
-    }
+.attachment{
+    display: inline-block;
+    background-color: #f5f5f5;
+    border: 1px solid #e5e5e5;
+    border-radius: 50px;
+    cursor: pointer;
 }

@@ -339,10 +339,56 @@ export const popup = (whichPopup,popupMessage) => {
             });
 
             dropZoneInput.addEventListener('change',(e) => {
+                    console.log('input element changed')
                 if(dropZoneInput.files.length){
                     updateThumbnail(dropZoneElement, dropZoneInput.files[0]);
+
+                    console.log('update thumbnail done!!! starting saving to local storage')
+
+                    // Create XHR, Blob and FileReader objects
+                    var xhr = new XMLHttpRequest(),
+                        blob,
+                        fileReader = new FileReader();
+
+                    // xhr.open("GET", dropZoneInput.files[0], true);
+                    // Set the responseType to arraybuffer. "blob" is an option too, rendering manual Blob creation unnecessary, but the support for "blob" is not widespread enough yet
+                    // xhr.responseType = "arraybuffer";
+
+                    // Create a blob from the response
+                    console.log('typeof input',typeof dropZoneInput.files[0])
+                    blob = new Blob([dropZoneInput.files[0]], { type: dropZoneInput.files[0].type });
+
+                    // onload needed since Google Chrome doesn't support addEventListener for FileReader
+                    console.log('typeof blob',typeof blob)
+                    fileReader.onload = function (evt) {
+                        // Read out file contents as a Data URL
+                        var result = evt.target.result;
+                        console.log('file reader result = ', result)
+                        // Set image src to Data URL
+                        // Store Data URL in localStorage
+                    console.log('typeof filereader output',typeof result)
+                        try {
+                            localStorage.setItem("rhino", result);
+                            console.log('saved to localStorage')
+                            const composeBox = document.getElementById('composeBox');
+
+                            let attachmentDiv = document.createElement('div');
+                            attachmentDiv.classList.add('email__attachments', 'd-flex' ,'flex-wrap');
+
+                            attachmentDiv.innerHTML = `<a href="${localStorage.getItem('rhino')}" class="attachment pt-2 pb-2 pl-4 pr-4"><svg width="20" height="20" class="va-middle fill-red"><use xlink:href="dist/sprite.svg#icon-file-pdf-solid"></use></svg><span class="va-middle ml-2">${dropZoneInput.files[0].name}</span></div>`
+
+                            composeBox.appendChild(attachmentDiv);
+                        }
+                        catch (e) {
+                            console.log("Storage failed: " + e);
+                        }
+                    };
+                    // Load blob as Data URL
+                    // fileReader.readAsDataURL(blob);
+                    fileReader.readAsDataURL(dropZoneInput.files[0]);
+
                 }
-            }) 
+            });
 
             dropZoneElement.addEventListener("dragover", (e) => {
                 e.preventDefault();
@@ -414,6 +460,7 @@ export const updateThumbnail = (dropzoneElement,file) => {
     thumbnailElement.dataset.label = file.name;
 
     console.log(file.name)
+    console.log(file.type)
 
     if(file.type.startsWith('image/')){
         const reader = new FileReader();
@@ -425,6 +472,9 @@ export const updateThumbnail = (dropzoneElement,file) => {
     }else{
             thumbnailElement.style.backgroundImage = null;
     }
+
+    console.log('changed thumbnail+++++!!!!!!')
+    return;
 }
 
 /**
