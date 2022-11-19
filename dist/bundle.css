@@ -2899,10 +2899,12 @@ body {
           flex-grow: 1;
   white-space: pre-line;
 }
+
 .email__attachments {
   gap: 10px;
 }
-.email .attachment {
+
+.attachment {
   display: inline-block;
   background-color: #f5f5f5;
   border: 1px solid #e5e5e5;

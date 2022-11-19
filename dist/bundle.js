@@ -24,6 +24,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "updateThumbnail": function() { return /* binding */ updateThumbnail; }
 /* harmony export */ });
 /* harmony import */ var _globals__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./globals */ "./src/js/globals.js");
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 
 
 /**
@@ -230,6 +231,53 @@ var popup = function popup(whichPopup, popupMessage) {
       dropZoneElement.addEventListener("click", function (e) {
         dropZoneInput.click();
       });
+      dropZoneInput.addEventListener('change', function (e) {
+        console.log('input element changed');
+        if (dropZoneInput.files.length) {
+          updateThumbnail(dropZoneElement, dropZoneInput.files[0]);
+          console.log('update thumbnail done!!! starting saving to local storage');
+
+          // Create XHR, Blob and FileReader objects
+          var xhr = new XMLHttpRequest(),
+            blob,
+            fileReader = new FileReader();
+
+          // xhr.open("GET", dropZoneInput.files[0], true);
+          // Set the responseType to arraybuffer. "blob" is an option too, rendering manual Blob creation unnecessary, but the support for "blob" is not widespread enough yet
+          // xhr.responseType = "arraybuffer";
+
+          // Create a blob from the response
+          console.log('typeof input', _typeof(dropZoneInput.files[0]));
+          blob = new Blob([dropZoneInput.files[0]], {
+            type: dropZoneInput.files[0].type
+          });
+
+          // onload needed since Google Chrome doesn't support addEventListener for FileReader
+          console.log('typeof blob', _typeof(blob));
+          fileReader.onload = function (evt) {
+            // Read out file contents as a Data URL
+            var result = evt.target.result;
+            console.log('file reader result = ', result);
+            // Set image src to Data URL
+            // Store Data URL in localStorage
+            console.log('typeof filereader output', _typeof(result));
+            try {
+              localStorage.setItem("rhino", result);
+              console.log('saved to localStorage');
+              var composeBox = document.getElementById('composeBox');
+              var attachmentDiv = document.createElement('div');
+              attachmentDiv.classList.add('email__attachments', 'd-flex', 'flex-wrap');
+              attachmentDiv.innerHTML = "<a href=\"".concat(localStorage.getItem('rhino'), "\" class=\"attachment pt-2 pb-2 pl-4 pr-4\"><svg width=\"20\" height=\"20\" class=\"va-middle fill-red\"><use xlink:href=\"dist/sprite.svg#icon-file-pdf-solid\"></use></svg><span class=\"va-middle ml-2\">").concat(dropZoneInput.files[0].name, "</span></div>");
+              composeBox.appendChild(attachmentDiv);
+            } catch (e) {
+              console.log("Storage failed: " + e);
+            }
+          };
+          // Load blob as Data URL
+          // fileReader.readAsDataURL(blob);
+          fileReader.readAsDataURL(dropZoneInput.files[0]);
+        }
+      });
       dropZoneElement.addEventListener("dragover", function (e) {
         e.preventDefault();
         dropZoneElement.classList.add("drop-zone--over");
@@ -289,6 +337,7 @@ var updateThumbnail = function updateThumbnail(dropzoneElement, file) {
   dropzoneElement.classList.add('drop-zone--thumbnail');
   thumbnailElement.dataset.label = file.name;
   console.log(file.name);
+  console.log(file.type);
   if (file.type.startsWith('image/')) {
     var reader = new FileReader();
     reader.readAsDataURL(file);
@@ -298,6 +347,8 @@ var updateThumbnail = function updateThumbnail(dropzoneElement, file) {
   } else {
     thumbnailElement.style.backgroundImage = null;
   }
+  console.log('changed thumbnail+++++!!!!!!');
+  return;
 };
 
 /**
