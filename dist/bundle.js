@@ -15,13 +15,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "defaultScreen": function() { return /* binding */ defaultScreen; },
 /* harmony export */   "deleteEmail": function() { return /* binding */ deleteEmail; },
 /* harmony export */   "filterObject": function() { return /* binding */ filterObject; },
+/* harmony export */   "handleFileUpload": function() { return /* binding */ handleFileUpload; },
 /* harmony export */   "highlightElement": function() { return /* binding */ highlightElement; },
 /* harmony export */   "openComposeBox": function() { return /* binding */ openComposeBox; },
 /* harmony export */   "popEmailList": function() { return /* binding */ popEmailList; },
 /* harmony export */   "popEmailReader": function() { return /* binding */ popEmailReader; },
 /* harmony export */   "popup": function() { return /* binding */ popup; },
-/* harmony export */   "updateNumber": function() { return /* binding */ updateNumber; },
-/* harmony export */   "updateThumbnail": function() { return /* binding */ updateThumbnail; }
+/* harmony export */   "returnAttachments": function() { return /* binding */ returnAttachments; },
+/* harmony export */   "updateNumber": function() { return /* binding */ updateNumber; }
 /* harmony export */ });
 /* harmony import */ var _globals__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./globals */ "./src/js/globals.js");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
@@ -93,22 +94,26 @@ var popEmailReader = function popEmailReader(data, eventElement) {
   emailReader.classList.remove('d-flex', 'ai-center', 'jc-center');
   var index = eventElement.id;
   var folder = eventElement.dataset.folder;
-  var attachment = '';
-  if (_globals__WEBPACK_IMPORTED_MODULE_0__["default"].emailData[folder][index]['attachment']) {
-    _globals__WEBPACK_IMPORTED_MODULE_0__["default"].emailData[folder][index]['files'].forEach(function (fileName) {
-      var fileType = fileName.slice(fileName.length - 3);
-      if (fileType == 'pdf') {
-        // if extension is pdf add pdf svg
-        attachment += "<div class=\"attachment pt-2 pb-2 pl-4 pr-4\"><svg width=\"20\" height=\"20\" class=\"va-middle fill-red\"><use xlink:href=\"dist/sprite.svg#icon-file-pdf-solid\"></use></svg><span class=\"va-middle ml-2\">".concat(fileName, "</span></div>");
-      } else if (fileType == 'doc') {
-        // if extension is doc add doc svg
-        attachment += "<div class=\"attachment pt-2 pb-2 pl-4 pr-4\"><svg width=\"20\" height=\"20\" class=\"va-middle fill-blue\"><use xlink:href=\"dist/sprite.svg#icon-file-word-solid\"></use></svg><span class=\"va-middle ml-2\">".concat(fileName, "</span></div>");
-      } else {
-        // if extension is other then those two, add normal file svg
-        attachment += "<div class=\"attachment pt-2 pb-2 pl-4 pr-4\"><svg width=\"20\" height=\"20\" class=\"va-middle\"><use xlink:href=\"dist/sprite.svg#icon-file-solid\"></use></svg><span class=\"va-middle ml-2\">".concat(fileName, "</span></div>");
-      }
-    });
-  }
+  var attachment = returnAttachments(_globals__WEBPACK_IMPORTED_MODULE_0__["default"].emailData[folder][index]['files']);
+  // if(globals.emailData[folder][index]['attachment']){
+  //     globals.emailData[folder][index]['files'].forEach(fileName => {
+
+  //         let fileType = fileName.slice(fileName.length - 3)
+
+  //         if(fileType == 'pdf'){
+  //             // if extension is pdf add pdf svg
+  //             attachment += `<div class="attachment pt-2 pb-2 pl-4 pr-4"><svg width="20" height="20" class="va-middle fill-red"><use xlink:href="dist/sprite.svg#icon-file-pdf-solid"></use></svg><span class="va-middle ml-2">${fileName}</span></div>`;
+  //         }else if (fileType == 'doc'){
+  //             // if extension is doc add doc svg
+  //             attachment += `<div class="attachment pt-2 pb-2 pl-4 pr-4"><svg width="20" height="20" class="va-middle fill-blue"><use xlink:href="dist/sprite.svg#icon-file-word-solid"></use></svg><span class="va-middle ml-2">${fileName}</span></div>`;
+  //         }else{
+  //             // if extension is other then those two, add normal file svg
+  // let fileName = globals.emailData[folder][index]['files'][0] ;
+  // attachment += `<div class="attachment pt-2 pb-2 pl-4 pr-4"><svg width="20" height="20" class="va-middle"><use xlink:href="dist/sprite.svg#icon-file-solid"></use></svg><span class="va-middle ml-2">${fileName}</span></div>`;
+  //         }
+  //     });
+  // }
+
   var pictureJpg = 'dist/img/avatar-512x512.jpg'; // by default it's unknown profile picture
   if (data[folder][index]['picture'].length) {
     // if picture exists in json - change it to that picture
@@ -224,77 +229,8 @@ var popup = function popup(whichPopup, popupMessage) {
     case 'emailError':
       break;
     case 'fileUpload':
-      popupElement.innerHTML = "\n            <div class=\"settings\">\n                <div class=\"mb-10\">\n                    <p>Attach files</p>\n                    <button onclick=\"document.getElementById('popup').classList.remove('shown');\" class=\"btn settings__btn d-block\">&times;</button>\n                </div>\n                <div class=\"drop-zone\" id=\"drop-zone\">\n                    <span class=\"drop-zone__prompt\">Drop file here or click to upload</span>\n                    <div class=\"drop-zone__thumb\" data-label=\"myfile.txt\" id=\"dropzoneThumbnail\"></div>\n                    <input class=\"drop-zone__input\" type=\"file\"  name=\"emailAttachment\" id=\"dropzoneInput\">\n                </div>\n            </div>";
+      popupElement.innerHTML = "\n            <div class=\"settings\">\n                <div class=\"mb-2\">\n                    <p>Attach files</p>\n                    <button onclick=\"document.getElementById('popup').classList.remove('shown');\" class=\"btn settings__btn d-block\">&times;</button>\n                </div>\n                <div class=\"drop-zone mb-3\" id=\"drop-zone\">\n                    <span class=\"drop-zone__prompt\">Drop file here or click to upload</span>\n                    <div class=\"drop-zone__thumb\" data-label=\"myfile.txt\" id=\"dropzoneThumbnail\"></div>\n                    <input class=\"drop-zone__input\" type=\"file\"  name=\"emailAttachment\" id=\"dropzoneInput\">\n                </div>\n                <button id=\"add-attachment\" class=\"btn btn-blue\">Add Attachments</button>\n            </div>";
       popupElement.classList.add('shown');
-      var dropZoneElement = document.getElementById('drop-zone');
-      var dropZoneInput = document.getElementById('dropzoneInput');
-      dropZoneElement.addEventListener("click", function (e) {
-        dropZoneInput.click();
-      });
-      dropZoneInput.addEventListener('change', function (e) {
-        console.log('input element changed');
-        if (dropZoneInput.files.length) {
-          updateThumbnail(dropZoneElement, dropZoneInput.files[0]);
-          console.log('update thumbnail done!!! starting saving to local storage');
-
-          // Create XHR, Blob and FileReader objects
-          var xhr = new XMLHttpRequest(),
-            blob,
-            fileReader = new FileReader();
-
-          // xhr.open("GET", dropZoneInput.files[0], true);
-          // Set the responseType to arraybuffer. "blob" is an option too, rendering manual Blob creation unnecessary, but the support for "blob" is not widespread enough yet
-          // xhr.responseType = "arraybuffer";
-
-          // Create a blob from the response
-          console.log('typeof input', _typeof(dropZoneInput.files[0]));
-          blob = new Blob([dropZoneInput.files[0]], {
-            type: dropZoneInput.files[0].type
-          });
-
-          // onload needed since Google Chrome doesn't support addEventListener for FileReader
-          console.log('typeof blob', _typeof(blob));
-          fileReader.onload = function (evt) {
-            // Read out file contents as a Data URL
-            var result = evt.target.result;
-            console.log('file reader result = ', result);
-            // Set image src to Data URL
-            // Store Data URL in localStorage
-            console.log('typeof filereader output', _typeof(result));
-            try {
-              localStorage.setItem("rhino", result);
-              console.log('saved to localStorage');
-              var composeBox = document.getElementById('composeBox');
-              var attachmentDiv = document.createElement('div');
-              attachmentDiv.classList.add('email__attachments', 'd-flex', 'flex-wrap');
-              attachmentDiv.innerHTML = "<a href=\"".concat(localStorage.getItem('rhino'), "\" class=\"attachment pt-2 pb-2 pl-4 pr-4\"><svg width=\"20\" height=\"20\" class=\"va-middle fill-red\"><use xlink:href=\"dist/sprite.svg#icon-file-pdf-solid\"></use></svg><span class=\"va-middle ml-2\">").concat(dropZoneInput.files[0].name, "</span></div>");
-              composeBox.appendChild(attachmentDiv);
-            } catch (e) {
-              console.log("Storage failed: " + e);
-            }
-          };
-          // Load blob as Data URL
-          // fileReader.readAsDataURL(blob);
-          fileReader.readAsDataURL(dropZoneInput.files[0]);
-        }
-      });
-      dropZoneElement.addEventListener("dragover", function (e) {
-        e.preventDefault();
-        dropZoneElement.classList.add("drop-zone--over");
-      });
-      ["dragleave", "dragend"].forEach(function (type) {
-        dropZoneElement.addEventListener(type, function (e) {
-          dropZoneElement.classList.remove("drop-zone--over");
-        });
-      });
-      dropZoneElement.addEventListener("drop", function (e) {
-        e.preventDefault();
-        if (e.dataTransfer.files.length) {
-          dropZoneInput.files = e.dataTransfer.files;
-          updateThumbnail(dropZoneElement, e.dataTransfer.files[0]);
-        }
-        dropZoneElement.classList.remove("drop-zone--over");
-      });
       break;
   }
 };
@@ -322,33 +258,142 @@ var highlightElement = function highlightElement(element, parentElement) {
       break;
   }
 };
+var handleFileUpload = function handleFileUpload() {
+  var composeBox = document.getElementById('composeBox');
+  // document.body.addEventListener('dragover',(e) =>{
+  //     console.log('dragover body')
+  //     composeBox.classList.remove('compose--writing-mode');
+  // });
 
+  // ["dragend"].forEach((type) => {
+  //    document.body.addEventListener(type, (e) => {
+  //     console.log('dragleave body')
+  //         composeBox.classList.add("compose--writing-mode");
+  //     });
+  // });
+  var dropZoneElement = document.getElementById('drop-zone');
+  var dropZoneInput = document.getElementById('dropzoneInput');
+  dropZoneElement.addEventListener("click", function (e) {
+    dropZoneInput.click();
+  });
+  dropZoneInput.addEventListener('change', function (e) {
+    console.log('input element changed');
+    if (dropZoneInput.files.length) {
+      returnAttachments([dropZoneInput.files[0].name]);
+      console.log('update thumbnail done!!! starting saving to local storage');
+
+      // Create XHR, Blob and FileReader objects
+      var xhr = new XMLHttpRequest(),
+        blob,
+        fileReader = new FileReader();
+
+      // xhr.open("GET", dropZoneInput.files[0], true);
+      // Set the responseType to arraybuffer. "blob" is an option too, rendering manual Blob creation unnecessary, but the support for "blob" is not widespread enough yet
+      // xhr.responseType = "arraybuffer";
+
+      // Create a blob from the response
+      console.log('typeof input', _typeof(dropZoneInput.files[0]));
+      blob = new Blob([dropZoneInput.files[0]], {
+        type: dropZoneInput.files[0].type
+      });
+
+      // onload needed since Google Chrome doesn't support addEventListener for FileReader
+      console.log('typeof blob', _typeof(blob));
+      fileReader.onload = function (evt) {
+        // Read out file contents as a Data URL
+        var result = evt.target.result;
+        console.log('file reader result = ', result);
+        // Set image src to Data URL
+        // Store Data URL in localStorage
+        console.log('typeof filereader output', _typeof(result));
+        try {
+          localStorage.setItem("rhino", result);
+          console.log('saved to localStorage');
+          var _composeBox = document.getElementById('composeBox');
+          var attachmentDiv = document.createElement('div');
+          attachmentDiv.classList.add('email__attachments', 'd-flex', 'flex-wrap');
+
+          // attachmentDiv.innerHTML = `<a href="${localStorage.getItem('rhino')}" class="attachment pt-2 pb-2 pl-4 pr-4"><svg width="20" height="20" class="va-middle fill-red"><use xlink:href="dist/sprite.svg#icon-file-pdf-solid"></use></svg><span class="va-middle ml-2">${dropZoneInput.files[0].name}</span></div>`
+
+          // composeBox.appendChild(attachmentDiv);
+
+          composeAttachment = document.getElementById('composse-attachments');
+          composeAttachment.innerHTML = returnAttachments(dropZoneInput.files);
+        } catch (e) {
+          console.log("Storage failed: " + e);
+        }
+      };
+      // Load blob as Data URL
+      // fileReader.readAsDataURL(blob);
+      fileReader.readAsDataURL(dropZoneInput.files[0]);
+    }
+  });
+  composeBox.addEventListener("dragover", function (e) {
+    console.log('dragover drop zone');
+    e.preventDefault();
+    composeBox.classList.remove('compose--writing-mode');
+    // dropZoneElement.classList.add("drop-zone--over");
+  });
+
+  ["dragleave", "dragend"].forEach(function (type) {
+    window.addEventListener(type, function (e) {
+      console.log(type, 'drop zone');
+      // dropZoneElement.classList.remove("drop-zone--over");
+      composeBox.classList.add("compose--writing-mode");
+    });
+  });
+  composeBox.addEventListener("drop", function (e) {
+    e.preventDefault();
+    if (e.dataTransfer.files.length) {
+      dropZoneInput.files = e.dataTransfer.files;
+      var fileArray = [];
+      for (var i = 0; e.dataTransfer.files.length > i; i++) {
+        fileArray.push(e.dataTransfer.files[i].name);
+      }
+      console.log(fileArray);
+      // returnAttachments([e.dataTransfer.files.name]);
+    }
+
+    dropZoneElement.classList.remove("drop-zone--over");
+    composeBox.classList.add("compose--writing-mode");
+  });
+};
 /**
  * 
- * @param  {HTMLElement} dropzoneElement
- * @param  {file} file 
+ * @param  {list} array a array of file names 
+ * @return {string} returns html version of the file name with icons as a string that can be used for innerHTML 
  */
-var updateThumbnail = function updateThumbnail(dropzoneElement, file) {
-  console.log(dropzoneElement);
-  console.log(file);
-  var thumbnailElement = dropzoneElement.querySelector('#dropzoneThumbnail');
+var returnAttachments = function returnAttachments(list) {
+  // const thumbnailElement = dropzoneElement.querySelector('#dropzoneThumbnail');
 
   // remove prompt and show thumbnail
-  dropzoneElement.classList.add('drop-zone--thumbnail');
-  thumbnailElement.dataset.label = file.name;
-  console.log(file.name);
-  console.log(file.type);
-  if (file.type.startsWith('image/')) {
-    var reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = function () {
-      thumbnailElement.style.backgroundImage = "url('".concat(reader.result, "')");
-    };
-  } else {
-    thumbnailElement.style.backgroundImage = null;
-  }
-  console.log('changed thumbnail+++++!!!!!!');
-  return;
+  // dropzoneElement.classList.add('drop-zone--thumbnail');
+
+  // thumbnailElement.dataset.label = file.name;
+  var attachment = '';
+  // let list = ['img.png','scan.pdf','word.doc','word.docx','apple.pages'];
+  var fileTypes = {
+    'doc': 'file-word-solid',
+    'docx': 'file-word-solid',
+    'pages': 'file-word-solid',
+    'pdf': 'file-pdf-solid',
+    'png': 'file-image-solid',
+    'jpg': 'file-image-solid',
+    'jpeg': 'file-image-solid',
+    'gif': 'file-image-solid'
+  };
+  list.forEach(function (fileName) {
+    var extension = fileName.split('.');
+    extension = extension[extension.length - 1];
+    var iconName = 'file-solid';
+    if (Object.keys(fileTypes).includes(extension)) {
+      iconName = fileTypes[extension];
+    }
+    attachment += "<div class=\"attachment pt-2 pb-2 pl-4 pr-4 d-flex ai-center jc-center\"><svg width=\"20\" height=\"20\" class=\"va-middle\">\n        <use xlink:href=\"dist/sprite.svg#icon-".concat(iconName, "\"></use></svg>\n        <span class=\"va-middle ml-2\">").concat(fileName, "</span>\n        </div>");
+  });
+
+  // thumbnailElement.innerHTML = attachment;
+  return attachment;
 };
 
 /**
@@ -389,6 +434,7 @@ var updateNumber = function updateNumber() {
 var openComposeBox = function openComposeBox() {
   var composeBox = document.getElementById('composeBox');
   composeBox.classList.add('shown');
+  handleFileUpload(); // drag and drop file upload
 };
 
 /**
