@@ -73,57 +73,57 @@ document.getElementById('compose-attachments').addEventListener('click',(e) => {
         console.log('current file uploads',globals.currentFileUploads)
     }
 });
-    const composeBox = document.getElementById('composeBox');
-    const dropZoneInput = document.getElementById('dropzoneInput')
-    const composeAttachment = document.getElementById('compose-attachments');
+const composeBox = document.getElementById('composeBox');
+const dropZoneInput = document.getElementById('dropzoneInput')
+const composeAttachment = document.getElementById('compose-attachments');
 
-    dropZoneInput.addEventListener('change', (e) => {
-        if (dropZoneInput.files.length) {
+dropZoneInput.addEventListener('change', (e) => {
+    if (dropZoneInput.files.length) {
 
 
-            for(let i = 0; i < dropZoneInput.files.length; i++) {
-                saveFilesToLocalStorage(dropZoneInput.files[i])
-                globals.currentFileUploads.push(dropZoneInput.files[i].name)
-            }
-        };
-            composeAttachment.innerHTML = returnAttachments(globals.currentFileUploads);
-    });
-
-    composeBox.addEventListener("dragover", (e) => {
-        e.preventDefault();
-        composeBox.classList.remove('compose--writing-mode');
-
-        document.getElementById('messageInput').style.pointerEvents = "none";
-        // dropZoneElement.classList.add("drop-zone--over");
-    });
-
-    ["dragleave", "dragend"].forEach((type) => {
-        composeBox.addEventListener(type, (e) => {
-                // dropZoneElement.classList.remove("drop-zone--over");
-                composeBox.classList.add("compose--writing-mode");
-            setTimeout(() => {
-                document.getElementById('messageInput').style.pointerEvents = "auto";
-            },700)
-        });
-    });
-
-    composeBox.addEventListener("drop", (e) => {
-        e.preventDefault();
-
-        if (e.dataTransfer.files.length) {
-            dropZoneInput.files = e.dataTransfer.files;
-
-            for(let i = 0; i < dropZoneInput.files.length; i++) {
-                saveFilesToLocalStorage(dropZoneInput.files[i])
-                globals.currentFileUploads.push(dropZoneInput.files[i].name)
-            }
-
+        for (let i = 0; i < dropZoneInput.files.length; i++) {
+            saveFilesToLocalStorage(dropZoneInput.files[i])
+            globals.currentFileUploads.push(dropZoneInput.files[i].name)
         }
-        composeAttachment.innerHTML = returnAttachments(globals.currentFileUploads);
+    };
+    composeAttachment.innerHTML = returnAttachments(globals.currentFileUploads);
+});
 
+composeBox.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    composeBox.classList.remove('compose--writing-mode');
+
+    document.getElementById('messageInput').style.pointerEvents = "none";
+    // dropZoneElement.classList.add("drop-zone--over");
+});
+
+["dragleave", "dragend"].forEach((type) => {
+    composeBox.addEventListener(type, (e) => {
         // dropZoneElement.classList.remove("drop-zone--over");
         composeBox.classList.add("compose--writing-mode");
+        setTimeout(() => {
+            document.getElementById('messageInput').style.pointerEvents = "auto";
+        }, 700)
     });
+});
+
+composeBox.addEventListener("drop", (e) => {
+    e.preventDefault();
+
+    if (e.dataTransfer.files.length) {
+        dropZoneInput.files = e.dataTransfer.files;
+
+        for (let i = 0; i < dropZoneInput.files.length; i++) {
+            saveFilesToLocalStorage(dropZoneInput.files[i])
+            globals.currentFileUploads.push(dropZoneInput.files[i].name)
+        }
+
+    }
+    composeAttachment.innerHTML = returnAttachments(globals.currentFileUploads);
+
+    // dropZoneElement.classList.remove("drop-zone--over");
+    composeBox.classList.add("compose--writing-mode");
+});
 
 document.getElementById('email-list').addEventListener('click', (e) => {
     let eventTarget = e.target.closest('li');
