@@ -83,8 +83,11 @@ document.getElementById('sidebar').addEventListener('click', (e) => {
     }
 })
 
+// compose Box eventlistener
 document.getElementById('closeCompose').addEventListener('click', closeComposeBox);
 document.getElementById('sendBtn').addEventListener('click', addEmailToSent);
+// open file input on clicking attach button
+document.getElementById('attachBtn').addEventListener("click", () => { document.getElementById('dropzoneInput').click(); });
 
 document.getElementById('email-list').addEventListener('click', (e) => {
     let eventTarget = e.target.closest('li');
