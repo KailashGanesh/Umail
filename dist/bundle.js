@@ -225,7 +225,7 @@ var openPopup = function openPopup(whichPopup, popupMessage) {
       popupElement.classList.add('shown');
       break;
     case 'preview':
-      popupElement.innerHTML = "\n            <div class=\"settings\" style=\"width:80%; height:80%;\">\n                <div class=\"mb-10\">\n                    <p>Preview</p>\n                    <button onclick=\"document.getElementById('popup').classList.remove('shown');\" class=\"btn settings__btn d-block\">&times;</button>\n                </div>\n                <iframe width='100%' height='100%' src='".concat(popupMessage, "'></iframe>\n\n            </div>");
+      popupElement.innerHTML = "\n            <div class=\"settings\" style=\"width:80%; height:80%;\">\n                <div class=\"mb-1\">\n                    <p>Preview</p>\n                    <button onclick=\"document.getElementById('popup').classList.remove('shown');\" class=\"btn settings__btn d-block\">&times;</button>\n                </div>\n                <iframe width='100%' height='100%' src='".concat(popupMessage, "'></iframe>\n\n            </div>");
       popupElement.classList.add('shown');
       break;
   }
@@ -330,12 +330,6 @@ var saveFilesToLocalStorage = function saveFilesToLocalStorage(file) {
  * @return {string} returns html version of the file name with icons as a string that can be used for innerHTML 
  */
 var returnAttachments = function returnAttachments(list) {
-  // const thumbnailElement = dropzoneElement.querySelector('#dropzoneThumbnail');
-
-  // remove prompt and show thumbnail
-  // dropzoneElement.classList.add('drop-zone--thumbnail');
-
-  // thumbnailElement.dataset.label = file.name;
   var attachment = '';
   // let list = ['img.png','scan.pdf','word.doc','word.docx','apple.pages'];
   var fileTypes = {
@@ -406,6 +400,7 @@ var openComposeBox = function openComposeBox() {
 
 /**
  * removes class of 'shown' from element with id of composeBox
+ * clears all perviously used items in the composeBox
  */
 var closeComposeBox = function closeComposeBox() {
   //hides compose box
@@ -629,12 +624,6 @@ var url = 'https://raw.githubusercontent.com/KailashGanesh/Umail/master/emails.j
 // url = 'http://127.0.0.1:5500/emails.json'
 
 var sideBar = document.getElementById('sidebar');
-// const emailList =  document.getElementById('email-list');
-// const searchBar = document.getElementById('searchBar');
-// const inboxBtn = document.getElementById('inboxBtn');
-// const composeCloseBtn = document.getElementById('closeCompose');
-// const sendEmailBtn = document.getElementById('sendBtn');
-
 (0,_js_getData__WEBPACK_IMPORTED_MODULE_0__["default"])(url);
 var data = _js_globals__WEBPACK_IMPORTED_MODULE_1__["default"].emailData;
 document.getElementById('sidebar').addEventListener('click', function (e) {
@@ -642,32 +631,6 @@ document.getElementById('sidebar').addEventListener('click', function (e) {
   if (eventTarget == null) {
     return; // if user clicked on empty space exit
   }
-  // else if(eventTarget.dataset.type == 'folder'){
-  //     let folderName = eventTarget.id.slice(0, -3);
-
-  //     highlightElement(eventTarget,'sidebarMenu')
-  //     defaultScreen(false,true)
-  //     popEmailList(data, folderName)
-  // }else if(eventTarget.dataset.type == 'tag'){
-  //     let search = eventTarget.id.slice(0, -3);
-  //     let result = filterObject('inbox', 'tag', search);
-
-  //     highlightElement(eventTarget,'sidebarMenu')
-  //     defaultScreen(false,true)
-  //     popEmailList({'inbox':result}, 'inbox')
-  // }else if(eventTarget.id == 'settingsBtn'){
-  //     let popup = document.getElementById('popup');
-  //     let toggle = document.getElementById('setting_toggle');
-
-  //     popup.classList.add('shown');
-
-  //     toggle.addEventListener('change',() => {
-
-  //         globals.settings.openNextEmailAfterDelete = (/true/i).test(toggle.value);
-  //     })
-  // }else if(eventTarget.id == 'composeBtn'){
-  //    openComposeBox();
-  // }else{return;}
 
   switch (eventTarget.dataset.type) {
     case 'folder':
