@@ -100,24 +100,6 @@ export const popEmailReader = (data,eventElement) => {
     const folder = eventElement.dataset.folder;
 
     let attachment = returnAttachments(globals.emailData[folder][index]['files']);
-    // if(globals.emailData[folder][index]['attachment']){
-    //     globals.emailData[folder][index]['files'].forEach(fileName => {
-
-    //         let fileType = fileName.slice(fileName.length - 3)
-
-    //         if(fileType == 'pdf'){
-    //             // if extension is pdf add pdf svg
-    //             attachment += `<div class="attachment pt-2 pb-2 pl-4 pr-4"><svg width="20" height="20" class="va-middle fill-red"><use xlink:href="dist/sprite.svg#icon-file-pdf-solid"></use></svg><span class="va-middle ml-2">${fileName}</span></div>`;
-    //         }else if (fileType == 'doc'){
-    //             // if extension is doc add doc svg
-    //             attachment += `<div class="attachment pt-2 pb-2 pl-4 pr-4"><svg width="20" height="20" class="va-middle fill-blue"><use xlink:href="dist/sprite.svg#icon-file-word-solid"></use></svg><span class="va-middle ml-2">${fileName}</span></div>`;
-    //         }else{
-    //             // if extension is other then those two, add normal file svg
-    // let fileName = globals.emailData[folder][index]['files'][0] ;
-                // attachment += `<div class="attachment pt-2 pb-2 pl-4 pr-4"><svg width="20" height="20" class="va-middle"><use xlink:href="dist/sprite.svg#icon-file-solid"></use></svg><span class="va-middle ml-2">${fileName}</span></div>`;
-    //         }
-    //     });
-    // }
 
     let pictureJpg = 'dist/img/avatar-512x512.jpg' // by default it's unknown profile picture
     if(data[folder][index]['picture'].length){
@@ -192,7 +174,7 @@ export const popEmailReader = (data,eventElement) => {
 <div class="email__body p-7"> 
     <p class="email__message">${data[folder][index]['message']}</p>
     
-    <div class="email__attachments d-flex flex-wrap">${attachment}</div>
+    <div class="email__attachments d-flex flex-wrap" id="email-attachment">${attachment}</div>
 </div>`;
 
     if(eventElement.classList.contains('unread')){
@@ -203,6 +185,17 @@ export const popEmailReader = (data,eventElement) => {
 
     const deleteBtn = document.getElementById('deleteBtn'); // get delete button in email reader
     const dropdown = document.getElementById('dropdown');
+
+    document.getElementById('email-attachment').addEventListener('click', (e) => {
+
+        let clickedAttachment = e.target.closest('a');
+        if(clickedAttachment == null || clickedAttachment.dataset.file == "null"){
+            return;
+        }else{
+            console.log('opening preview')
+            openPopup('preview',clickedAttachment.dataset.file);
+        }
+    });
 
     deleteBtn.addEventListener('click', () =>{
         deleteEmail(eventElement);
@@ -297,7 +290,6 @@ export const addEmailToSent = () => {
     currentEmail.attachment = globals.currentFileUploads.length > 0;
     currentEmail.files = currentEmail.attachment ? globals.currentFileUploads:[];
 
-    console.log(currentEmail)
     globals.emailData.sent.unshift(currentEmail)
 
     localStorage.setItem('sent',JSON.stringify(globals.emailData.sent))
@@ -334,25 +326,17 @@ export const openPopup = (whichPopup,popupMessage) => {
             </div>`
             popupElement.classList.add('shown') 
         break;
-        case 'emailError':
-            
-        break;
-        case 'fileUpload':
+        case 'preview':
             popupElement.innerHTML = `
-            <div class="settings">
-                <div class="mb-2">
-                    <p>Attach files</p>
+            <div class="settings" style="width:80%; height:80%;">
+                <div class="mb-10">
+                    <p>Preview</p>
                     <button onclick="document.getElementById('popup').classList.remove('shown');" class="btn settings__btn d-block">&times;</button>
                 </div>
-                <div class="drop-zone mb-3" id="drop-zone">
-                    <span class="drop-zone__prompt">Drop file here or click to upload</span>
-                    <div class="drop-zone__thumb" data-label="myfile.txt" id="dropzoneThumbnail"></div>
-                    <input class="drop-zone__input" type="file"  name="emailAttachment" id="dropzoneInput">
-                </div>
-                <button id="add-attachment" class="btn btn-blue">Add Attachments</button>
-            </div>`
-            popupElement.classList.add('shown');
+                <iframe width='100%' height='100%' src='${popupMessage}'></iframe>
 
+            </div>`
+            popupElement.classList.add('shown') 
         break;
     }
 }
@@ -389,41 +373,21 @@ export const handleFileUpload = () => {
     const composeBox = document.getElementById('composeBox');
     const dropZoneElement = document.getElementById('drop-zone')
     const dropZoneInput = document.getElementById('dropzoneInput')
+    const composeAttachment = document.getElementById('compose-attachments');
 
     dropZoneInput.addEventListener('change', (e) => {
-        console.log('input element changed')
         if (dropZoneInput.files.length) {
-            console.log('update thumbnail done!!! starting saving to local storage')
 
-            let fileArray = [];
 
             for(let i = 0; i < dropZoneInput.files.length; i++) {
                 saveFilesToLocalStorage(dropZoneInput.files[i])
-                fileArray.push(dropZoneInput.files[i].name)
+                globals.currentFileUploads.push(dropZoneInput.files[i].name)
             }
-
-            globals.currentFileUploads = fileArray;
-            console.log(fileArray)
-            const composeAttachment = document.getElementById('compose-attachments');
-            composeAttachment.innerHTML = returnAttachments(fileArray);
-
-            // add delete to file attachments
-            composeAttachment.addEventListener('click',(e) => {
-                let triggerBtn = e.target.closest('button');
-                e.target.closest('.attachment').remove();
-                if(triggerBtn.dataset.delete){
-                    let attachmentFileName = triggerBtn.dataset.delete;
-                    localStorage.removeItem(attachmentFileName); // removes item from local storage
-                    let index = globals.currentFileUploads.indexOf(attachmentFileName) // gets index in gobals array
-                    globals.currentFileUploads.splice(index, 1); // delete item from gobals array
-                    console.log('->>>>>>>>>>>>>>>',globals.currentFileUploads);
-                }
-            });
         };
+            composeAttachment.innerHTML = returnAttachments(globals.currentFileUploads);
     });
 
     composeBox.addEventListener("dragover", (e) => {
-            console.log('dragover drop zone')
         e.preventDefault();
         composeBox.classList.remove('compose--writing-mode');
 
@@ -433,7 +397,6 @@ export const handleFileUpload = () => {
 
     ["dragleave", "dragend"].forEach((type) => {
         composeBox.addEventListener(type, (e) => {
-                console.log(type,'drop zone')
                 // dropZoneElement.classList.remove("drop-zone--over");
                 composeBox.classList.add("compose--writing-mode");
             setTimeout(() => {
@@ -448,20 +411,15 @@ export const handleFileUpload = () => {
         if (e.dataTransfer.files.length) {
             dropZoneInput.files = e.dataTransfer.files;
 
-            let fileArray = []
-            for(let i = 0; e.dataTransfer.files.length > i; i++){
-                saveFilesToLocalStorage(e.dataTransfer.files[i])
-                fileArray.push(e.dataTransfer.files[i].name)
+            for(let i = 0; i < dropZoneInput.files.length; i++) {
+                saveFilesToLocalStorage(dropZoneInput.files[i])
+                globals.currentFileUploads.push(dropZoneInput.files[i].name)
             }
 
-            globals.currentFileUploads = fileArray;
-
-            console.log(fileArray)
-            const composeAttachment = document.getElementById('compose-attachments');
-            composeAttachment.innerHTML = returnAttachments(fileArray);
         }
+        composeAttachment.innerHTML = returnAttachments(globals.currentFileUploads);
 
-        dropZoneElement.classList.remove("drop-zone--over");
+        // dropZoneElement.classList.remove("drop-zone--over");
         composeBox.classList.add("compose--writing-mode");
     });
 
@@ -470,12 +428,10 @@ export const handleFileUpload = () => {
 export const saveFilesToLocalStorage = (file) => {
 
     let fileReader = new FileReader();
-    console.log('helloooooo from the func')
     // onload needed since Google Chrome doesn't support addEventListener for FileReader
     fileReader.onload = function (evt) {
         // Read out file contents as a Data URL
         let result = evt.target.result;
-        console.log('file reader result = ', result)
 
         try {
             // save item to local storage with file name
@@ -525,14 +481,14 @@ export const returnAttachments = (list) => {
             iconName = fileTypes[extension];
         }
 
-        let dataURL = localStorage.getItem(fileName) == null ? 'javascript:void(0);' : localStorage.getItem(fileName);
+        let dataURL = localStorage.getItem(fileName);
 
         attachment += `<div class="attachment pt-2 pb-2 pl-4 pr-4 d-flex ai-center">
         <svg width="20" height="20" class="va-middle">
             <use href="dist/sprite.svg#icon-${iconName}"></use>
         </svg>
-        <button data-delete="${fileName}" class="btn attachment__deletebtn">&times;</button>
-        <a href="${dataURL}" target="_blank" class="va-middle ml-2 attachment__name">${fileName}</a>
+        <button data-delete="${fileName}" title="Remove Attachment" class="btn attachment__deletebtn">&times;</button>
+        <a data-file="${dataURL}" class="va-middle ml-2 attachment__name">${fileName}</a>
         </div>`;
     })
 
