@@ -319,13 +319,17 @@ export const openPopup = (whichPopup,popupMessage) => {
                     <p>Settings</p>
                     <button onclick="document.getElementById('popup').classList.remove('shown');" class="btn settings__btn d-block">&times;</button>
                 </div>
-                <div>
+                <div class="mb-3">
                     <label for="setting_toggle" class="mr-4">Automatically open next email after deleting</label>
                     <!-- <input class="cb2 tgl tgl-ios" type="checkbox" id="setting_toggle"> --> 
                     <select name="open next" id="setting_toggle">
                         <option value="true">Yes</option>
                         <option value="false">no</option>
                     </select>
+                </div>
+                <div>
+                    <p class="mr-4 d-iblock">Clear localStorage?</p>
+                    <button onclick="javascript:localStorage.clear();" class="d-iblock">Clear</button>
                 </div>
             </div>`
             popupElement.classList.add('shown') 
