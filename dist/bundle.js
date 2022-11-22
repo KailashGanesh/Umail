@@ -255,50 +255,57 @@ var highlightElement = function highlightElement(element, parentElement) {
   }
 };
 var handleFileUpload = function handleFileUpload() {
-  var composeBox = document.getElementById('composeBox');
-  var dropZoneElement = document.getElementById('drop-zone');
-  var dropZoneInput = document.getElementById('dropzoneInput');
-  var composeAttachment = document.getElementById('compose-attachments');
-  dropZoneInput.addEventListener('change', function (e) {
-    if (dropZoneInput.files.length) {
-      for (var i = 0; i < dropZoneInput.files.length; i++) {
-        saveFilesToLocalStorage(dropZoneInput.files[i]);
-        _globals__WEBPACK_IMPORTED_MODULE_0__["default"].currentFileUploads.push(dropZoneInput.files[i].name);
-      }
-    }
-    ;
-    composeAttachment.innerHTML = returnAttachments(_globals__WEBPACK_IMPORTED_MODULE_0__["default"].currentFileUploads);
-  });
-  composeBox.addEventListener("dragover", function (e) {
-    e.preventDefault();
-    composeBox.classList.remove('compose--writing-mode');
-    document.getElementById('messageInput').style.pointerEvents = "none";
-    // dropZoneElement.classList.add("drop-zone--over");
-  });
+  // const composeBox = document.getElementById('composeBox');
+  // const dropZoneInput = document.getElementById('dropzoneInput')
+  // const composeAttachment = document.getElementById('compose-attachments');
 
-  ["dragleave", "dragend"].forEach(function (type) {
-    composeBox.addEventListener(type, function (e) {
-      // dropZoneElement.classList.remove("drop-zone--over");
-      composeBox.classList.add("compose--writing-mode");
-      setTimeout(function () {
-        document.getElementById('messageInput').style.pointerEvents = "auto";
-      }, 700);
-    });
-  });
-  composeBox.addEventListener("drop", function (e) {
-    e.preventDefault();
-    if (e.dataTransfer.files.length) {
-      dropZoneInput.files = e.dataTransfer.files;
-      for (var i = 0; i < dropZoneInput.files.length; i++) {
-        saveFilesToLocalStorage(dropZoneInput.files[i]);
-        _globals__WEBPACK_IMPORTED_MODULE_0__["default"].currentFileUploads.push(dropZoneInput.files[i].name);
-      }
-    }
-    composeAttachment.innerHTML = returnAttachments(_globals__WEBPACK_IMPORTED_MODULE_0__["default"].currentFileUploads);
+  // dropZoneInput.addEventListener('change', (e) => {
+  //     if (dropZoneInput.files.length) {
 
-    // dropZoneElement.classList.remove("drop-zone--over");
-    composeBox.classList.add("compose--writing-mode");
-  });
+  //         for(let i = 0; i < dropZoneInput.files.length; i++) {
+  //             saveFilesToLocalStorage(dropZoneInput.files[i])
+  //             globals.currentFileUploads.push(dropZoneInput.files[i].name)
+  //         }
+  //     };
+  //         composeAttachment.innerHTML = returnAttachments(globals.currentFileUploads);
+  // });
+
+  // composeBox.addEventListener("dragover", (e) => {
+  //     e.preventDefault();
+  //     composeBox.classList.remove('compose--writing-mode');
+
+  //     document.getElementById('messageInput').style.pointerEvents = "none";
+  //     // dropZoneElement.classList.add("drop-zone--over");
+  // });
+
+  // ["dragleave", "dragend"].forEach((type) => {
+  //     composeBox.addEventListener(type, (e) => {
+  //             // dropZoneElement.classList.remove("drop-zone--over");
+  //             composeBox.classList.add("compose--writing-mode");
+  //         setTimeout(() => {
+  //             document.getElementById('messageInput').style.pointerEvents = "auto";
+  //         },700)
+  //     });
+  // });
+
+  // composeBox.addEventListener("drop", (e) => {
+  //     e.preventDefault();
+
+  //     if (e.dataTransfer.files.length) {
+  //         dropZoneInput.files = e.dataTransfer.files;
+
+  //         for(let i = 0; i < dropZoneInput.files.length; i++) {
+  //             saveFilesToLocalStorage(dropZoneInput.files[i])
+  //             globals.currentFileUploads.push(dropZoneInput.files[i].name)
+  //         }
+
+  //     }
+  //     composeAttachment.innerHTML = returnAttachments(globals.currentFileUploads);
+  //     dropZoneInput.files = '';
+
+  //     // dropZoneElement.classList.remove("drop-zone--over");
+  //     composeBox.classList.add("compose--writing-mode");
+  // });
 };
 var saveFilesToLocalStorage = function saveFilesToLocalStorage(file) {
   var fileReader = new FileReader();
@@ -411,6 +418,9 @@ var closeComposeBox = function closeComposeBox() {
 
   // clear any files elements in compose box
   document.getElementById('compose-attachments').innerHTML = '';
+
+  // remove file names from gobals current files
+  _globals__WEBPACK_IMPORTED_MODULE_0__["default"].currentFileUploads = [];
 };
 
 /**
@@ -691,7 +701,7 @@ document.getElementById('sidebar').addEventListener('click', function (e) {
   }
 });
 
-// compose Box eventlistener
+// == compose Box eventlistener ==
 document.getElementById('closeCompose').addEventListener('click', _js_domFunctions__WEBPACK_IMPORTED_MODULE_2__.closeComposeBox);
 document.getElementById('sendBtn').addEventListener('click', _js_domFunctions__WEBPACK_IMPORTED_MODULE_2__.addEmailToSent);
 // open file input on clicking attach button
@@ -714,6 +724,49 @@ document.getElementById('compose-attachments').addEventListener('click', functio
     _js_globals__WEBPACK_IMPORTED_MODULE_1__["default"].currentFileUploads.splice(index, 1);
     console.log('current file uploads', _js_globals__WEBPACK_IMPORTED_MODULE_1__["default"].currentFileUploads);
   }
+});
+var composeBox = document.getElementById('composeBox');
+var dropZoneInput = document.getElementById('dropzoneInput');
+var composeAttachment = document.getElementById('compose-attachments');
+dropZoneInput.addEventListener('change', function (e) {
+  if (dropZoneInput.files.length) {
+    for (var i = 0; i < dropZoneInput.files.length; i++) {
+      (0,_js_domFunctions__WEBPACK_IMPORTED_MODULE_2__.saveFilesToLocalStorage)(dropZoneInput.files[i]);
+      _js_globals__WEBPACK_IMPORTED_MODULE_1__["default"].currentFileUploads.push(dropZoneInput.files[i].name);
+    }
+  }
+  ;
+  composeAttachment.innerHTML = (0,_js_domFunctions__WEBPACK_IMPORTED_MODULE_2__.returnAttachments)(_js_globals__WEBPACK_IMPORTED_MODULE_1__["default"].currentFileUploads);
+});
+composeBox.addEventListener("dragover", function (e) {
+  e.preventDefault();
+  composeBox.classList.remove('compose--writing-mode');
+  document.getElementById('messageInput').style.pointerEvents = "none";
+  // dropZoneElement.classList.add("drop-zone--over");
+});
+
+["dragleave", "dragend"].forEach(function (type) {
+  composeBox.addEventListener(type, function (e) {
+    // dropZoneElement.classList.remove("drop-zone--over");
+    composeBox.classList.add("compose--writing-mode");
+    setTimeout(function () {
+      document.getElementById('messageInput').style.pointerEvents = "auto";
+    }, 700);
+  });
+});
+composeBox.addEventListener("drop", function (e) {
+  e.preventDefault();
+  if (e.dataTransfer.files.length) {
+    dropZoneInput.files = e.dataTransfer.files;
+    for (var i = 0; i < dropZoneInput.files.length; i++) {
+      (0,_js_domFunctions__WEBPACK_IMPORTED_MODULE_2__.saveFilesToLocalStorage)(dropZoneInput.files[i]);
+      _js_globals__WEBPACK_IMPORTED_MODULE_1__["default"].currentFileUploads.push(dropZoneInput.files[i].name);
+    }
+  }
+  composeAttachment.innerHTML = (0,_js_domFunctions__WEBPACK_IMPORTED_MODULE_2__.returnAttachments)(_js_globals__WEBPACK_IMPORTED_MODULE_1__["default"].currentFileUploads);
+
+  // dropZoneElement.classList.remove("drop-zone--over");
+  composeBox.classList.add("compose--writing-mode");
 });
 document.getElementById('email-list').addEventListener('click', function (e) {
   var eventTarget = e.target.closest('li');
