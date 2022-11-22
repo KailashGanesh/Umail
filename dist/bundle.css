@@ -2923,6 +2923,7 @@ body {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+  color: #000000;
 }
 .attachment__deletebtn {
   display: none;

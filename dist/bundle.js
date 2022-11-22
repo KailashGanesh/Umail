@@ -95,25 +95,6 @@ var popEmailReader = function popEmailReader(data, eventElement) {
   var index = eventElement.id;
   var folder = eventElement.dataset.folder;
   var attachment = returnAttachments(_globals__WEBPACK_IMPORTED_MODULE_0__["default"].emailData[folder][index]['files']);
-  // if(globals.emailData[folder][index]['attachment']){
-  //     globals.emailData[folder][index]['files'].forEach(fileName => {
-
-  //         let fileType = fileName.slice(fileName.length - 3)
-
-  //         if(fileType == 'pdf'){
-  //             // if extension is pdf add pdf svg
-  //             attachment += `<div class="attachment pt-2 pb-2 pl-4 pr-4"><svg width="20" height="20" class="va-middle fill-red"><use xlink:href="dist/sprite.svg#icon-file-pdf-solid"></use></svg><span class="va-middle ml-2">${fileName}</span></div>`;
-  //         }else if (fileType == 'doc'){
-  //             // if extension is doc add doc svg
-  //             attachment += `<div class="attachment pt-2 pb-2 pl-4 pr-4"><svg width="20" height="20" class="va-middle fill-blue"><use xlink:href="dist/sprite.svg#icon-file-word-solid"></use></svg><span class="va-middle ml-2">${fileName}</span></div>`;
-  //         }else{
-  //             // if extension is other then those two, add normal file svg
-  // let fileName = globals.emailData[folder][index]['files'][0] ;
-  // attachment += `<div class="attachment pt-2 pb-2 pl-4 pr-4"><svg width="20" height="20" class="va-middle"><use xlink:href="dist/sprite.svg#icon-file-solid"></use></svg><span class="va-middle ml-2">${fileName}</span></div>`;
-  //         }
-  //     });
-  // }
-
   var pictureJpg = 'dist/img/avatar-512x512.jpg'; // by default it's unknown profile picture
   if (data[folder][index]['picture'].length) {
     // if picture exists in json - change it to that picture
@@ -126,7 +107,7 @@ var popEmailReader = function popEmailReader(data, eventElement) {
     // if tag is available, add that tag class
     tag = "<span class=\"tag--".concat(data[folder][index]['tag'], " email__tag\"></span>");
   }
-  emailReader.innerHTML = "\n<div class=\"email__header d-flex jc-space-between ai-center flex-wrap pt-10 pb-10 pl-7 pr-7\">\n    <div class=\"d-flex ai-center jc-space-between flex-wrap\">\n        <div class=\"email__imgContainer\">\n\n            <picture>\n                <source srcset=\"".concat(pictureWebp, "\" type=\"image/webp\">\n                <source srcset=\"").concat(pictureJpg, "\" type=\"image/jpeg\">\n\n                <img src=\"").concat(pictureJpg, "\" alt=\"profile picture\" class=\"fs-sm email__picture\">\n            </picture>\n            ").concat(tag, "\n        </div>\n        <div class=\"ml-4\">\n            <p>").concat(data[folder][index]['subject'], "</p>\n            <div>\n                <span class=\"fs-md clr-cool-gray\">").concat(folder == 'sent' || folder == 'drafts' ? 'To:' : 'From:', "</span>\n\n                <a tabindex=\"0\" href=\"javascript:void(0);\" class=\"dropdown fs-sm\" id=\"dropdown\">\n                    <span class=\"va-middle clr-cool-gray\">").concat(data[folder][index]['name'], "</span>\n                    <svg class=\"va-middle fill-cool-gray\" width=\"10\" height=\"10\">\n                        <use xlink:href=\"dist/sprite.svg#icon-chevron-down-solid\"></use>\n                    </svg>\n                    <div class=\"dropdown__content\">\n                        <p>From: ").concat(data[folder][index]['from'], "</p>\n                        <p>To: ").concat(data[folder][index]['to'], "</p>\n                    </div>\n                </a>\n            </div>\n        </div>\n    </div>\n\n\n    <div class=\"btn-group--round\">\n        <button class=\"btn\">\n            <svg class=\"btn__icon\">\n                <use xlink:href=\"dist/sprite.svg#icon-star\"></use>\n            </svg>\n        </button>\n        <button class=\"btn\">\n            <svg class=\"btn__icon\">\n                <use xlink:href=\"dist/sprite.svg#icon-document-text\"></use>\n            </svg>\n        </button>\n        <button class=\"btn btn-clicked\" id=\"deleteBtn\">\n            <svg class=\"btn__icon\">\n                <use xlink:href=\"dist/sprite.svg#icon-trash-can\"></use>\n            </svg>\n        </button>\n        <button class=\"btn\">\n            <svg class=\"btn__icon\">\n                <use xlink:href=\"dist/sprite.svg#icon-arrow-back-outline\"></use>\n            </svg>\n        </button>\n    </div>\n</div>\n\n<div class=\"email__body p-7\"> \n    <p class=\"email__message\">").concat(data[folder][index]['message'], "</p>\n    \n    <div class=\"email__attachments d-flex flex-wrap\">").concat(attachment, "</div>\n</div>");
+  emailReader.innerHTML = "\n<div class=\"email__header d-flex jc-space-between ai-center flex-wrap pt-10 pb-10 pl-7 pr-7\">\n    <div class=\"d-flex ai-center jc-space-between flex-wrap\">\n        <div class=\"email__imgContainer\">\n\n            <picture>\n                <source srcset=\"".concat(pictureWebp, "\" type=\"image/webp\">\n                <source srcset=\"").concat(pictureJpg, "\" type=\"image/jpeg\">\n\n                <img src=\"").concat(pictureJpg, "\" alt=\"profile picture\" class=\"fs-sm email__picture\">\n            </picture>\n            ").concat(tag, "\n        </div>\n        <div class=\"ml-4\">\n            <p>").concat(data[folder][index]['subject'], "</p>\n            <div>\n                <span class=\"fs-md clr-cool-gray\">").concat(folder == 'sent' || folder == 'drafts' ? 'To:' : 'From:', "</span>\n\n                <a tabindex=\"0\" href=\"javascript:void(0);\" class=\"dropdown fs-sm\" id=\"dropdown\">\n                    <span class=\"va-middle clr-cool-gray\">").concat(data[folder][index]['name'], "</span>\n                    <svg class=\"va-middle fill-cool-gray\" width=\"10\" height=\"10\">\n                        <use xlink:href=\"dist/sprite.svg#icon-chevron-down-solid\"></use>\n                    </svg>\n                    <div class=\"dropdown__content\">\n                        <p>From: ").concat(data[folder][index]['from'], "</p>\n                        <p>To: ").concat(data[folder][index]['to'], "</p>\n                    </div>\n                </a>\n            </div>\n        </div>\n    </div>\n\n\n    <div class=\"btn-group--round\">\n        <button class=\"btn\">\n            <svg class=\"btn__icon\">\n                <use xlink:href=\"dist/sprite.svg#icon-star\"></use>\n            </svg>\n        </button>\n        <button class=\"btn\">\n            <svg class=\"btn__icon\">\n                <use xlink:href=\"dist/sprite.svg#icon-document-text\"></use>\n            </svg>\n        </button>\n        <button class=\"btn btn-clicked\" id=\"deleteBtn\">\n            <svg class=\"btn__icon\">\n                <use xlink:href=\"dist/sprite.svg#icon-trash-can\"></use>\n            </svg>\n        </button>\n        <button class=\"btn\">\n            <svg class=\"btn__icon\">\n                <use xlink:href=\"dist/sprite.svg#icon-arrow-back-outline\"></use>\n            </svg>\n        </button>\n    </div>\n</div>\n\n<div class=\"email__body p-7\"> \n    <p class=\"email__message\">").concat(data[folder][index]['message'], "</p>\n    \n    <div class=\"email__attachments d-flex flex-wrap\" id=\"email-attachment\">").concat(attachment, "</div>\n</div>");
   if (eventElement.classList.contains('unread')) {
     eventElement.classList.remove('unread'); // remove class unread on email that's opened
     _globals__WEBPACK_IMPORTED_MODULE_0__["default"].emailData[folder][index]['unread'] = false; // mark it read on global data
@@ -135,6 +116,15 @@ var popEmailReader = function popEmailReader(data, eventElement) {
 
   var deleteBtn = document.getElementById('deleteBtn'); // get delete button in email reader
   var dropdown = document.getElementById('dropdown');
+  document.getElementById('email-attachment').addEventListener('click', function (e) {
+    var clickedAttachment = e.target.closest('a');
+    if (clickedAttachment == null || clickedAttachment.dataset.file == "null") {
+      return;
+    } else {
+      console.log('opening preview');
+      openPopup('preview', clickedAttachment.dataset.file);
+    }
+  });
   deleteBtn.addEventListener('click', function () {
     deleteEmail(eventElement);
   });
@@ -220,7 +210,6 @@ var addEmailToSent = function addEmailToSent() {
   currentEmail.message = messageInput.value == '' ? '(no message)' : messageInput.value;
   currentEmail.attachment = _globals__WEBPACK_IMPORTED_MODULE_0__["default"].currentFileUploads.length > 0;
   currentEmail.files = currentEmail.attachment ? _globals__WEBPACK_IMPORTED_MODULE_0__["default"].currentFileUploads : [];
-  console.log(currentEmail);
   _globals__WEBPACK_IMPORTED_MODULE_0__["default"].emailData.sent.unshift(currentEmail);
   localStorage.setItem('sent', JSON.stringify(_globals__WEBPACK_IMPORTED_MODULE_0__["default"].emailData.sent));
   if (_globals__WEBPACK_IMPORTED_MODULE_0__["default"].activeSidebarMenu.id == 'sentBtn') {
@@ -235,10 +224,8 @@ var openPopup = function openPopup(whichPopup, popupMessage) {
       popupElement.innerHTML = "\n            <div class=\"settings\">\n                <div class=\"mb-10\">\n                    <p>Settings</p>\n                    <button onclick=\"document.getElementById('popup').classList.remove('shown');\" class=\"btn settings__btn d-block\">&times;</button>\n                </div>\n                <div class=\"mb-3\">\n                    <label for=\"setting_toggle\" class=\"mr-4\">Automatically open next email after deleting</label>\n                    <!-- <input class=\"cb2 tgl tgl-ios\" type=\"checkbox\" id=\"setting_toggle\"> --> \n                    <select name=\"open next\" id=\"setting_toggle\">\n                        <option value=\"true\">Yes</option>\n                        <option value=\"false\">no</option>\n                    </select>\n                </div>\n                <div>\n                    <p class=\"mr-4 d-iblock\">Clear localStorage?</p>\n                    <button onclick=\"javascript:localStorage.clear();\" class=\"d-iblock\">Clear</button>\n                </div>\n            </div>";
       popupElement.classList.add('shown');
       break;
-    case 'emailError':
-      break;
-    case 'fileUpload':
-      popupElement.innerHTML = "\n            <div class=\"settings\">\n                <div class=\"mb-2\">\n                    <p>Attach files</p>\n                    <button onclick=\"document.getElementById('popup').classList.remove('shown');\" class=\"btn settings__btn d-block\">&times;</button>\n                </div>\n                <div class=\"drop-zone mb-3\" id=\"drop-zone\">\n                    <span class=\"drop-zone__prompt\">Drop file here or click to upload</span>\n                    <div class=\"drop-zone__thumb\" data-label=\"myfile.txt\" id=\"dropzoneThumbnail\"></div>\n                    <input class=\"drop-zone__input\" type=\"file\"  name=\"emailAttachment\" id=\"dropzoneInput\">\n                </div>\n                <button id=\"add-attachment\" class=\"btn btn-blue\">Add Attachments</button>\n            </div>";
+    case 'preview':
+      popupElement.innerHTML = "\n            <div class=\"settings\" style=\"width:80%; height:80%;\">\n                <div class=\"mb-10\">\n                    <p>Preview</p>\n                    <button onclick=\"document.getElementById('popup').classList.remove('shown');\" class=\"btn settings__btn d-block\">&times;</button>\n                </div>\n                <iframe width='100%' height='100%' src='".concat(popupMessage, "'></iframe>\n\n            </div>");
       popupElement.classList.add('shown');
       break;
   }
@@ -271,37 +258,18 @@ var handleFileUpload = function handleFileUpload() {
   var composeBox = document.getElementById('composeBox');
   var dropZoneElement = document.getElementById('drop-zone');
   var dropZoneInput = document.getElementById('dropzoneInput');
+  var composeAttachment = document.getElementById('compose-attachments');
   dropZoneInput.addEventListener('change', function (e) {
-    console.log('input element changed');
     if (dropZoneInput.files.length) {
-      console.log('update thumbnail done!!! starting saving to local storage');
-      var fileArray = [];
       for (var i = 0; i < dropZoneInput.files.length; i++) {
         saveFilesToLocalStorage(dropZoneInput.files[i]);
-        fileArray.push(dropZoneInput.files[i].name);
+        _globals__WEBPACK_IMPORTED_MODULE_0__["default"].currentFileUploads.push(dropZoneInput.files[i].name);
       }
-      _globals__WEBPACK_IMPORTED_MODULE_0__["default"].currentFileUploads = fileArray;
-      console.log(fileArray);
-      var composeAttachment = document.getElementById('compose-attachments');
-      composeAttachment.innerHTML = returnAttachments(fileArray);
-
-      // add delete to file attachments
-      composeAttachment.addEventListener('click', function (e) {
-        var triggerBtn = e.target.closest('button');
-        e.target.closest('.attachment').remove();
-        if (triggerBtn.dataset.delete) {
-          var attachmentFileName = triggerBtn.dataset.delete;
-          localStorage.removeItem(attachmentFileName); // removes item from local storage
-          var index = _globals__WEBPACK_IMPORTED_MODULE_0__["default"].currentFileUploads.indexOf(attachmentFileName); // gets index in gobals array
-          _globals__WEBPACK_IMPORTED_MODULE_0__["default"].currentFileUploads.splice(index, 1); // delete item from gobals array
-          console.log('->>>>>>>>>>>>>>>', _globals__WEBPACK_IMPORTED_MODULE_0__["default"].currentFileUploads);
-        }
-      });
     }
     ;
+    composeAttachment.innerHTML = returnAttachments(_globals__WEBPACK_IMPORTED_MODULE_0__["default"].currentFileUploads);
   });
   composeBox.addEventListener("dragover", function (e) {
-    console.log('dragover drop zone');
     e.preventDefault();
     composeBox.classList.remove('compose--writing-mode');
     document.getElementById('messageInput').style.pointerEvents = "none";
@@ -310,7 +278,6 @@ var handleFileUpload = function handleFileUpload() {
 
   ["dragleave", "dragend"].forEach(function (type) {
     composeBox.addEventListener(type, function (e) {
-      console.log(type, 'drop zone');
       // dropZoneElement.classList.remove("drop-zone--over");
       composeBox.classList.add("compose--writing-mode");
       setTimeout(function () {
@@ -322,28 +289,23 @@ var handleFileUpload = function handleFileUpload() {
     e.preventDefault();
     if (e.dataTransfer.files.length) {
       dropZoneInput.files = e.dataTransfer.files;
-      var fileArray = [];
-      for (var i = 0; e.dataTransfer.files.length > i; i++) {
-        saveFilesToLocalStorage(e.dataTransfer.files[i]);
-        fileArray.push(e.dataTransfer.files[i].name);
+      for (var i = 0; i < dropZoneInput.files.length; i++) {
+        saveFilesToLocalStorage(dropZoneInput.files[i]);
+        _globals__WEBPACK_IMPORTED_MODULE_0__["default"].currentFileUploads.push(dropZoneInput.files[i].name);
       }
-      _globals__WEBPACK_IMPORTED_MODULE_0__["default"].currentFileUploads = fileArray;
-      console.log(fileArray);
-      var composeAttachment = document.getElementById('compose-attachments');
-      composeAttachment.innerHTML = returnAttachments(fileArray);
     }
-    dropZoneElement.classList.remove("drop-zone--over");
+    composeAttachment.innerHTML = returnAttachments(_globals__WEBPACK_IMPORTED_MODULE_0__["default"].currentFileUploads);
+
+    // dropZoneElement.classList.remove("drop-zone--over");
     composeBox.classList.add("compose--writing-mode");
   });
 };
 var saveFilesToLocalStorage = function saveFilesToLocalStorage(file) {
   var fileReader = new FileReader();
-  console.log('helloooooo from the func');
   // onload needed since Google Chrome doesn't support addEventListener for FileReader
   fileReader.onload = function (evt) {
     // Read out file contents as a Data URL
     var result = evt.target.result;
-    console.log('file reader result = ', result);
     try {
       // save item to local storage with file name
       localStorage.setItem(file.name, result);
@@ -386,8 +348,8 @@ var returnAttachments = function returnAttachments(list) {
     if (Object.keys(fileTypes).includes(extension)) {
       iconName = fileTypes[extension];
     }
-    var dataURL = localStorage.getItem(fileName) == null ? 'javascript:void(0);' : localStorage.getItem(fileName);
-    attachment += "<div class=\"attachment pt-2 pb-2 pl-4 pr-4 d-flex ai-center\">\n        <svg width=\"20\" height=\"20\" class=\"va-middle\">\n            <use href=\"dist/sprite.svg#icon-".concat(iconName, "\"></use>\n        </svg>\n        <button data-delete=\"").concat(fileName, "\" class=\"btn attachment__deletebtn\">&times;</button>\n        <a href=\"").concat(dataURL, "\" target=\"_blank\" class=\"va-middle ml-2 attachment__name\">").concat(fileName, "</a>\n        </div>");
+    var dataURL = localStorage.getItem(fileName);
+    attachment += "<div class=\"attachment pt-2 pb-2 pl-4 pr-4 d-flex ai-center\">\n        <svg width=\"20\" height=\"20\" class=\"va-middle\">\n            <use href=\"dist/sprite.svg#icon-".concat(iconName, "\"></use>\n        </svg>\n        <button data-delete=\"").concat(fileName, "\" title=\"Remove Attachment\" class=\"btn attachment__deletebtn\">&times;</button>\n        <a data-file=\"").concat(dataURL, "\" class=\"va-middle ml-2 attachment__name\">").concat(fileName, "</a>\n        </div>");
   });
 
   // thumbnailElement.innerHTML = attachment;
@@ -735,6 +697,23 @@ document.getElementById('sendBtn').addEventListener('click', _js_domFunctions__W
 // open file input on clicking attach button
 document.getElementById('attachBtn').addEventListener("click", function () {
   document.getElementById('dropzoneInput').click();
+});
+// add delete to file attachments
+document.getElementById('compose-attachments').addEventListener('click', function (e) {
+  if (e.target.nodeName == 'BUTTON') {
+    var triggerBtn = e.target;
+    var attachmentFileName = triggerBtn.dataset.delete;
+    // gets index in gobals array
+    var index = _js_globals__WEBPACK_IMPORTED_MODULE_1__["default"].currentFileUploads.indexOf(attachmentFileName);
+
+    // remove the attachment
+    e.target.closest('.attachment').remove();
+    // removes item from local storage
+    localStorage.removeItem(attachmentFileName);
+    // delete item from gobal array
+    _js_globals__WEBPACK_IMPORTED_MODULE_1__["default"].currentFileUploads.splice(index, 1);
+    console.log('current file uploads', _js_globals__WEBPACK_IMPORTED_MODULE_1__["default"].currentFileUploads);
+  }
 });
 document.getElementById('email-list').addEventListener('click', function (e) {
   var eventTarget = e.target.closest('li');
