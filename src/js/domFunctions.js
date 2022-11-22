@@ -55,7 +55,7 @@ export const popEmailList = (data, folderName) => {
 
 /**
  * clears child elements and shows a default or placeholder screen in emailList and emailReader
- * @param  {Boolean} clarEmailList if true it will change email list to default view
+ * @param  {Boolean} clearEmailList if true it will change email list to default view
  * @param  {Boolean} clearEmailReader if true it will change email reader to default view
  */
 export const defaultScreen = (clearEmailList = false,clearEmailReader = false) => {
@@ -246,6 +246,10 @@ export const deleteEmail = (eventElement) => {
     }
 }
 
+/**
+ * function runs when 'send' button is clicked on composeBox
+ * it takes values of emailInput, subjectInput, messageInput and attachment if any and added it to gobals.emailData.sent variables
+ */
 export const addEmailToSent = () => {
 
     const currentEmail = {
@@ -301,6 +305,11 @@ export const addEmailToSent = () => {
     closeComposeBox()
 }
 
+/**
+ * @param  {string} whichPopup options for popup - 'settings', 'preview' 
+ * @param  {string} popupMessage can pass a message to be displayed in the popup or a data URL to be used in preview
+ * opens popup with the selected option
+ */
 export const openPopup = (whichPopup,popupMessage) => {
     const popupElement = document.getElementById('popup');
     switch (whichPopup) {
@@ -329,12 +338,11 @@ export const openPopup = (whichPopup,popupMessage) => {
         case 'preview':
             popupElement.innerHTML = `
             <div class="settings" style="width:80%; height:80%;">
-                <div class="mb-10">
+                <div class="mb-1">
                     <p>Preview</p>
                     <button onclick="document.getElementById('popup').classList.remove('shown');" class="btn settings__btn d-block">&times;</button>
                 </div>
                 <iframe width='100%' height='100%' src='${popupMessage}'></iframe>
-
             </div>`
             popupElement.classList.add('shown') 
         break;
@@ -369,62 +377,10 @@ export const openPopup = (whichPopup,popupMessage) => {
 
 }
 
-export const handleFileUpload = () => {
-    const composeBox = document.getElementById('composeBox');
-    const dropZoneElement = document.getElementById('drop-zone')
-    const dropZoneInput = document.getElementById('dropzoneInput')
-    const composeAttachment = document.getElementById('compose-attachments');
-
-    dropZoneInput.addEventListener('change', (e) => {
-        if (dropZoneInput.files.length) {
-
-
-            for(let i = 0; i < dropZoneInput.files.length; i++) {
-                saveFilesToLocalStorage(dropZoneInput.files[i])
-                globals.currentFileUploads.push(dropZoneInput.files[i].name)
-            }
-        };
-            composeAttachment.innerHTML = returnAttachments(globals.currentFileUploads);
-    });
-
-    composeBox.addEventListener("dragover", (e) => {
-        e.preventDefault();
-        composeBox.classList.remove('compose--writing-mode');
-
-        document.getElementById('messageInput').style.pointerEvents = "none";
-        // dropZoneElement.classList.add("drop-zone--over");
-    });
-
-    ["dragleave", "dragend"].forEach((type) => {
-        composeBox.addEventListener(type, (e) => {
-                // dropZoneElement.classList.remove("drop-zone--over");
-                composeBox.classList.add("compose--writing-mode");
-            setTimeout(() => {
-                document.getElementById('messageInput').style.pointerEvents = "auto";
-            },700)
-        });
-    });
-
-    composeBox.addEventListener("drop", (e) => {
-        e.preventDefault();
-
-        if (e.dataTransfer.files.length) {
-            dropZoneInput.files = e.dataTransfer.files;
-
-            for(let i = 0; i < dropZoneInput.files.length; i++) {
-                saveFilesToLocalStorage(dropZoneInput.files[i])
-                globals.currentFileUploads.push(dropZoneInput.files[i].name)
-            }
-
-        }
-        composeAttachment.innerHTML = returnAttachments(globals.currentFileUploads);
-
-        // dropZoneElement.classList.remove("drop-zone--over");
-        composeBox.classList.add("compose--writing-mode");
-    });
-
-}
-
+/**
+ * converts files into dataURL and saves it in localStorage with the file name
+ * @param  {object} file the file object to be turned into dataURL and saved to localStorage
+ */
 export const saveFilesToLocalStorage = (file) => {
 
     let fileReader = new FileReader();
@@ -452,12 +408,6 @@ export const saveFilesToLocalStorage = (file) => {
  */
 export const returnAttachments = (list) => {
 
-    // const thumbnailElement = dropzoneElement.querySelector('#dropzoneThumbnail');
-
-    // remove prompt and show thumbnail
-    // dropzoneElement.classList.add('drop-zone--thumbnail');
-
-    // thumbnailElement.dataset.label = file.name;
     let attachment = '';
     // let list = ['img.png','scan.pdf','word.doc','word.docx','apple.pages'];
     const fileTypes = {
@@ -545,6 +495,7 @@ export const updateNumber = () => {
 
 /**
  * removes class of 'shown' from element with id of composeBox
+ * clears all perviously used items in the composeBox
  */
 export const closeComposeBox = () => {
     //hides compose box
@@ -557,6 +508,9 @@ export const closeComposeBox = () => {
 
     // clear any files elements in compose box
     document.getElementById('compose-attachments').innerHTML = '';
+
+    // remove file names from gobals current files
+    globals.currentFileUploads = [];
 
 }
 

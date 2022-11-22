@@ -1,6 +1,6 @@
 import getData from './js/getData';
 import globals from './js/globals';
-import {popEmailList, popEmailReader, highlightElement,defaultScreen, filterObject,openComposeBox, closeComposeBox, addEmailToSent, openPopup} from './js/domFunctions';
+import {popEmailList, popEmailReader, highlightElement,defaultScreen, filterObject,openComposeBox, closeComposeBox, addEmailToSent, openPopup, saveFilesToLocalStorage,returnAttachments} from './js/domFunctions';
 import './styles/main.scss'
 
 
@@ -8,11 +8,6 @@ let url = 'https://raw.githubusercontent.com/KailashGanesh/Umail/master/emails.j
 // url = 'http://127.0.0.1:5500/emails.json'
 
 const sideBar =  document.getElementById('sidebar');
-// const emailList =  document.getElementById('email-list');
-// const searchBar = document.getElementById('searchBar');
-// const inboxBtn = document.getElementById('inboxBtn');
-// const composeCloseBtn = document.getElementById('closeCompose');
-// const sendEmailBtn = document.getElementById('sendBtn');
 
 getData(url);
 
@@ -24,33 +19,6 @@ document.getElementById('sidebar').addEventListener('click', (e) => {
     if(eventTarget == null){
         return; // if user clicked on empty space exit
     }
-    // else if(eventTarget.dataset.type == 'folder'){
-    //     let folderName = eventTarget.id.slice(0, -3);
-
-
-    //     highlightElement(eventTarget,'sidebarMenu')
-    //     defaultScreen(false,true)
-    //     popEmailList(data, folderName)
-    // }else if(eventTarget.dataset.type == 'tag'){
-    //     let search = eventTarget.id.slice(0, -3);
-    //     let result = filterObject('inbox', 'tag', search);
-
-    //     highlightElement(eventTarget,'sidebarMenu')
-    //     defaultScreen(false,true)
-    //     popEmailList({'inbox':result}, 'inbox')
-    // }else if(eventTarget.id == 'settingsBtn'){
-    //     let popup = document.getElementById('popup');
-    //     let toggle = document.getElementById('setting_toggle');
-
-    //     popup.classList.add('shown');
-
-    //     toggle.addEventListener('change',() => {
-
-    //         globals.settings.openNextEmailAfterDelete = (/true/i).test(toggle.value);
-    //     })
-    // }else if(eventTarget.id == 'composeBtn'){
-    //    openComposeBox();
-    // }else{return;}
 
     switch (eventTarget.dataset.type) {
         case 'folder':
@@ -83,7 +51,7 @@ document.getElementById('sidebar').addEventListener('click', (e) => {
     }
 })
 
-// compose Box eventlistener
+// == compose Box eventlistener ==
 document.getElementById('closeCompose').addEventListener('click', closeComposeBox);
 document.getElementById('sendBtn').addEventListener('click', addEmailToSent);
 // open file input on clicking attach button
@@ -105,6 +73,58 @@ document.getElementById('compose-attachments').addEventListener('click',(e) => {
         console.log('current file uploads',globals.currentFileUploads)
     }
 });
+    const composeBox = document.getElementById('composeBox');
+    const dropZoneInput = document.getElementById('dropzoneInput')
+    const composeAttachment = document.getElementById('compose-attachments');
+
+    dropZoneInput.addEventListener('change', (e) => {
+        if (dropZoneInput.files.length) {
+
+
+            for(let i = 0; i < dropZoneInput.files.length; i++) {
+                saveFilesToLocalStorage(dropZoneInput.files[i])
+                globals.currentFileUploads.push(dropZoneInput.files[i].name)
+            }
+        };
+            composeAttachment.innerHTML = returnAttachments(globals.currentFileUploads);
+    });
+
+    composeBox.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        composeBox.classList.remove('compose--writing-mode');
+
+        document.getElementById('messageInput').style.pointerEvents = "none";
+        // dropZoneElement.classList.add("drop-zone--over");
+    });
+
+    ["dragleave", "dragend"].forEach((type) => {
+        composeBox.addEventListener(type, (e) => {
+                // dropZoneElement.classList.remove("drop-zone--over");
+                composeBox.classList.add("compose--writing-mode");
+            setTimeout(() => {
+                document.getElementById('messageInput').style.pointerEvents = "auto";
+            },700)
+        });
+    });
+
+    composeBox.addEventListener("drop", (e) => {
+        e.preventDefault();
+
+        if (e.dataTransfer.files.length) {
+            dropZoneInput.files = e.dataTransfer.files;
+
+            for(let i = 0; i < dropZoneInput.files.length; i++) {
+                saveFilesToLocalStorage(dropZoneInput.files[i])
+                globals.currentFileUploads.push(dropZoneInput.files[i].name)
+            }
+
+        }
+        composeAttachment.innerHTML = returnAttachments(globals.currentFileUploads);
+
+        // dropZoneElement.classList.remove("drop-zone--over");
+        composeBox.classList.add("compose--writing-mode");
+    });
+
 document.getElementById('email-list').addEventListener('click', (e) => {
     let eventTarget = e.target.closest('li');
 
