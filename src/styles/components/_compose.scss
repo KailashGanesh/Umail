@@ -5,7 +5,7 @@
 
     width: 600px;
     height: 616px;
-    background-color: thistle;
+    background-color: $white;
 
     border-top-left-radius: 13px;
     border-top-right-radius: 13px;
@@ -58,6 +58,14 @@
         border: none;
         height: 100%;
         resize: none;
+
+        // visibility: hidden;
+        display: none;
+        // position: absolute;
+        // left: 0px;
+        // top: 140px;
+        // width: 100%;
+        // bottom: 48px;
     }
 
     &__toolbar{
@@ -92,6 +100,17 @@
 
 .shown{
     display: flex;
+}
+
+.compose--writing-mode{
+    .compose__message{
+        // visibility: visible;
+        display: initial;
+    }
+
+    .drop-zone{
+        display: none;
+    }
 }
 
 @keyframes scale-up {

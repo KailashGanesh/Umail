@@ -1,10 +1,11 @@
 .drop-zone{
-    width: 200px;
-    height: 200px;
-    border: 4px dashed $gunmetal;
+    height: 100%;
+    border: 4px dashed $cool-gray;
     border-radius: 10px;
+    background-color: white;
+    pointer-events:none;
 
-    padding: 25px;
+    margin: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -38,6 +39,8 @@
             text-align: center;
         }
     }
+
+    .attachment{}
 }
 
 .drop-zone--over{

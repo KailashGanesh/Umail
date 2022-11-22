@@ -19,7 +19,9 @@ async function getData(url){
         globals.emailData.drafts = emailData.drafts;
         globals.emailData.trash = emailData.trash;
 
-
+        if(localStorage.getItem('sent')){
+            globals.emailData.sent = JSON.parse(localStorage.getItem('sent'))
+        }
         const inboxBtn = document.getElementById('inboxBtn');
         const emailList =  document.getElementById('email-list');
 

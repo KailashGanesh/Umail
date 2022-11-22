@@ -4,7 +4,8 @@ let globals = {
   },
   'activeSidebarMenu':'',
   'activeEmailList':'',
-  'settings':{'openNextEmailAfterDelete':true}
+  'settings':{'openNextEmailAfterDelete':true},
+  'currentFileUploads':[]
 };
 
 export default  globals;

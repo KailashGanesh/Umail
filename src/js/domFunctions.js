@@ -99,24 +99,25 @@ export const popEmailReader = (data,eventElement) => {
     const index = eventElement.id;
     const folder = eventElement.dataset.folder;
 
-    let attachment = '';
-    if(globals.emailData[folder][index]['attachment']){
-        globals.emailData[folder][index]['files'].forEach(fileName => {
+    let attachment = returnAttachments(globals.emailData[folder][index]['files']);
+    // if(globals.emailData[folder][index]['attachment']){
+    //     globals.emailData[folder][index]['files'].forEach(fileName => {
 
-            let fileType = fileName.slice(fileName.length - 3)
+    //         let fileType = fileName.slice(fileName.length - 3)
 
-            if(fileType == 'pdf'){
-                // if extension is pdf add pdf svg
-                attachment += `<div class="attachment pt-2 pb-2 pl-4 pr-4"><svg width="20" height="20" class="va-middle fill-red"><use xlink:href="dist/sprite.svg#icon-file-pdf-solid"></use></svg><span class="va-middle ml-2">${fileName}</span></div>`;
-            }else if (fileType == 'doc'){
-                // if extension is doc add doc svg
-                attachment += `<div class="attachment pt-2 pb-2 pl-4 pr-4"><svg width="20" height="20" class="va-middle fill-blue"><use xlink:href="dist/sprite.svg#icon-file-word-solid"></use></svg><span class="va-middle ml-2">${fileName}</span></div>`;
-            }else{
-                // if extension is other then those two, add normal file svg
-                attachment += `<div class="attachment pt-2 pb-2 pl-4 pr-4"><svg width="20" height="20" class="va-middle"><use xlink:href="dist/sprite.svg#icon-file-solid"></use></svg><span class="va-middle ml-2">${fileName}</span></div>`;
-            }
-        });
-    }
+    //         if(fileType == 'pdf'){
+    //             // if extension is pdf add pdf svg
+    //             attachment += `<div class="attachment pt-2 pb-2 pl-4 pr-4"><svg width="20" height="20" class="va-middle fill-red"><use xlink:href="dist/sprite.svg#icon-file-pdf-solid"></use></svg><span class="va-middle ml-2">${fileName}</span></div>`;
+    //         }else if (fileType == 'doc'){
+    //             // if extension is doc add doc svg
+    //             attachment += `<div class="attachment pt-2 pb-2 pl-4 pr-4"><svg width="20" height="20" class="va-middle fill-blue"><use xlink:href="dist/sprite.svg#icon-file-word-solid"></use></svg><span class="va-middle ml-2">${fileName}</span></div>`;
+    //         }else{
+    //             // if extension is other then those two, add normal file svg
+    // let fileName = globals.emailData[folder][index]['files'][0] ;
+                // attachment += `<div class="attachment pt-2 pb-2 pl-4 pr-4"><svg width="20" height="20" class="va-middle"><use xlink:href="dist/sprite.svg#icon-file-solid"></use></svg><span class="va-middle ml-2">${fileName}</span></div>`;
+    //         }
+    //     });
+    // }
 
     let pictureJpg = 'dist/img/avatar-512x512.jpg' // by default it's unknown profile picture
     if(data[folder][index]['picture'].length){
@@ -235,6 +236,11 @@ export const deleteEmail = (eventElement) => {
     // eventElement.remove(); // remove the email from email list
     globals.emailData[folder].splice(index, 1); // removes the email from global array
     updateNumber(); // an email was deleted so update the numbers
+
+    if(globals.activeSidebarMenu.id == 'sentBtn'){
+        // if it is sent email folder, save the current sent emails to localStorage
+        localStorage.setItem('sent',JSON.stringify(globals.emailData.sent));
+    }
     globals['activeSidebarMenu'].click() // click on the current active menu to reload email list
 
 
@@ -287,16 +293,21 @@ export const addEmailToSent = () => {
     // if no subject change to (no subject)
     currentEmail.subject = subjectInput.value == ''? '(no subject)':subjectInput.value;
     currentEmail.message = messageInput.value == ''? '(no message)':messageInput.value;
+    
+    currentEmail.attachment = globals.currentFileUploads.length > 0;
+    currentEmail.files = currentEmail.attachment ? globals.currentFileUploads:[];
 
     console.log(currentEmail)
     globals.emailData.sent.unshift(currentEmail)
+
+    localStorage.setItem('sent',JSON.stringify(globals.emailData.sent))
 
     if(globals.activeSidebarMenu.id == 'sentBtn'){
         globals.activeSidebarMenu.click();
     }
 }
 
-export const popup = (whichPopup,popupMessage) => {
+export const openPopup = (whichPopup,popupMessage) => {
     const popupElement = document.getElementById('popup');
     switch (whichPopup) {
         case 'settings':
@@ -319,98 +330,19 @@ export const popup = (whichPopup,popupMessage) => {
         case 'fileUpload':
             popupElement.innerHTML = `
             <div class="settings">
-                <div class="mb-10">
+                <div class="mb-2">
                     <p>Attach files</p>
                     <button onclick="document.getElementById('popup').classList.remove('shown');" class="btn settings__btn d-block">&times;</button>
                 </div>
-                <div class="drop-zone" id="drop-zone">
+                <div class="drop-zone mb-3" id="drop-zone">
                     <span class="drop-zone__prompt">Drop file here or click to upload</span>
                     <div class="drop-zone__thumb" data-label="myfile.txt" id="dropzoneThumbnail"></div>
                     <input class="drop-zone__input" type="file"  name="emailAttachment" id="dropzoneInput">
                 </div>
+                <button id="add-attachment" class="btn btn-blue">Add Attachments</button>
             </div>`
-            popupElement.classList.add('shown') 
+            popupElement.classList.add('shown');
 
-            const dropZoneElement =  document.getElementById('drop-zone')
-            const dropZoneInput =  document.getElementById('dropzoneInput')
-
-            dropZoneElement.addEventListener("click", (e) => {
-                dropZoneInput.click();
-            });
-
-            dropZoneInput.addEventListener('change',(e) => {
-                    console.log('input element changed')
-                if(dropZoneInput.files.length){
-                    updateThumbnail(dropZoneElement, dropZoneInput.files[0]);
-
-                    console.log('update thumbnail done!!! starting saving to local storage')
-
-                    // Create XHR, Blob and FileReader objects
-                    var xhr = new XMLHttpRequest(),
-                        blob,
-                        fileReader = new FileReader();
-
-                    // xhr.open("GET", dropZoneInput.files[0], true);
-                    // Set the responseType to arraybuffer. "blob" is an option too, rendering manual Blob creation unnecessary, but the support for "blob" is not widespread enough yet
-                    // xhr.responseType = "arraybuffer";
-
-                    // Create a blob from the response
-                    console.log('typeof input',typeof dropZoneInput.files[0])
-                    blob = new Blob([dropZoneInput.files[0]], { type: dropZoneInput.files[0].type });
-
-                    // onload needed since Google Chrome doesn't support addEventListener for FileReader
-                    console.log('typeof blob',typeof blob)
-                    fileReader.onload = function (evt) {
-                        // Read out file contents as a Data URL
-                        var result = evt.target.result;
-                        console.log('file reader result = ', result)
-                        // Set image src to Data URL
-                        // Store Data URL in localStorage
-                    console.log('typeof filereader output',typeof result)
-                        try {
-                            localStorage.setItem("rhino", result);
-                            console.log('saved to localStorage')
-                            const composeBox = document.getElementById('composeBox');
-
-                            let attachmentDiv = document.createElement('div');
-                            attachmentDiv.classList.add('email__attachments', 'd-flex' ,'flex-wrap');
-
-                            attachmentDiv.innerHTML = `<a href="${localStorage.getItem('rhino')}" class="attachment pt-2 pb-2 pl-4 pr-4"><svg width="20" height="20" class="va-middle fill-red"><use xlink:href="dist/sprite.svg#icon-file-pdf-solid"></use></svg><span class="va-middle ml-2">${dropZoneInput.files[0].name}</span></div>`
-
-                            composeBox.appendChild(attachmentDiv);
-                        }
-                        catch (e) {
-                            console.log("Storage failed: " + e);
-                        }
-                    };
-                    // Load blob as Data URL
-                    // fileReader.readAsDataURL(blob);
-                    fileReader.readAsDataURL(dropZoneInput.files[0]);
-
-                }
-            });
-
-            dropZoneElement.addEventListener("dragover", (e) => {
-                e.preventDefault();
-                dropZoneElement.classList.add("drop-zone--over");
-            });
-        
-            ["dragleave", "dragend"].forEach((type) => {
-                dropZoneElement.addEventListener(type, (e) => {
-                    dropZoneElement.classList.remove("drop-zone--over");
-                });
-            });
-        
-            dropZoneElement.addEventListener("drop", (e) => {
-                e.preventDefault();
-        
-                if (e.dataTransfer.files.length) {
-                    dropZoneInput.files = e.dataTransfer.files;
-                    updateThumbnail(dropZoneElement, e.dataTransfer.files[0]);
-                }
-        
-                dropZoneElement.classList.remove("drop-zone--over");
-            });
         break;
     }
 }
@@ -443,38 +375,160 @@ export const popup = (whichPopup,popupMessage) => {
 
 }
 
+export const handleFileUpload = () => {
+    const composeBox = document.getElementById('composeBox');
+    // document.body.addEventListener('dragover',(e) =>{
+    //     console.log('dragover body')
+    //     composeBox.classList.remove('compose--writing-mode');
+    // });
+
+    // ["dragend"].forEach((type) => {
+    //    document.body.addEventListener(type, (e) => {
+    //     console.log('dragleave body')
+    //         composeBox.classList.add("compose--writing-mode");
+    //     });
+    // });
+    const dropZoneElement = document.getElementById('drop-zone')
+    const dropZoneInput = document.getElementById('dropzoneInput')
+    const attachBtn = document.getElementById('attachBtn')
+
+    attachBtn.addEventListener("click", (e) => {
+        dropZoneInput.click();
+    });
+
+    dropZoneInput.addEventListener('change', (e) => {
+        console.log('input element changed')
+        if (dropZoneInput.files.length) {
+            console.log('update thumbnail done!!! starting saving to local storage')
+
+            let fileArray = [];
+
+            for(let i = 0; i < dropZoneInput.files.length; i++) {
+                saveFilesToLocalStorage(dropZoneInput.files[i])
+                fileArray.push(dropZoneInput.files[i].name)
+            }
+
+            globals.currentFileUploads = fileArray;
+            console.log(fileArray)
+            const composeAttachment = document.getElementById('compose-attachments');
+            composeAttachment.innerHTML = returnAttachments(fileArray);
+        };
+    });
+
+    composeBox.addEventListener("dragover", (e) => {
+            console.log('dragover drop zone')
+        e.preventDefault();
+        composeBox.classList.remove('compose--writing-mode');
+
+        document.getElementById('messageInput').style.pointerEvents = "none";
+        // dropZoneElement.classList.add("drop-zone--over");
+    });
+
+    ["dragleave", "dragend"].forEach((type) => {
+        composeBox.addEventListener(type, (e) => {
+                console.log(type,'drop zone')
+                // dropZoneElement.classList.remove("drop-zone--over");
+                composeBox.classList.add("compose--writing-mode");
+            setTimeout(() => {
+                document.getElementById('messageInput').style.pointerEvents = "auto";
+            },700)
+        });
+    });
+
+    composeBox.addEventListener("drop", (e) => {
+        e.preventDefault();
+
+        if (e.dataTransfer.files.length) {
+            dropZoneInput.files = e.dataTransfer.files;
+
+            let fileArray = []
+            for(let i = 0; e.dataTransfer.files.length > i; i++){
+                saveFilesToLocalStorage(e.dataTransfer.files[i])
+                fileArray.push(e.dataTransfer.files[i].name)
+            }
+
+            globals.currentFileUploads = fileArray;
+
+            console.log(fileArray)
+            const composeAttachment = document.getElementById('compose-attachments');
+            composeAttachment.innerHTML = returnAttachments(fileArray);
+        }
+
+        dropZoneElement.classList.remove("drop-zone--over");
+        composeBox.classList.add("compose--writing-mode");
+    });
+
+}
+
+export const saveFilesToLocalStorage = (file) => {
+
+    let fileReader = new FileReader();
+    console.log('helloooooo from the func')
+    // onload needed since Google Chrome doesn't support addEventListener for FileReader
+    fileReader.onload = function (evt) {
+        // Read out file contents as a Data URL
+        let result = evt.target.result;
+        console.log('file reader result = ', result)
+
+        try {
+            // save item to local storage with file name
+            localStorage.setItem(file.name, result);
+        }
+        catch (e) {
+            console.log("Storage failed: " + e);
+        }
+    }
+    // read files are data url
+    fileReader.readAsDataURL(file);
+}
+
 /**
  * 
- * @param  {HTMLElement} dropzoneElement
- * @param  {file} file 
+ * @param  {list} array a array of file names 
+ * @return {string} returns html version of the file name with icons as a string that can be used for innerHTML 
  */
-export const updateThumbnail = (dropzoneElement,file) => {
-    console.log(dropzoneElement);
-    console.log(file);
+export const returnAttachments = (list) => {
 
-    const thumbnailElement = dropzoneElement.querySelector('#dropzoneThumbnail');
+    // const thumbnailElement = dropzoneElement.querySelector('#dropzoneThumbnail');
 
     // remove prompt and show thumbnail
-    dropzoneElement.classList.add('drop-zone--thumbnail');
+    // dropzoneElement.classList.add('drop-zone--thumbnail');
 
-    thumbnailElement.dataset.label = file.name;
+    // thumbnailElement.dataset.label = file.name;
+    let attachment = '';
+    // let list = ['img.png','scan.pdf','word.doc','word.docx','apple.pages'];
+    const fileTypes = {
+                        'doc':'file-word-solid',
+                        'docx':'file-word-solid',
+                        'pages':'file-word-solid',
+                        'pdf':'file-pdf-solid',
+                        'png':'file-image-solid',
+                        'jpg':'file-image-solid',
+                        'jpeg':'file-image-solid',
+                        'gif':'file-image-solid',
+                    };
 
-    console.log(file.name)
-    console.log(file.type)
+    list.forEach((fileName) => {
+        let extension = fileName.split('.');
+        extension = extension[extension.length - 1]
 
-    if(file.type.startsWith('image/')){
-        const reader = new FileReader();
+        let iconName  = 'file-solid'
 
-        reader.readAsDataURL(file);
-        reader.onload = () => {
-            thumbnailElement.style.backgroundImage = `url('${reader.result}')`;
-        };
-    }else{
-            thumbnailElement.style.backgroundImage = null;
-    }
+        if(Object.keys(fileTypes).includes(extension)){
+            iconName = fileTypes[extension];
+        }
 
-    console.log('changed thumbnail+++++!!!!!!')
-    return;
+        let dataURL = localStorage.getItem(fileName) == null ? 'javascript:void(0);' : localStorage.getItem(fileName);
+
+        attachment += `<div class="attachment pt-2 pb-2 pl-4 pr-4 d-flex ai-center"><svg width="20" height="20" class="va-middle">
+        <use xlink:href="dist/sprite.svg#icon-${iconName}"></use></svg>
+        <a href="${dataURL}" target="_blank" class="va-middle ml-2 attachment__name">${fileName}</a>
+        </div>`;
+    })
+
+
+    // thumbnailElement.innerHTML = attachment;
+    return attachment;
 }
 
 /**
@@ -520,6 +574,7 @@ export const updateNumber = () => {
  export const openComposeBox = () => {
     let composeBox = document.getElementById('composeBox')
     composeBox.classList.add('shown');
+    handleFileUpload(); // drag and drop file upload
 }
 
 /**
