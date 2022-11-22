@@ -51,6 +51,44 @@ document.getElementById('sidebar').addEventListener('click', (e) => {
     }
 })
 
+document.getElementById('email-list').addEventListener('click', (e) => {
+    let eventTarget = e.target.closest('li');
+
+    if(eventTarget == null) return;
+
+    popEmailReader(globals.emailData,eventTarget);
+})
+
+document.getElementById('searchBar').addEventListener('keyup', (e) => {
+    let searchText = document.getElementById('searchBar').value;
+
+    if (e.key == 'Enter'){
+        e.preventDefault()
+
+        let currentActiveMenuBtn = globals.activeSidebarMenu;
+        let folderName = currentActiveMenuBtn.id.slice(0, -3);
+
+        if(currentActiveMenuBtn.dataset.type == 'folder'){
+            let result = filterObject(folderName, 'subject', searchText, true);
+            let resultObj = {};
+            resultObj[folderName] = result;
+
+            popEmailList(resultObj, folderName)
+        }else if(currentActiveMenuBtn.dataset.type == 'tag'){
+
+            let result = filterObject('inbox', 'tag', folderName);
+
+            globals.emailData[folderName] = result;
+
+            result = filterObject(folderName, 'subject', searchText, true);
+            popEmailList({'inbox':result}, 'inbox')
+        }
+
+        defaultScreen(false,true)
+    }
+})
+
+
 // == compose Box eventlistener ==
 document.getElementById('closeCompose').addEventListener('click', closeComposeBox);
 document.getElementById('sendBtn').addEventListener('click', addEmailToSent);
@@ -124,44 +162,3 @@ composeBox.addEventListener("drop", (e) => {
     // dropZoneElement.classList.remove("drop-zone--over");
     composeBox.classList.add("compose--writing-mode");
 });
-
-document.getElementById('email-list').addEventListener('click', (e) => {
-    let eventTarget = e.target.closest('li');
-
-    if(eventTarget == null) return;
-
-    popEmailReader(globals.emailData,eventTarget);
-})
-
-document.getElementById('searchBar').addEventListener('keyup', (e) => {
-    let searchText = document.getElementById('searchBar').value;
-
-    if (e.key == 'Enter'){
-        e.preventDefault()
-
-        let currentActiveMenuBtn = globals.activeSidebarMenu;
-        let folderName = currentActiveMenuBtn.id.slice(0, -3);
-
-        if(currentActiveMenuBtn.dataset.type == 'folder'){
-            let result = filterObject(folderName, 'subject', searchText, true);
-            let resultObj = {};
-            resultObj[folderName] = result;
-
-            popEmailList(resultObj, folderName)
-        }else if(currentActiveMenuBtn.dataset.type == 'tag'){
-
-            let result = filterObject('inbox', 'tag', folderName);
-
-            globals.emailData[folderName] = result;
-
-            result = filterObject(folderName, 'subject', searchText, true);
-            popEmailList({'inbox':result}, 'inbox')
-        }
-
-        defaultScreen(false,true)
-    }
-})
-
-
-document.getElementById('popup').addEventListener('click', (e) => {});
-
