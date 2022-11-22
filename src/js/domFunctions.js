@@ -305,6 +305,8 @@ export const addEmailToSent = () => {
     if(globals.activeSidebarMenu.id == 'sentBtn'){
         globals.activeSidebarMenu.click();
     }
+
+    closeComposeBox()
 }
 
 export const openPopup = (whichPopup,popupMessage) => {
@@ -319,7 +321,11 @@ export const openPopup = (whichPopup,popupMessage) => {
                 </div>
                 <div>
                     <label for="setting_toggle" class="mr-4">Automatically open next email after deleting</label>
-                    <input class="cb2 tgl tgl-ios" type="checkbox" id="setting_toggle">
+                    <!-- <input class="cb2 tgl tgl-ios" type="checkbox" id="setting_toggle"> --> 
+                    <select name="open next" id="setting_toggle">
+                        <option value="true">Yes</option>
+                        <option value="false">no</option>
+                    </select>
                 </div>
             </div>`
             popupElement.classList.add('shown') 
@@ -377,24 +383,8 @@ export const openPopup = (whichPopup,popupMessage) => {
 
 export const handleFileUpload = () => {
     const composeBox = document.getElementById('composeBox');
-    // document.body.addEventListener('dragover',(e) =>{
-    //     console.log('dragover body')
-    //     composeBox.classList.remove('compose--writing-mode');
-    // });
-
-    // ["dragend"].forEach((type) => {
-    //    document.body.addEventListener(type, (e) => {
-    //     console.log('dragleave body')
-    //         composeBox.classList.add("compose--writing-mode");
-    //     });
-    // });
     const dropZoneElement = document.getElementById('drop-zone')
     const dropZoneInput = document.getElementById('dropzoneInput')
-    const attachBtn = document.getElementById('attachBtn')
-
-    attachBtn.addEventListener("click", (e) => {
-        dropZoneInput.click();
-    });
 
     dropZoneInput.addEventListener('change', (e) => {
         console.log('input element changed')
@@ -412,6 +402,19 @@ export const handleFileUpload = () => {
             console.log(fileArray)
             const composeAttachment = document.getElementById('compose-attachments');
             composeAttachment.innerHTML = returnAttachments(fileArray);
+
+            // add delete to file attachments
+            composeAttachment.addEventListener('click',(e) => {
+                let triggerBtn = e.target.closest('button');
+                e.target.closest('.attachment').remove();
+                if(triggerBtn.dataset.delete){
+                    let attachmentFileName = triggerBtn.dataset.delete;
+                    localStorage.removeItem(attachmentFileName); // removes item from local storage
+                    let index = globals.currentFileUploads.indexOf(attachmentFileName) // gets index in gobals array
+                    globals.currentFileUploads.splice(index, 1); // delete item from gobals array
+                    console.log('->>>>>>>>>>>>>>>',globals.currentFileUploads);
+                }
+            });
         };
     });
 
@@ -520,8 +523,11 @@ export const returnAttachments = (list) => {
 
         let dataURL = localStorage.getItem(fileName) == null ? 'javascript:void(0);' : localStorage.getItem(fileName);
 
-        attachment += `<div class="attachment pt-2 pb-2 pl-4 pr-4 d-flex ai-center"><svg width="20" height="20" class="va-middle">
-        <use xlink:href="dist/sprite.svg#icon-${iconName}"></use></svg>
+        attachment += `<div class="attachment pt-2 pb-2 pl-4 pr-4 d-flex ai-center">
+        <svg width="20" height="20" class="va-middle">
+            <use href="dist/sprite.svg#icon-${iconName}"></use>
+        </svg>
+        <button data-delete="${fileName}" class="btn attachment__deletebtn">&times;</button>
         <a href="${dataURL}" target="_blank" class="va-middle ml-2 attachment__name">${fileName}</a>
         </div>`;
     })
@@ -588,6 +594,9 @@ export const closeComposeBox = () => {
     document.getElementById('emailInput').value = '';
     document.getElementById('subjectInput').value = '';
     document.getElementById('messageInput').value = '';
+
+    // clear any files elements in compose box
+    document.getElementById('compose-attachments').innerHTML = '';
 
 }
 
