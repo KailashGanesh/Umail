@@ -226,12 +226,13 @@ var addEmailToSent = function addEmailToSent() {
   if (_globals__WEBPACK_IMPORTED_MODULE_0__["default"].activeSidebarMenu.id == 'sentBtn') {
     _globals__WEBPACK_IMPORTED_MODULE_0__["default"].activeSidebarMenu.click();
   }
+  closeComposeBox();
 };
 var openPopup = function openPopup(whichPopup, popupMessage) {
   var popupElement = document.getElementById('popup');
   switch (whichPopup) {
     case 'settings':
-      popupElement.innerHTML = "\n            <div class=\"settings\">\n                <div class=\"mb-10\">\n                    <p>Settings</p>\n                    <button onclick=\"document.getElementById('popup').classList.remove('shown');\" class=\"btn settings__btn d-block\">&times;</button>\n                </div>\n                <div>\n                    <label for=\"setting_toggle\" class=\"mr-4\">Automatically open next email after deleting</label>\n                    <input class=\"cb2 tgl tgl-ios\" type=\"checkbox\" id=\"setting_toggle\">\n                </div>\n            </div>";
+      popupElement.innerHTML = "\n            <div class=\"settings\">\n                <div class=\"mb-10\">\n                    <p>Settings</p>\n                    <button onclick=\"document.getElementById('popup').classList.remove('shown');\" class=\"btn settings__btn d-block\">&times;</button>\n                </div>\n                <div>\n                    <label for=\"setting_toggle\" class=\"mr-4\">Automatically open next email after deleting</label>\n                    <!-- <input class=\"cb2 tgl tgl-ios\" type=\"checkbox\" id=\"setting_toggle\"> --> \n                    <select name=\"open next\" id=\"setting_toggle\">\n                        <option value=\"true\">Yes</option>\n                        <option value=\"false\">no</option>\n                    </select>\n                </div>\n            </div>";
       popupElement.classList.add('shown');
       break;
     case 'emailError':
@@ -268,23 +269,8 @@ var highlightElement = function highlightElement(element, parentElement) {
 };
 var handleFileUpload = function handleFileUpload() {
   var composeBox = document.getElementById('composeBox');
-  // document.body.addEventListener('dragover',(e) =>{
-  //     console.log('dragover body')
-  //     composeBox.classList.remove('compose--writing-mode');
-  // });
-
-  // ["dragend"].forEach((type) => {
-  //    document.body.addEventListener(type, (e) => {
-  //     console.log('dragleave body')
-  //         composeBox.classList.add("compose--writing-mode");
-  //     });
-  // });
   var dropZoneElement = document.getElementById('drop-zone');
   var dropZoneInput = document.getElementById('dropzoneInput');
-  var attachBtn = document.getElementById('attachBtn');
-  attachBtn.addEventListener("click", function (e) {
-    dropZoneInput.click();
-  });
   dropZoneInput.addEventListener('change', function (e) {
     console.log('input element changed');
     if (dropZoneInput.files.length) {
@@ -298,6 +284,19 @@ var handleFileUpload = function handleFileUpload() {
       console.log(fileArray);
       var composeAttachment = document.getElementById('compose-attachments');
       composeAttachment.innerHTML = returnAttachments(fileArray);
+
+      // add delete to file attachments
+      composeAttachment.addEventListener('click', function (e) {
+        var triggerBtn = e.target.closest('button');
+        e.target.closest('.attachment').remove();
+        if (triggerBtn.dataset.delete) {
+          var attachmentFileName = triggerBtn.dataset.delete;
+          localStorage.removeItem(attachmentFileName); // removes item from local storage
+          var index = _globals__WEBPACK_IMPORTED_MODULE_0__["default"].currentFileUploads.indexOf(attachmentFileName); // gets index in gobals array
+          _globals__WEBPACK_IMPORTED_MODULE_0__["default"].currentFileUploads.splice(index, 1); // delete item from gobals array
+          console.log('->>>>>>>>>>>>>>>', _globals__WEBPACK_IMPORTED_MODULE_0__["default"].currentFileUploads);
+        }
+      });
     }
     ;
   });
@@ -388,7 +387,7 @@ var returnAttachments = function returnAttachments(list) {
       iconName = fileTypes[extension];
     }
     var dataURL = localStorage.getItem(fileName) == null ? 'javascript:void(0);' : localStorage.getItem(fileName);
-    attachment += "<div class=\"attachment pt-2 pb-2 pl-4 pr-4 d-flex ai-center\"><svg width=\"20\" height=\"20\" class=\"va-middle\">\n        <use xlink:href=\"dist/sprite.svg#icon-".concat(iconName, "\"></use></svg>\n        <a href=\"").concat(dataURL, "\" target=\"_blank\" class=\"va-middle ml-2 attachment__name\">").concat(fileName, "</a>\n        </div>");
+    attachment += "<div class=\"attachment pt-2 pb-2 pl-4 pr-4 d-flex ai-center\">\n        <svg width=\"20\" height=\"20\" class=\"va-middle\">\n            <use href=\"dist/sprite.svg#icon-".concat(iconName, "\"></use>\n        </svg>\n        <button data-delete=\"").concat(fileName, "\" class=\"btn attachment__deletebtn\">&times;</button>\n        <a href=\"").concat(dataURL, "\" target=\"_blank\" class=\"va-middle ml-2 attachment__name\">").concat(fileName, "</a>\n        </div>");
   });
 
   // thumbnailElement.innerHTML = attachment;
@@ -447,6 +446,9 @@ var closeComposeBox = function closeComposeBox() {
   document.getElementById('emailInput').value = '';
   document.getElementById('subjectInput').value = '';
   document.getElementById('messageInput').value = '';
+
+  // clear any files elements in compose box
+  document.getElementById('compose-attachments').innerHTML = '';
 };
 
 /**
@@ -726,8 +728,14 @@ document.getElementById('sidebar').addEventListener('click', function (e) {
       break;
   }
 });
+
+// compose Box eventlistener
 document.getElementById('closeCompose').addEventListener('click', _js_domFunctions__WEBPACK_IMPORTED_MODULE_2__.closeComposeBox);
 document.getElementById('sendBtn').addEventListener('click', _js_domFunctions__WEBPACK_IMPORTED_MODULE_2__.addEmailToSent);
+// open file input on clicking attach button
+document.getElementById('attachBtn').addEventListener("click", function () {
+  document.getElementById('dropzoneInput').click();
+});
 document.getElementById('email-list').addEventListener('click', function (e) {
   var eventTarget = e.target.closest('li');
   if (eventTarget == null) return;

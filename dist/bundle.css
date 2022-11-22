@@ -2924,5 +2924,18 @@ body {
   overflow: hidden;
   white-space: nowrap;
 }
+.attachment__deletebtn {
+  display: none;
+  width: 20px;
+  height: 20px;
+  background-color: transparent;
+}
+
+.email__attachments--show-delete .attachment:hover svg {
+  display: none;
+}
+.email__attachments--show-delete .attachment:hover .attachment__deletebtn {
+  display: inline;
+}
 
 /*# sourceMappingURL=bundle.css.map*/
