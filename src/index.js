@@ -88,7 +88,23 @@ document.getElementById('closeCompose').addEventListener('click', closeComposeBo
 document.getElementById('sendBtn').addEventListener('click', addEmailToSent);
 // open file input on clicking attach button
 document.getElementById('attachBtn').addEventListener("click", () => { document.getElementById('dropzoneInput').click(); });
+// add delete to file attachments
+document.getElementById('compose-attachments').addEventListener('click',(e) => {
+    if(e.target.nodeName == 'BUTTON'){
+        let triggerBtn = e.target;
+        let attachmentFileName = triggerBtn.dataset.delete;
+        // gets index in gobals array
+        let index = globals.currentFileUploads.indexOf(attachmentFileName)
 
+        // remove the attachment
+        e.target.closest('.attachment').remove();
+        // removes item from local storage
+        localStorage.removeItem(attachmentFileName);
+        // delete item from gobal array
+        globals.currentFileUploads.splice(index, 1);
+        console.log('current file uploads',globals.currentFileUploads)
+    }
+});
 document.getElementById('email-list').addEventListener('click', (e) => {
     let eventTarget = e.target.closest('li');
 
