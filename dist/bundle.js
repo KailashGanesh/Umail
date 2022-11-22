@@ -18,14 +18,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "handleFileUpload": function() { return /* binding */ handleFileUpload; },
 /* harmony export */   "highlightElement": function() { return /* binding */ highlightElement; },
 /* harmony export */   "openComposeBox": function() { return /* binding */ openComposeBox; },
+/* harmony export */   "openPopup": function() { return /* binding */ openPopup; },
 /* harmony export */   "popEmailList": function() { return /* binding */ popEmailList; },
 /* harmony export */   "popEmailReader": function() { return /* binding */ popEmailReader; },
-/* harmony export */   "popup": function() { return /* binding */ popup; },
 /* harmony export */   "returnAttachments": function() { return /* binding */ returnAttachments; },
+/* harmony export */   "saveFilesToLocalStorage": function() { return /* binding */ saveFilesToLocalStorage; },
 /* harmony export */   "updateNumber": function() { return /* binding */ updateNumber; }
 /* harmony export */ });
 /* harmony import */ var _globals__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./globals */ "./src/js/globals.js");
-function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 
 
 /**
@@ -164,6 +164,11 @@ var deleteEmail = function deleteEmail(eventElement) {
   // eventElement.remove(); // remove the email from email list
   _globals__WEBPACK_IMPORTED_MODULE_0__["default"].emailData[folder].splice(index, 1); // removes the email from global array
   updateNumber(); // an email was deleted so update the numbers
+
+  if (_globals__WEBPACK_IMPORTED_MODULE_0__["default"].activeSidebarMenu.id == 'sentBtn') {
+    // if it is sent email folder, save the current sent emails to localStorage
+    localStorage.setItem('sent', JSON.stringify(_globals__WEBPACK_IMPORTED_MODULE_0__["default"].emailData.sent));
+  }
   _globals__WEBPACK_IMPORTED_MODULE_0__["default"].activeSidebarMenu.click(); // click on the current active menu to reload email list
 
   if (_globals__WEBPACK_IMPORTED_MODULE_0__["default"].settings.openNextEmailAfterDelete) {
@@ -213,13 +218,16 @@ var addEmailToSent = function addEmailToSent() {
   // if no subject change to (no subject)
   currentEmail.subject = subjectInput.value == '' ? '(no subject)' : subjectInput.value;
   currentEmail.message = messageInput.value == '' ? '(no message)' : messageInput.value;
+  currentEmail.attachment = _globals__WEBPACK_IMPORTED_MODULE_0__["default"].currentFileUploads.length > 0;
+  currentEmail.files = currentEmail.attachment ? _globals__WEBPACK_IMPORTED_MODULE_0__["default"].currentFileUploads : [];
   console.log(currentEmail);
   _globals__WEBPACK_IMPORTED_MODULE_0__["default"].emailData.sent.unshift(currentEmail);
+  localStorage.setItem('sent', JSON.stringify(_globals__WEBPACK_IMPORTED_MODULE_0__["default"].emailData.sent));
   if (_globals__WEBPACK_IMPORTED_MODULE_0__["default"].activeSidebarMenu.id == 'sentBtn') {
     _globals__WEBPACK_IMPORTED_MODULE_0__["default"].activeSidebarMenu.click();
   }
 };
-var popup = function popup(whichPopup, popupMessage) {
+var openPopup = function openPopup(whichPopup, popupMessage) {
   var popupElement = document.getElementById('popup');
   switch (whichPopup) {
     case 'settings':
@@ -273,73 +281,42 @@ var handleFileUpload = function handleFileUpload() {
   // });
   var dropZoneElement = document.getElementById('drop-zone');
   var dropZoneInput = document.getElementById('dropzoneInput');
-  dropZoneElement.addEventListener("click", function (e) {
+  var attachBtn = document.getElementById('attachBtn');
+  attachBtn.addEventListener("click", function (e) {
     dropZoneInput.click();
   });
   dropZoneInput.addEventListener('change', function (e) {
     console.log('input element changed');
     if (dropZoneInput.files.length) {
-      returnAttachments([dropZoneInput.files[0].name]);
       console.log('update thumbnail done!!! starting saving to local storage');
-
-      // Create XHR, Blob and FileReader objects
-      var xhr = new XMLHttpRequest(),
-        blob,
-        fileReader = new FileReader();
-
-      // xhr.open("GET", dropZoneInput.files[0], true);
-      // Set the responseType to arraybuffer. "blob" is an option too, rendering manual Blob creation unnecessary, but the support for "blob" is not widespread enough yet
-      // xhr.responseType = "arraybuffer";
-
-      // Create a blob from the response
-      console.log('typeof input', _typeof(dropZoneInput.files[0]));
-      blob = new Blob([dropZoneInput.files[0]], {
-        type: dropZoneInput.files[0].type
-      });
-
-      // onload needed since Google Chrome doesn't support addEventListener for FileReader
-      console.log('typeof blob', _typeof(blob));
-      fileReader.onload = function (evt) {
-        // Read out file contents as a Data URL
-        var result = evt.target.result;
-        console.log('file reader result = ', result);
-        // Set image src to Data URL
-        // Store Data URL in localStorage
-        console.log('typeof filereader output', _typeof(result));
-        try {
-          localStorage.setItem("rhino", result);
-          console.log('saved to localStorage');
-          var _composeBox = document.getElementById('composeBox');
-          var attachmentDiv = document.createElement('div');
-          attachmentDiv.classList.add('email__attachments', 'd-flex', 'flex-wrap');
-
-          // attachmentDiv.innerHTML = `<a href="${localStorage.getItem('rhino')}" class="attachment pt-2 pb-2 pl-4 pr-4"><svg width="20" height="20" class="va-middle fill-red"><use xlink:href="dist/sprite.svg#icon-file-pdf-solid"></use></svg><span class="va-middle ml-2">${dropZoneInput.files[0].name}</span></div>`
-
-          // composeBox.appendChild(attachmentDiv);
-
-          composeAttachment = document.getElementById('composse-attachments');
-          composeAttachment.innerHTML = returnAttachments(dropZoneInput.files);
-        } catch (e) {
-          console.log("Storage failed: " + e);
-        }
-      };
-      // Load blob as Data URL
-      // fileReader.readAsDataURL(blob);
-      fileReader.readAsDataURL(dropZoneInput.files[0]);
+      var fileArray = [];
+      for (var i = 0; i < dropZoneInput.files.length; i++) {
+        saveFilesToLocalStorage(dropZoneInput.files[i]);
+        fileArray.push(dropZoneInput.files[i].name);
+      }
+      _globals__WEBPACK_IMPORTED_MODULE_0__["default"].currentFileUploads = fileArray;
+      console.log(fileArray);
+      var composeAttachment = document.getElementById('compose-attachments');
+      composeAttachment.innerHTML = returnAttachments(fileArray);
     }
+    ;
   });
   composeBox.addEventListener("dragover", function (e) {
     console.log('dragover drop zone');
     e.preventDefault();
     composeBox.classList.remove('compose--writing-mode');
+    document.getElementById('messageInput').style.pointerEvents = "none";
     // dropZoneElement.classList.add("drop-zone--over");
   });
 
   ["dragleave", "dragend"].forEach(function (type) {
-    window.addEventListener(type, function (e) {
+    composeBox.addEventListener(type, function (e) {
       console.log(type, 'drop zone');
       // dropZoneElement.classList.remove("drop-zone--over");
       composeBox.classList.add("compose--writing-mode");
+      setTimeout(function () {
+        document.getElementById('messageInput').style.pointerEvents = "auto";
+      }, 700);
     });
   });
   composeBox.addEventListener("drop", function (e) {
@@ -348,16 +325,37 @@ var handleFileUpload = function handleFileUpload() {
       dropZoneInput.files = e.dataTransfer.files;
       var fileArray = [];
       for (var i = 0; e.dataTransfer.files.length > i; i++) {
+        saveFilesToLocalStorage(e.dataTransfer.files[i]);
         fileArray.push(e.dataTransfer.files[i].name);
       }
+      _globals__WEBPACK_IMPORTED_MODULE_0__["default"].currentFileUploads = fileArray;
       console.log(fileArray);
-      // returnAttachments([e.dataTransfer.files.name]);
+      var composeAttachment = document.getElementById('compose-attachments');
+      composeAttachment.innerHTML = returnAttachments(fileArray);
     }
-
     dropZoneElement.classList.remove("drop-zone--over");
     composeBox.classList.add("compose--writing-mode");
   });
 };
+var saveFilesToLocalStorage = function saveFilesToLocalStorage(file) {
+  var fileReader = new FileReader();
+  console.log('helloooooo from the func');
+  // onload needed since Google Chrome doesn't support addEventListener for FileReader
+  fileReader.onload = function (evt) {
+    // Read out file contents as a Data URL
+    var result = evt.target.result;
+    console.log('file reader result = ', result);
+    try {
+      // save item to local storage with file name
+      localStorage.setItem(file.name, result);
+    } catch (e) {
+      console.log("Storage failed: " + e);
+    }
+  };
+  // read files are data url
+  fileReader.readAsDataURL(file);
+};
+
 /**
  * 
  * @param  {list} array a array of file names 
@@ -389,7 +387,8 @@ var returnAttachments = function returnAttachments(list) {
     if (Object.keys(fileTypes).includes(extension)) {
       iconName = fileTypes[extension];
     }
-    attachment += "<div class=\"attachment pt-2 pb-2 pl-4 pr-4 d-flex ai-center jc-center\"><svg width=\"20\" height=\"20\" class=\"va-middle\">\n        <use xlink:href=\"dist/sprite.svg#icon-".concat(iconName, "\"></use></svg>\n        <span class=\"va-middle ml-2\">").concat(fileName, "</span>\n        </div>");
+    var dataURL = localStorage.getItem(fileName) == null ? 'javascript:void(0);' : localStorage.getItem(fileName);
+    attachment += "<div class=\"attachment pt-2 pb-2 pl-4 pr-4 d-flex ai-center\"><svg width=\"20\" height=\"20\" class=\"va-middle\">\n        <use xlink:href=\"dist/sprite.svg#icon-".concat(iconName, "\"></use></svg>\n        <a href=\"").concat(dataURL, "\" target=\"_blank\" class=\"va-middle ml-2 attachment__name\">").concat(fileName, "</a>\n        </div>");
   });
 
   // thumbnailElement.innerHTML = attachment;
@@ -519,24 +518,27 @@ function _getData() {
             _globals__WEBPACK_IMPORTED_MODULE_1__["default"].emailData.starred = emailData.starred;
             _globals__WEBPACK_IMPORTED_MODULE_1__["default"].emailData.drafts = emailData.drafts;
             _globals__WEBPACK_IMPORTED_MODULE_1__["default"].emailData.trash = emailData.trash;
+            if (localStorage.getItem('sent')) {
+              _globals__WEBPACK_IMPORTED_MODULE_1__["default"].emailData.sent = JSON.parse(localStorage.getItem('sent'));
+            }
             inboxBtn = document.getElementById('inboxBtn');
             emailList = document.getElementById('email-list');
             inboxBtn.click(); // open inbox on page load
             emailList.firstElementChild.click(); // open first email on page load
             (0,_domFunctions__WEBPACK_IMPORTED_MODULE_0__.updateNumber)(); // update numbers on menus
-            _context.next = 23;
+            _context.next = 24;
             break;
-          case 19:
-            _context.prev = 19;
+          case 20:
+            _context.prev = 20;
             _context.t0 = _context["catch"](0);
             alert('we got an unexpected error - please try later');
             console.log(_context.t0);
-          case 23:
+          case 24:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[0, 19]]);
+    }, _callee, null, [[0, 20]]);
   }));
   return _getData.apply(this, arguments);
 }
@@ -559,7 +561,8 @@ var globals = {
   'activeEmailList': '',
   'settings': {
     'openNextEmailAfterDelete': true
-  }
+  },
+  'currentFileUploads': []
 };
 /* harmony default export */ __webpack_exports__["default"] = (globals);
 
@@ -709,10 +712,10 @@ document.getElementById('sidebar').addEventListener('click', function (e) {
       }, 'inbox');
       break;
     case 'settings':
-      _popup('settings');
-      var _popup = document.getElementById('popup');
+      (0,_js_domFunctions__WEBPACK_IMPORTED_MODULE_2__.openPopup)('settings');
+      var popup = document.getElementById('popup');
       var toggle = document.getElementById('setting_toggle');
-      _popup.classList.add('shown');
+      popup.classList.add('shown');
       toggle.addEventListener('change', function () {
         _js_globals__WEBPACK_IMPORTED_MODULE_1__["default"].settings.openNextEmailAfterDelete = /true/i.test(toggle.value); // converts string 'true' into bool true
       });
@@ -725,9 +728,6 @@ document.getElementById('sidebar').addEventListener('click', function (e) {
 });
 document.getElementById('closeCompose').addEventListener('click', _js_domFunctions__WEBPACK_IMPORTED_MODULE_2__.closeComposeBox);
 document.getElementById('sendBtn').addEventListener('click', _js_domFunctions__WEBPACK_IMPORTED_MODULE_2__.addEmailToSent);
-document.getElementById('attachBtn').addEventListener('click', function () {
-  (0,_js_domFunctions__WEBPACK_IMPORTED_MODULE_2__.popup)('fileUpload');
-});
 document.getElementById('email-list').addEventListener('click', function (e) {
   var eventTarget = e.target.closest('li');
   if (eventTarget == null) return;

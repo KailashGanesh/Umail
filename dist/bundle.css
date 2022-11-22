@@ -2569,7 +2569,7 @@ body {
   bottom: 0;
   width: 600px;
   height: 616px;
-  background-color: thistle;
+  background-color: #ffffff;
   border-top-left-radius: 13px;
   border-top-right-radius: 13px;
   -webkit-box-shadow: 0px 0px 20px 0 grey;
@@ -2624,12 +2624,12 @@ body {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 .compose__message {
-  display: none;
   padding: 10px 20px;
   outline: none;
   border: none;
   height: 100%;
   resize: none;
+  display: none;
 }
 .compose__toolbar {
   background-color: white;
@@ -2700,10 +2700,11 @@ body {
 }
 .drop-zone {
   height: 100%;
-  border: 4px dashed #4c4f59;
+  border: 4px dashed #a3a3a8;
   border-radius: 10px;
   background-color: white;
-  padding: 25px;
+  pointer-events: none;
+  margin: 24px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -2916,6 +2917,12 @@ body {
   border: 1px solid #e5e5e5;
   border-radius: 50px;
   cursor: pointer;
+}
+.attachment__name {
+  max-width: 200px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 /*# sourceMappingURL=bundle.css.map*/
