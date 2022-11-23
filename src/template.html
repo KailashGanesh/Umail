@@ -8,10 +8,10 @@
     <link rel="icon" href="favicon.ico" type="image/ico">
 </head>
 <body>
-    <header class="header">
-        <div class="header__logo">
-            <div class="logo-U"></div>
-            <span class="">mail</span>
+    <header class="header d-flex ai-center jc-space-between pr-7 pl-7">
+        <div class="header__logo d-flex ai-center">
+            <div class="logo-U d-iblock"></div>
+            <span>mail</span>
         </div>
         <p class="heading-md clr-steel" id="addHeading">Sparrow</p>
         <div class="input">
@@ -25,15 +25,15 @@
         </div>
     </header>
 
-    <div class="wrapper">
+    <div class="d-flex">
 
-        <aside class="sidebar" id="sidebar">
+        <aside class="sidebar d-flex jc-space-between flex-direction-col" id="sidebar">
                 <ul class="pt-5">
                     <li class="mb-7 pl-4">
-                        <button class="btn btn-blue tt-uppercase d-block m-auto" id="composeBtn" data-type="compose">compose</button>
+                        <button class="btn btn-blue tt-uppercase" id="composeBtn" data-type="compose">compose</button>
                     </li>
                     <li>
-                        <button class="btn sidebar__btn" id="inboxBtn" data-type="folder">
+                        <button class="btn sidebar__btn d-block ta-l tt-capitalize pl-4 pb-1 fs-lg" id="inboxBtn" data-type="folder">
                             <svg class="btn__icon va-middle">
                                 <use xlink:href="dist/sprite.svg#icon-inbox"></use>
                             </svg>
@@ -41,7 +41,7 @@
                         </button>
                     </li>
                     <li>
-                        <button class="btn sidebar__btn" id="sentBtn" data-type="folder">
+                        <button class="btn sidebar__btn d-block ta-l tt-capitalize pl-4 pb-1 fs-lg" id="sentBtn" data-type="folder">
                             <svg class="btn__icon va-middle">
                                 <use xlink:href="dist/sprite.svg#icon-inbox-upload"></use>
                             </svg>
@@ -49,7 +49,7 @@
                         </button>
                     </li>
                     <li>
-                        <button class="btn sidebar__btn" id="starredBtn" data-type="folder">
+                        <button class="btn sidebar__btn d-block ta-l tt-capitalize pl-4 pb-1 fs-lg" id="starredBtn" data-type="folder">
                             <svg class="btn__icon va-middle">
                                 <use xlink:href="dist/sprite.svg#icon-star"></use>
                             </svg>
@@ -57,7 +57,7 @@
                         </button>
                     </li>
                     <li>
-                        <button class="btn sidebar__btn" id="draftsBtn" data-type="folder">
+                        <button class="btn sidebar__btn d-block ta-l tt-capitalize pl-4 pb-1 fs-lg" id="draftsBtn" data-type="folder">
                             <svg class="btn__icon va-middle">
                                 <use xlink:href="dist/sprite.svg#icon-document-text"></use>
                             </svg>
@@ -65,7 +65,7 @@
                         </button>
                     </li>
                     <li class="mb-3">
-                        <button class="btn sidebar__btn" id="trashBtn" data-type="folder">
+                        <button class="btn sidebar__btn d-block ta-l tt-capitalize pl-4 pb-1 fs-lg" id="trashBtn" data-type="folder">
                             <svg class="btn__icon va-middle">
                                 <use xlink:href="dist/sprite.svg#icon-trash-can"></use>
                             </svg>
@@ -74,31 +74,31 @@
                     </li>
 
                     <li>
-                        <button class="btn sidebar__btn" id="personalBtn" data-type="tag">
+                        <button class="btn sidebar__btn d-block ta-l tt-capitalize pl-4 pb-1 fs-lg" id="personalBtn" data-type="tag">
                             <span class="tag--personal"></span>
                             <span class="va-middle" id="personalBtnText">Personal (2)</span>
                         </button>
                     </li>
                     <li>
-                        <button class="btn sidebar__btn" id="clientsBtn" data-type="tag">
+                        <button class="btn sidebar__btn d-block ta-l tt-capitalize pl-4 pb-1 fs-lg" id="clientsBtn" data-type="tag">
                             <span class="tag--clients"></span>
                             <span class="va-middle" id="clientsBtnText">Clients</span>
                         </button>
                     </li>
                     <li>
-                        <button class="btn sidebar__btn" id="familyBtn" data-type="tag">
+                        <button class="btn sidebar__btn d-block ta-l tt-capitalize pl-4 pb-1 fs-lg" id="familyBtn" data-type="tag">
                             <span class="tag--family"></span>
                             <span class="va-middle" id="familyBtnText">Family (2)</span>
                         </button>
                     </li>
                     <li>
-                        <button class="btn sidebar__btn" id="friendsBtn" data-type="tag">
+                        <button class="btn sidebar__btn d-block ta-l tt-capitalize pl-4 pb-1 fs-lg" id="friendsBtn" data-type="tag">
                             <span class="tag--friends"></span>
                             <span class="va-middle" id="friendsBtnText">Friends</span>
                         </button>
                     </li>
                     <li>
-                        <button class="btn sidebar__btn" id="archivesBtn" data-type="tag">
+                        <button class="btn sidebar__btn d-block ta-l tt-capitalize pl-4 pb-1 fs-lg" id="archivesBtn" data-type="tag">
                             <span class="tag--archives"></span>
                             <span class="va-middle" id="archivesBtnText">Archives</span>
                         </button>
@@ -118,27 +118,27 @@
             </div>
         </aside>
 
-        <main class="wrapper email">
+        <main class="d-flex email">
             <ul class="email__list" id="email-list"> </ul>
             <div class="email__reader d-flex flex-direction-col" id="email-reader"> </div>
         </main>
     </div>
 
-    <div class="compose compose--writing-mode" id="composeBox">
-        <div class="compose__titlebar">
+    <div class="compose compose--writing-mode flex-direction-col" id="composeBox">
+        <div class="compose__titlebar d-flex jc-space-between ai-center">
             <span>New Message</span>
             <button class="btn compose__closebtn" id="closeCompose">&times;</button>
         </div>
-        <input type="email" class="compose__email" placeholder="Recipient" id="emailInput">
-        <input type="text" class="compose__subject" placeholder="Subject" id="subjectInput">
-        <textarea name="" id="messageInput" cols="30" rows="10" class="compose__message"></textarea>
+        <input type="email" class="compose__email pt-2 pb-2 pr-5 pl-5" placeholder="Recipient" id="emailInput">
+        <input type="text" class="compose__subject pt-2 pb-2 pr-5 pl-5" placeholder="Subject" id="subjectInput">
+        <textarea name="" id="messageInput" cols="30" rows="10" class="compose__message pt-2 pb-2 pr-5 pl-5"></textarea>
                 <div class="drop-zone" id="drop-zone">
                     <span class="drop-zone__prompt">Drop file here or click to upload</span>
                     <div class="drop-zone__thumb" data-label="myfile.txt" id="dropzoneThumbnail"></div>
                     <input class="drop-zone__input" type="file"  name="emailAttachment" id="dropzoneInput" multiple>
                 </div>
         <div class="email__attachments email__attachments--show-delete d-flex flex-wrap pr-4 pl-4" id="compose-attachments"></div>
-        <div class="compose__toolbar">
+        <div class="compose__toolbar p-2">
             <button class="btn compose__btn" id="sendBtn">send</button>
             <button class="btn ml-2 compose__attachbtn" id="attachBtn">
                 <svg class="va-middle fill-cool-gray attachbtn__icon" height="15" width="15">
@@ -150,7 +150,5 @@
 
     <div class="popup" id="popup">
     </div>
-
-
 </body>
 </html>

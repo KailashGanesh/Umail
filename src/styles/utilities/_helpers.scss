@@ -3,11 +3,6 @@
     height: auto;
 }
 
-.wrapper{
-    display: flex;
-    background-color: $white;
-}
-
 // margin auto
 .mr-auto{ margin-right: auto;}
 .ml-auto{ margin-left: auto;}
@@ -29,6 +24,7 @@
 // Uppercase letters
 
 .tt-uppercase{text-transform: uppercase;}
+.tt-capitalize{text-transform: capitalize;}
 
 // line heigh
 .lh-1{line-height: 1;}
@@ -55,9 +51,9 @@
 
 
 // colors
-
 .clr-gunmetal{ color: $gunmetal; }
 .clr-cool-gray{ color: $cool-gray; }
 .fill-cool-gray{ fill: $cool-gray; }
 .fill-blue{ fill: $blue; }
-.fill-red{ fill: $red; }
+.fill-red{ fill: $red;}
+.fill-steel{ fill: $steel; }

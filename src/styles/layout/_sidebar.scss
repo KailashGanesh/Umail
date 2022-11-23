@@ -5,21 +5,10 @@
     width: 220px;
     overflow-y: auto;
 
-    display: flex;
-    justify-content: space-between;
-    flex-direction: column;
-
     &__btn{
-        display: block;
         background-color: transparent;
         color: $steel;
-        font-size: 14px;
         width: 100%;
-        text-align: left;
-        padding-left: 16px;
-        padding-bottom: 4px;
-        text-transform: capitalize;
-        // cursor: pointer;
 
         &:hover{
             background-color: rgba(142, 142, 147, 0.19);

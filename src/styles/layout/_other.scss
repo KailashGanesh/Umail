@@ -22,6 +22,14 @@
         border-left: 3px solid transparent;
         cursor: pointer;
 
+        // &::before{
+        //     content: attr(data-folder);
+        //     display: inline-block;
+        //     font-size: 12px;
+        //     background-color: rgba($cool-gray, 0.3);
+        //     width: fit-content;
+        // }
+
         &:hover{
             background-color: rgba(142, 142, 147, 0.05);
         }
@@ -32,19 +40,13 @@
         background-color: rgba(142, 142, 147, 0.05);
     }
 
-   
-    // &__details{
-    //     display: flex;
-    //     justify-content: space-between;
-    //     align-items: center;
-    // }
-
     &__subject{
         max-width: 200px;
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
     }
+
     // ========= email reader ==========
     &__reader{
         height: calc(100vh - 60px);
@@ -71,9 +73,6 @@
     &__imgContainer{
         position: relative;
         max-width: 54px;
-        // width: 54px;
-        // height: 54px;
-        // border-radius: 50%; 
     }
 
     &__picture{
