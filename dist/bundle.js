@@ -15,7 +15,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "defaultScreen": function() { return /* binding */ defaultScreen; },
 /* harmony export */   "deleteEmail": function() { return /* binding */ deleteEmail; },
 /* harmony export */   "filterObject": function() { return /* binding */ filterObject; },
-/* harmony export */   "handleFileUpload": function() { return /* binding */ handleFileUpload; },
 /* harmony export */   "highlightElement": function() { return /* binding */ highlightElement; },
 /* harmony export */   "openComposeBox": function() { return /* binding */ openComposeBox; },
 /* harmony export */   "openPopup": function() { return /* binding */ openPopup; },
@@ -63,7 +62,7 @@ var popEmailList = function popEmailList(data, folderName) {
 
 /**
  * clears child elements and shows a default or placeholder screen in emailList and emailReader
- * @param  {Boolean} clarEmailList if true it will change email list to default view
+ * @param  {Boolean} clearEmailList if true it will change email list to default view
  * @param  {Boolean} clearEmailReader if true it will change email reader to default view
  */
 var defaultScreen = function defaultScreen() {
@@ -169,6 +168,11 @@ var deleteEmail = function deleteEmail(eventElement) {
     activeElement.click();
   }
 };
+
+/**
+ * function runs when 'send' button is clicked on composeBox
+ * it takes values of emailInput, subjectInput, messageInput and attachment if any and added it to gobals.emailData.sent variables
+ */
 var addEmailToSent = function addEmailToSent() {
   var currentEmail = {
     "picture": "",
@@ -217,6 +221,12 @@ var addEmailToSent = function addEmailToSent() {
   }
   closeComposeBox();
 };
+
+/**
+ * @param  {string} whichPopup options for popup - 'settings', 'preview' 
+ * @param  {string} popupMessage can pass a message to be displayed in the popup or a data URL to be used in preview
+ * opens popup with the selected option
+ */
 var openPopup = function openPopup(whichPopup, popupMessage) {
   var popupElement = document.getElementById('popup');
   switch (whichPopup) {
@@ -225,7 +235,7 @@ var openPopup = function openPopup(whichPopup, popupMessage) {
       popupElement.classList.add('shown');
       break;
     case 'preview':
-      popupElement.innerHTML = "\n            <div class=\"settings\" style=\"width:80%; height:80%;\">\n                <div class=\"mb-1\">\n                    <p>Preview</p>\n                    <button onclick=\"document.getElementById('popup').classList.remove('shown');\" class=\"btn settings__btn d-block\">&times;</button>\n                </div>\n                <iframe width='100%' height='100%' src='".concat(popupMessage, "'></iframe>\n\n            </div>");
+      popupElement.innerHTML = "\n            <div class=\"settings\" style=\"width:80%; height:80%;\">\n                <div class=\"mb-1\">\n                    <p>Preview</p>\n                    <button onclick=\"document.getElementById('popup').classList.remove('shown');\" class=\"btn settings__btn d-block\">&times;</button>\n                </div>\n                <iframe width='100%' height='100%' src='".concat(popupMessage, "'></iframe>\n            </div>");
       popupElement.classList.add('shown');
       break;
   }
@@ -254,59 +264,11 @@ var highlightElement = function highlightElement(element, parentElement) {
       break;
   }
 };
-var handleFileUpload = function handleFileUpload() {
-  // const composeBox = document.getElementById('composeBox');
-  // const dropZoneInput = document.getElementById('dropzoneInput')
-  // const composeAttachment = document.getElementById('compose-attachments');
 
-  // dropZoneInput.addEventListener('change', (e) => {
-  //     if (dropZoneInput.files.length) {
-
-  //         for(let i = 0; i < dropZoneInput.files.length; i++) {
-  //             saveFilesToLocalStorage(dropZoneInput.files[i])
-  //             globals.currentFileUploads.push(dropZoneInput.files[i].name)
-  //         }
-  //     };
-  //         composeAttachment.innerHTML = returnAttachments(globals.currentFileUploads);
-  // });
-
-  // composeBox.addEventListener("dragover", (e) => {
-  //     e.preventDefault();
-  //     composeBox.classList.remove('compose--writing-mode');
-
-  //     document.getElementById('messageInput').style.pointerEvents = "none";
-  //     // dropZoneElement.classList.add("drop-zone--over");
-  // });
-
-  // ["dragleave", "dragend"].forEach((type) => {
-  //     composeBox.addEventListener(type, (e) => {
-  //             // dropZoneElement.classList.remove("drop-zone--over");
-  //             composeBox.classList.add("compose--writing-mode");
-  //         setTimeout(() => {
-  //             document.getElementById('messageInput').style.pointerEvents = "auto";
-  //         },700)
-  //     });
-  // });
-
-  // composeBox.addEventListener("drop", (e) => {
-  //     e.preventDefault();
-
-  //     if (e.dataTransfer.files.length) {
-  //         dropZoneInput.files = e.dataTransfer.files;
-
-  //         for(let i = 0; i < dropZoneInput.files.length; i++) {
-  //             saveFilesToLocalStorage(dropZoneInput.files[i])
-  //             globals.currentFileUploads.push(dropZoneInput.files[i].name)
-  //         }
-
-  //     }
-  //     composeAttachment.innerHTML = returnAttachments(globals.currentFileUploads);
-  //     dropZoneInput.files = '';
-
-  //     // dropZoneElement.classList.remove("drop-zone--over");
-  //     composeBox.classList.add("compose--writing-mode");
-  // });
-};
+/**
+ * converts files into dataURL and saves it in localStorage with the file name
+ * @param  {object} file the file object to be turned into dataURL and saved to localStorage
+ */
 var saveFilesToLocalStorage = function saveFilesToLocalStorage(file) {
   var fileReader = new FileReader();
   // onload needed since Google Chrome doesn't support addEventListener for FileReader
@@ -663,6 +625,33 @@ document.getElementById('sidebar').addEventListener('click', function (e) {
       break;
   }
 });
+document.getElementById('email-list').addEventListener('click', function (e) {
+  var eventTarget = e.target.closest('li');
+  if (eventTarget == null) return;
+  (0,_js_domFunctions__WEBPACK_IMPORTED_MODULE_2__.popEmailReader)(_js_globals__WEBPACK_IMPORTED_MODULE_1__["default"].emailData, eventTarget);
+});
+document.getElementById('searchBar').addEventListener('keyup', function (e) {
+  var searchText = document.getElementById('searchBar').value;
+  if (e.key == 'Enter') {
+    e.preventDefault();
+    var currentActiveMenuBtn = _js_globals__WEBPACK_IMPORTED_MODULE_1__["default"].activeSidebarMenu;
+    var folderName = currentActiveMenuBtn.id.slice(0, -3);
+    if (currentActiveMenuBtn.dataset.type == 'folder') {
+      var result = (0,_js_domFunctions__WEBPACK_IMPORTED_MODULE_2__.filterObject)(folderName, 'subject', searchText, true);
+      var resultObj = {};
+      resultObj[folderName] = result;
+      (0,_js_domFunctions__WEBPACK_IMPORTED_MODULE_2__.popEmailList)(resultObj, folderName);
+    } else if (currentActiveMenuBtn.dataset.type == 'tag') {
+      var _result = (0,_js_domFunctions__WEBPACK_IMPORTED_MODULE_2__.filterObject)('inbox', 'tag', folderName);
+      _js_globals__WEBPACK_IMPORTED_MODULE_1__["default"].emailData[folderName] = _result;
+      _result = (0,_js_domFunctions__WEBPACK_IMPORTED_MODULE_2__.filterObject)(folderName, 'subject', searchText, true);
+      (0,_js_domFunctions__WEBPACK_IMPORTED_MODULE_2__.popEmailList)({
+        'inbox': _result
+      }, 'inbox');
+    }
+    (0,_js_domFunctions__WEBPACK_IMPORTED_MODULE_2__.defaultScreen)(false, true);
+  }
+});
 
 // == compose Box eventlistener ==
 document.getElementById('closeCompose').addEventListener('click', _js_domFunctions__WEBPACK_IMPORTED_MODULE_2__.closeComposeBox);
@@ -731,34 +720,6 @@ composeBox.addEventListener("drop", function (e) {
   // dropZoneElement.classList.remove("drop-zone--over");
   composeBox.classList.add("compose--writing-mode");
 });
-document.getElementById('email-list').addEventListener('click', function (e) {
-  var eventTarget = e.target.closest('li');
-  if (eventTarget == null) return;
-  (0,_js_domFunctions__WEBPACK_IMPORTED_MODULE_2__.popEmailReader)(_js_globals__WEBPACK_IMPORTED_MODULE_1__["default"].emailData, eventTarget);
-});
-document.getElementById('searchBar').addEventListener('keyup', function (e) {
-  var searchText = document.getElementById('searchBar').value;
-  if (e.key == 'Enter') {
-    e.preventDefault();
-    var currentActiveMenuBtn = _js_globals__WEBPACK_IMPORTED_MODULE_1__["default"].activeSidebarMenu;
-    var folderName = currentActiveMenuBtn.id.slice(0, -3);
-    if (currentActiveMenuBtn.dataset.type == 'folder') {
-      var result = (0,_js_domFunctions__WEBPACK_IMPORTED_MODULE_2__.filterObject)(folderName, 'subject', searchText, true);
-      var resultObj = {};
-      resultObj[folderName] = result;
-      (0,_js_domFunctions__WEBPACK_IMPORTED_MODULE_2__.popEmailList)(resultObj, folderName);
-    } else if (currentActiveMenuBtn.dataset.type == 'tag') {
-      var _result = (0,_js_domFunctions__WEBPACK_IMPORTED_MODULE_2__.filterObject)('inbox', 'tag', folderName);
-      _js_globals__WEBPACK_IMPORTED_MODULE_1__["default"].emailData[folderName] = _result;
-      _result = (0,_js_domFunctions__WEBPACK_IMPORTED_MODULE_2__.filterObject)(folderName, 'subject', searchText, true);
-      (0,_js_domFunctions__WEBPACK_IMPORTED_MODULE_2__.popEmailList)({
-        'inbox': _result
-      }, 'inbox');
-    }
-    (0,_js_domFunctions__WEBPACK_IMPORTED_MODULE_2__.defaultScreen)(false, true);
-  }
-});
-document.getElementById('popup').addEventListener('click', function (e) {});
 }();
 /******/ })()
 ;
