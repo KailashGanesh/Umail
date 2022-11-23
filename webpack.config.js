@@ -7,8 +7,6 @@ const ImageminWebpWebpackPlugin= require("imagemin-webp-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 
-// const autoprefixer = require("autoprefixer");
-
 module.exports = {
     mode:'development',
     entry: {
@@ -23,7 +21,8 @@ module.exports = {
     },
     devtool:'source-map',
     devServer:{
-        static: {directory:path.resolve(__dirname,'dist')},
+        // static: {directory:path.resolve(__dirname,'dist')},
+        static: {directory:path.resolve(__dirname,'')},
         port:3000,
         open: true,
         hot: true,
@@ -56,7 +55,8 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             title:'Umail',
-            filename:'index.html',
+            // filename:'index.html',
+            filename:path.join(__dirname, "index.html"),
             template: 'src/template.html',
             scriptLoading: 'blocking',
             favicon:'dist/favicon.ico',
@@ -66,7 +66,7 @@ module.exports = {
             {from: './src/assets/sprite.svg', to:''},
             {from: './src/assets/img', to:'./img'},
             {from:'./src/favicon.ico', to:''},
-            {from:'./dist/index.html', to:'../index.html'},
+            // {from:'./dist/index.html', to:'../index.html'},
         ]}),
         new MiniCssExtractPlugin(),
         new ImageminWebpWebpackPlugin({
